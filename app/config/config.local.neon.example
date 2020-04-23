@@ -2,8 +2,13 @@ parameters:
 
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=test'
-	user:
-	password:
-	options:
-		lazy: yes
+	host: host
+	username: user
+	password: pass
+	database: db
+	lazy: TRUE
+	profiler:
+		run: false
+		explain: true
+		filter: DibiEvent::ALL
+		file: log.sql
