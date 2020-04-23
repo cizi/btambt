@@ -1,0 +1,122 @@
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+	<img class="adminMenuHeader" src="{$basePath}/images/menuHeader.png" />
+	<ul class="sidebar-nav">
+		<li class="sidebar-brand">
+			<span class="colorWhite">{=MENU_TITLE}</span>
+		</li>
+		{if $userRole == $adminRole}
+			<li>
+				<a href={link Dashboard:Default} {if $item == "dashboard"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-dashboard menuItem"></span>{=MENU_DASHBOARD}
+				</a>
+			</li>
+			<li>
+				<a href={link Header:Default} {if $item == "header"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-bookmark menuItem"></span>{=MENU_HEADER}
+				</a>
+			</li>
+			<li>
+				<a href={link Slider:Default} {if $item == "slider"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-picture menuItem"></span>{=MENU_LOGO}
+				</a>
+			</li>
+			<li>
+				<a href={link Menu:Default} {if $item == "menu"} style="color: white"{/if}>
+					<span class="glyphicon glyphicon-menu-hamburger menuItem"></span>{=MENU_MENU}
+				</a>
+			</li>
+			<li>
+				<a href={link Block:Default} {if $item == "block"} style="color: white"{/if}>
+					<span class="glyphicon glyphicon-th-large menuItem"></span>{=MENU_BLOCK}
+				</a>
+			</li>
+			<li>
+				<a href={link BlockContent:Default} {if $item == "blockContent"} style="color: white"{/if}>
+					<span class="glyphicon glyphicon-link menuItem"></span>{=MENU_MENU_BLOCK}
+				</a>
+			</li>
+			<li>
+				<a href={link Contact:Default} {if $item == "contact"} style="color: white"{/if}>
+					<span class="glyphicon glyphicon-envelope menuItem"></span>{=MENU_CONTACT_FORM}
+				</a>
+			</li>
+			<li>
+				<a href={link Footer:Default} {if $item == "footer"} style="color: white"{/if}>
+					<span class="glyphicon glyphicon-chevron-down menuItem"></span>{=MENU_FOOTER}</a>
+			</li>
+			<li>
+				<a href={link User:Default} {if $item == "user"} style="color: white"{/if}>
+					<span class="glyphicon glyphicon-user menuItem"></span>{=MENU_USERS}
+				</a>
+			</li>
+			<li>
+				<a href="{link Webconfig:Default}" {if $item == "webconfig"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-cog menuItem"></span>{=MENU_SETTINGS}</a>
+			</li>
+			<li>
+				<a href="{link Enumeration:Default}" {if $item == "enumeration"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-list-alt menuItem"></span>{=MENU_ENUMERATION}
+				</a>
+			</li>
+			<li>
+				<a href="{link Vet:Default}" {if $item == "vet"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-plus menuItem"></span>{=MENU_VETS}
+				</a>
+			</li>
+		{/if}
+		<li>
+			<a href="{link Referee:Default}" {if $item == "referee"} style="color: white" {/if}>
+				<span class="glyphicon glyphicon-search menuItem"></span>{=REFEREE_MENU}
+			</a>
+		</li>
+		<li>
+			<a href="{link Show:Default}" {if $item == "show"} style="color: white" {/if}>
+				<span class="glyphicon glyphicon-glass menuItem"></span>{=SHOW_MENU}
+			</a>
+		</li>
+		<li>
+			<a href="{link LitterApplication:Default}" {if $item == "litter"} style="color: white" {/if}>
+				<span class="glyphicon glyphicon-th menuItem"></span>{=LITTER_APPLICATION}
+			</a>
+		</li>
+		{if $userRole == $adminRole}
+			<li>
+				<a href="{link Lang:Default}" {if $item == "lang"} style="color: white" {/if}>
+					<span class="glyphicon glyphicon-globe menuItem"></span>{=MENU_LANG}</a>
+			</li>
+		{/if}
+		<li>
+			<div class="menuDelimiter"></div>
+		</li>
+		<li>
+			<a href="{link Out}">
+				<span class="glyphicon glyphicon-log-out menuItem"></span>{=MENU_LOGOUT}</a>
+		</li>
+		<li>
+			<a href="{link :Frontend:FeItem1velord1:default}">
+				<span class="glyphicon glyphicon-retweet menuItem"></span>{=MENU_FRONTEND}</a>
+		</li>
+	</ul>
+	{* <img id="adminMenuFooter" class="adminMenuFooter" src="{$basePath}/images/menuFooter.png" /> *}
+</div>
+<!-- /#sidebar-wrapper -->
+
+<script>
+	$(function() {
+		function fixMenuFooterImage() {
+			var menuFooterPosition = $(window).height() - 140;
+			if (menuFooterPosition < 460) {
+				$("#adminMenuFooter").css("display", "none");
+			} else {
+				var adminFooterElement = $("#adminMenuFooter");
+				adminFooterElement.css("display", "block");
+				adminFooterElement.css("margin-top", menuFooterPosition + "px");
+			}
+		}
+		fixMenuFooterImage();
+		$(window).resize(function(){
+			fixMenuFooterImage();
+		});
+	})
+</script>

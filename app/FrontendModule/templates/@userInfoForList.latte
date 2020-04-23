@@ -1,0 +1,23 @@
+<b>
+	{if $user->isPrivacy()}
+		{$user->getStation()}
+		{if $user->getBreed() != null}
+			(
+			{var breeds = explode(App\Model\Entity\UserEntity::BREED_DELIMITER, $user->getBreed())}
+			{foreach $breeds as $breed}
+				{$enumRepo->findEnumItemByOrder($lang, $breed)}{if $iterator->isLast() == false}, {/if}
+			{/foreach}
+			)
+		{/if}
+	{/if}
+</b>
+{if $user->getSharing() >= 32}
+	<ul>
+		<li>{$user->getFullName()}{if $user->isPrivacy()}, {$stateEnum->getValueByKey($user->getState())}{/if}</li>
+		{if ($user->getSharing() >= 33) && ($user->isPrivacy())}
+			<li>{if $user->getPhone() != null}{$user->getPhone()}{/if}</li>
+			<li>{if $user->getEmail() != null}{$user->getEmail()}{/if}</li>
+			<li>{if $user->getWeb() != null}<a href="http://{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
+		{/if}
+	</ul>
+{/if}

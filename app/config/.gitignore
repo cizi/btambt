@@ -1,0 +1,5 @@
+*
+*/
+!.gitignore
+!config.local.neon.example
+!config.neon.example

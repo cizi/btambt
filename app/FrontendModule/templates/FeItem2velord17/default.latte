@@ -1,0 +1,36 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						{control litterApplicationForm}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$("#frm-litterApplicationForm-fID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_MALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-litterApplicationForm-pID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_FEMALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-litterApplicationForm").submit(function( event ) {
+				if (($("#frm-litterApplicationForm-pID").val() == "0") || ($("#frm-litterApplicationForm-fID").val() == "0")) {
+					event.preventDefault();
+				}
+			});
+		})
+	</script>
+{/block}

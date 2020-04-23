@@ -1,0 +1,70 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						{control kinshipVerificationForm}
+					</div>
+				</div>
+
+				{if isset($male) && isset($female)}
+					<div class="row">
+						<div class="col-lg-12 viewHeader" style="height: auto;">
+							{=KINSHIP_VERIFICATION}
+							[<u>{$male->getTitulyPredJmenem()} {$male->getJmeno()} {$male->getTitulyZaJmenem()}</u>]
+							{=KINSHIP_VERIFICATION_AND}
+							[<u>{$female->getTitulyPredJmenem()} {$female->getJmeno()} {$female->getTitulyZaJmenem()}</u>]
+							<i>Fx = {$coef} % ({=KINSHIP_VERIFICATION_CROSS})</i>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 viewHeader" style="height: auto;">
+							{$male->getTitulyPredJmenem()} {$male->getJmeno()} {$male->getTitulyZaJmenem()}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							{$malePedigree|noescape}
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 viewHeader" style="height: auto;">
+							{$female->getTitulyPredJmenem()} {$female->getJmeno()} {$female->getTitulyZaJmenem()}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							{$femalePedigree|noescape}
+						</div>
+					</div>
+
+				{/if}
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$("#frm-kinshipVerificationForm-pID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_MALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-kinshipVerificationForm-fID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_FEMALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-kinshipVerificationForm").submit(function( event ) {
+				if (($("#frm-kinshipVerificationForm-pID").val() == "0") || ($("#frm-kinshipVerificationForm-fID").val() == "0")) {
+					event.preventDefault();
+				}
+			});
+		})
+	</script>
+{/block}

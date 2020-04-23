@@ -1,0 +1,160 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		{form editForm}
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<form>
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label email/}<span class="colorRedMandatory"> *</span>
+										{input email}
+									</div>
+									<div class="col-sm-2"></div>
+
+									<div class="col-sm-5">
+										{label password/}<span class="colorRedMandatory"> *</span>
+										{input password}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label passwordConfirm/}<span class="colorRedMandatory"> *</span>
+										{input passwordConfirm}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label title_before/}
+										{input title_before}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label name/}<span class="colorRedMandatory"> *</span>
+										{input name}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label surname/}<span class="colorRedMandatory"> *</span>
+										{input surname}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label title_after/}
+										{input title_after}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label street/}
+										{input street}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label city/}
+										{input city}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label zip/}
+										{input zip}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label state/}
+										{input state}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label web/}
+										{input web}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label phone/}
+										{input phone}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label fax/}
+										{input fax}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-5">
+										{label station/}
+										{input station}
+									</div>
+									<div class="col-sm-2"></div>
+									<div class="col-sm-5">
+										{label breed/}
+										{input breed}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										{label sharing/} <br />
+										{input sharing}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+										{input privacy}
+										<span class="colorRedMandatory"> *</span>
+										<strong>{=USER_EDIT_PRIVACY}
+											<a href="../docs/GDPR-INFORMACE_O_ZPRACOVANI_OSOBNICH_UDAJU.pdf" target="_blank">{=USER_EDIT_PRIVACY_URL}
+											</a>
+										</strong>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-12">
+										{input news} <strong>{=USER_EDIT_NEWS}</strong>
+									</div>
+								</div>
+
+								<div class="form-group row alignRight">
+									<div class="col-sm-offset-2 col-sm-10 col-md-10 col-lg-10">
+										{input confirm}
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+		{/form}
+	</div>
+
+	<script>
+		$( document ).ready(function() {
+			$("#frm-editForm-breed").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+		});
+	</script>
+{/block}

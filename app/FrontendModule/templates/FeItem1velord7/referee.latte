@@ -1,0 +1,20 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container">
+							{if $referee != null}
+								<strong>{=REFEREE_NAME}: </strong>{$referee->getTitulyPrefix()} {$referee->getJmeno()} {$referee->getPrijmeni()} {$referee->getTitulySuffix()}<br />
+								<strong>{=REFEREE_ADDRESS}: </strong> {$referee->getUlice()} {$referee->getMesto()} {$referee->getPSC()}
+							{/if}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}

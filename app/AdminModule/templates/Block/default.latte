@@ -1,0 +1,115 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'block'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-0">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<h1>{=BLOCK_SETTING_TITLE}</h1>
+							<span>{=BLOCK_SETTING_INFO|noescape}</span>
+							<br /><br />
+
+							<div class="container userTable">
+								<table class="table table-striped">
+									<thead>
+									<tr>
+										<th style="width: 55%">{=BLOCK_SETTING_CONTENT}</th>
+										<th>{=BLOCK_SETTING_BG_COLOR}</th>
+										<th>{=BLOCK_SETTING_COLOR}</th>
+										<th class="alignRight">
+											<button type="button" class="btn btn-success" onclick="window.location.assign({link Block:Edit});">
+												<span class="glyphicon glyphicon-plus"></span>	{=MENU_SETTINGS_ADD}
+											</button>
+										</th>
+									</tr>
+									</thead>
+									<tbody>
+										{foreach $blocks as $blockEntity}
+											<tr>
+												<td>
+													{$blockEntity->getBlockContent()->getContentText()|noescape}
+												</td>
+												<td>
+													{if $blockEntity->getBackgroundColor() !=""}
+														<div class="colorExample" style="background-color: {$blockEntity->getBackgroundColor()|noescape}"></div>
+													{/if}
+												</td>
+												<td>
+													{if $blockEntity->getColor() != ""}
+														<div class="colorExample" style="background-color: {$blockEntity->getColor()|noescape}"></div>
+													{/if}
+												</td>
+												<td class="alignRight">
+													{if $blockEntity->getId() != $contactFormId}
+														<a href='{link edit, $blockEntity->getId()}' title={=BLOCK_SETTING_EDIT_ITEM}><span class='glyphicon glyphicon-pencil'></span></a> &nbsp;&nbsp;
+														<a href='#' data-href='{link delete, $blockEntity->getId()}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title={=BLOCK_SETTING_DELETE_ITEM}><span class='glyphicon glyphicon-remove'></span></a>
+													{/if}
+												</td>
+											</tr>
+										{/foreach}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=BLOCK_SETTINGS_CONFIRM_MODAL_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=BLOCK_SETTINGS_CONFIRM_MODAL_DELETE_MSG}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=BLOCK_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=BLOCK_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		// modal for errors
+		function requiredFields() {
+			submitForm = true;
+			$($(".tinym_required_field").get().reverse()).each(function() {
+				console.log($(this).val());
+				if ($(this).val() == "") {
+					$(this).addClass("form-control-danger");
+					$("#tinym_info_modal_message").text($(this).attr("validation"));
+					$("#tinym_info_modal").modal();
+					$(this).focus();
+					submitForm = false;
+				} else {
+					$(this).removeClass("form-control-danger");
+					$(this).addClass("form-control-success");
+				}
+			});
+
+			return submitForm;
+		}
+	</script>
+
+{/block}
+

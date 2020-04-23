@@ -1,0 +1,182 @@
+{block content}
+<div id="wrapper">
+	{include '../@menu.latte', item => 'lang'}
+	<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+	<!-- Page Content -->
+	<div id="page-content-wrapper">
+		{form langForm}
+		<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+		<div class="container-fluid">
+
+			<div class="row">
+				<div class="col-lg-3 col-md-2 col-sm-1">
+				</div>
+
+				<div class="row">
+					<div class="col-lg-6 col-md-8 col-sm-12">
+						<h1>{=LANG_SETTINGS}</h1>
+						<span>{=LANG_TITLE_INFO}</span>
+						<br /><br />
+
+						<form>
+							<fieldset class="form-group">
+								<legend>{=LANG_SETTINGS_GLOBAL}</legend>
+								<div class="form-group row">
+									<div class="col-sm-10">
+										{label LANG_WIDTH/}
+										{input LANG_WIDTH}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=LANG_WIDTH_INFO|noescape}
+									</div>
+
+									<div class="col-sm-10">
+										{label LANG_BG_COLOR/}
+										{input LANG_BG_COLOR}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=LANG_BG_COLOR_INFO|noescape}
+									</div>
+
+									<div class="col-sm-10">
+										{label LANG_FONT_COLOR/}
+										{input LANG_FONT_COLOR}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=LANG_FONT_COLOR_INFO|noescape}
+									</div>
+
+									<div class="form-group row alignRight">
+										<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+											{input confirm}
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			{/form}
+
+			{* saved langs *}
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							{* stávající jazyky *}
+							<div class="form-group row">
+								<fieldset>
+									<legend>{=LANG_ALREADY_SAVED_LANGS}</legend>
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th class="alignLeft" ">{=LANG_TABLE_SHORTCUT}</th>
+												<th class="alignLeft">{=LANG_TABLE_FLAG}</th>
+												<th class="alignRight"">{=LANG_TABLE_DELETE}</th>
+											</tr>
+										</thead>
+										<tbody>
+											{foreach $langMutations as $langShort => $langDetail}
+												<tr>
+													<td class="alignLeft">{$langShort}</td>
+													<td><img src="{$baseUrl}{$langDetail[$langFlagKey]}" class="flagTable" /></td>
+													<td class="alignRight valignMiddle">
+														<a href='#' data-href='{link delete, $langShort}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title={=LANG_TABLE_DELETE}><span class='glyphicon glyphicon-remove'></span></a>
+													</td>
+												</tr>
+											{/foreach}
+										</tbody>
+									</table>
+								</fieldset>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{* new lang item
+			{form langItemForm}
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<form>
+								<div class="form-group row">
+									<fieldset>
+										<legend>{=LANG_ALREADY_NEW_LANG}</legend>
+									</fieldset>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				{/form}
+				*}
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=LANG_CONFIRM_MODAL_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=LANG_CONFIRM_MODAL_DELETE_MSG}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=LANG_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=LANG_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$(function() {
+			$("#langBackgroundColor").minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				format: $(this).attr('data-format') || 'hex',
+				keywords: $(this).attr('data-keywords') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+				theme: 'bootstrap'
+			});
+
+			$("#langFontColor").minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				format: $(this).attr('data-format') || 'hex',
+				keywords: $(this).attr('data-keywords') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+				theme: 'bootstrap'
+			});
+		})
+	</script>
+
+	{/block}
+

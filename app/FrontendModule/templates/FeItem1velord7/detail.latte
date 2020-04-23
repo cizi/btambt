@@ -1,0 +1,136 @@
+{block content}
+<div id="wrapper">
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container">
+							<br/>
+							{if $show !=null}
+								<b>{=SHOW_TABLE_TYPE}: </b>{$enumRepo->findEnumItemByOrder($lang, $show->getTyp())}
+								<br/>
+								<b>{=SHOW_TABLE_DATE}
+								:</b>{if $show->getDatum() != null}{$show->getDatum()->format('d.m.Y')}{/if}
+								<br/>
+								<b>{=SHOW_TABLE_NAME}:</b>{$show->getNazev()}
+								<br/>
+								<b>{=SHOW_TABLE_PLACE}:</b>{$show->getMisto()}
+								<br/>
+								<b>{=SHOW_TABLE_DONE}: </b>
+								{if $show->isHotovo()}
+									{=SHOW_DONE}
+								{else}
+									{=SHOW_UNDONE}
+								{/if}
+								<br/>
+								<b>{=SHOW_TABLE_REFEREE}:</b>
+								{if $show->getRozhodci() != null}
+									{var refes = explode(App\Model\Entity\RefereeEntity::REFEREE_SHOW_DELIMITER, $show->getRozhodci())}
+									{foreach $refes as $ref}
+										{var refe = $refereeRepository->getReferee($ref)}
+										{$refe->getCeleJmeno()}{if $iterator->isLast() == false}, {/if}
+									{/foreach}
+								{else}
+									-
+								{/if}
+								<br/>
+							{/if} <br />
+							<div class="container">
+								<table class="table table-striped showDetail">
+									<thead>
+									<tr>
+										<th>{=SHOW_REFEREE_FORM_REFEREE}</th>
+										<th>{=SHOW_REFEREE_FORM_CLASS}</th>
+										<th>{=SHOW_REFEREE_FORM_BREED}</th>
+									</tr>
+									</thead>
+									<tbody>
+									{var lastRefereeId = ""}
+									{foreach $referees as $referee}
+										<tr>
+											<td>
+												{if $lastRefereeId != $referee->getRID()}
+													{var ref = $refereeRepository->getReferee($referee->getRID())}
+													<a href={link referee, $ref->getID()}>{$ref->getTitulyPrefix()} {$ref->getJmeno()} {$ref->getPrijmeni()} {$ref->getTitulySuffix()}</a>
+												{/if}
+											</td>
+											<td>
+												{var tridy = explode(',', $referee->getTrida())}
+												{foreach $tridy as $trida}
+													{$enumRepo->findEnumItemByOrder($lang, $trida)}
+													{if $iterator->last == false}, {/if}
+												{/foreach}
+											</td>
+											<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getPlemeno())}</td>
+										</tr>
+										{var lastRefereeId = $referee->getRID()}
+									{/foreach}
+									</tbody>
+								</table>
+
+								{var lastBreed = ""}
+								{var lastSex = ""}
+								{var lastDogId = ""}
+								{foreach $dogs as $dog}
+									{var dogDetail = $dogRepository->getDog($dog->getPID())}
+									{if ($dogDetail->getPlemeno() != $lastBreed || ($dogDetail->getPohlavi() != $lastSex))}
+										<h4>{$enumRepo->findEnumItemByOrder($lang, $dogDetail->getPlemeno())} - {$enumRepo->findEnumItemByOrder($lang, $dogDetail->getPohlavi())}</h4>
+										<table class="table table-striped showDetail">
+											<thead>
+												<tr>
+													<th>{=SHOW_DOG_FORM_DOG}</th>
+													<th>{=SHOW_DOG_FORM_CLASS}</th>
+													<th>{=SHOW_DOG_FORM_REPUTATION}</th>
+													<th>{=SHOW_DOG_FORM_DOG_ORDER}</th>
+													<th>{=SHOW_DOG_FORM_DOG_TITLES}</th>
+													<th>{=SHOW_DOG_FORM_DOG_TITLES_ADDON}</th>
+												</tr>
+											</thead>
+										<tbody>
+									{/if}
+											<tr>
+												<td>
+													{if $lastDogId != $dogDetail->getID()}
+														<a href={link FeItem1velord2:View, $dog->getPID()}>{$dogDetail->getTitulyPredJmenem()} {$dogDetail->getJmeno()} {$dogDetail->getTitulyZaJmenem()}</a>
+													{/if}
+												</td>
+												<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getTrida())}</td>
+												<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getOceneni())}</td>
+												<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPoradi())}</td>
+												<td>
+													{var titles = $showDogRepo->findTitlesByShowAndDog($idShow, $dog->getPID())}
+													{foreach $titles as $title}
+														{$enumRepo->findEnumItemByOrder($lang, $title->getTitul())}
+														{if $iterator->last == false}, {/if}
+													{/foreach}
+												</td>
+												<td>{$dog->getTitulyDodatky()}</td>
+											</tr>
+										{var lastSex = $dogDetail->getPohlavi()}
+										{var lastBreed = $dogDetail->getPlemeno()}
+										{var lastDogId = $dogDetail->getID()}
+										{if (isset($dogs[$iterator->counter]))}
+											{var nextDog = $dogRepository->getDog($dogs[$iterator->counter]->getPID())}
+											{if ($nextDog->getPohlavi() != $lastSex) || ($nextDog->getPlemeno() != $lastBreed)}
+												</tbody>
+												</table>
+											{/if}
+										{else}
+											</tbody>
+											</table>
+										{/if}
+								{/foreach}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /#page-content-wrapper -->
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

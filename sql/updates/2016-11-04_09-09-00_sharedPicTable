@@ -1,0 +1,5 @@
+DROP TABLE `header_pic`;
+DROP TABLE `block_pic`;
+ALTER TABLE `footer_pic`
+RENAME TO `shared_pic`;
+

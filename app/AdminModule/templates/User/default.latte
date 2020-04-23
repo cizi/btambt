@@ -1,0 +1,123 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'user'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>{=USER_TITLE}</h1>
+						<p>{=USER_INFO_TEXT|noescape}</p>
+						<br /><br />
+
+						<div class="container userTable">
+							{control userFilterForm}
+							<div class="paginatorBackend">
+								{include "../@paginator.latte", $paginator}
+							</div>
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>{=USER_TABLE_HEADER_LOGIN}</th>
+										<th>{=USER_TABLE_HEADER_ROLE}</th>
+										<th>{=USER_TABLE_HEADER_ACTIVE}</th>
+										<th>{=USER_TABLE_HEADER_REGISTERED_DATE}</th>
+										<th>{=USER_TABLE_HEADER_LAST_LOGIN}</th>
+										<th class="alignRight">
+											<button type="button" class="btn btn-success" onclick="window.location.assign({link User:Edit});">
+												<span class="glyphicon glyphicon-plus"></span>	{=USER_ADD_USER}
+											</button>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+								{foreach $users as $userForeach}
+									<tr>
+										<td>{$userForeach->getEmail()}</td>
+										<td>
+											{if isset($roles[$userForeach->getRole()])}
+											{$roles[$userForeach->getRole()]}
+											{else}
+											""
+											{/if}
+										</td>
+										<td>
+											{if $userForeach->isActive()}
+												<label class="checkbox-inline">
+													<input class="activeToggleEvent" user-data={$userForeach->getId()} type="checkbox" checked data-toggle="toggle" data-height="25" data-width="50">
+												</label>
+											{else}
+												<label class="checkbox-inline">
+													<input class="activeToggleEvent" user-data={$userForeach->getId()} type="checkbox" data-toggle="toggle" data-height="25" data-width="50">
+												</label>
+											{/if}
+										</td>
+										<td>{$userForeach->getRegisterTimestamp()|date: 'j.n.Y G:i:s'}</td>
+										<td>{$userForeach->getLastLogin()|date: 'j.n.Y G:i:s'}</td>
+										<td class="alignRight">
+											<a href={link User:Edit, $userForeach->getId()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+											<a href="#" data-href={link User:DeleteUser, $userForeach->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=USER_CONFIRM_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=USER_CONFIRM_DELETE}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=USER_CONFIRM_DELETE_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=USER_CONFIRM_DELETE_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$(function() {
+			$('.activeToggleEvent').change(function() {
+				var userId = $(this).attr("user-data");
+				var changeTo = (($(this).prop("checked") !== typeof undefined) && ($(this).prop("checked") !== false));
+				$.ajax({
+					url: {link activeSwitch!},
+					data: {
+						idUser: userId,
+						to: changeTo
+					},
+					success: function() {
+
+					},
+					error: function() {
+						alert({=USER_ERROR_ACTIVE_SWITCH});
+					}
+				});
+			})
+		})
+	</script>
+{/block}
+

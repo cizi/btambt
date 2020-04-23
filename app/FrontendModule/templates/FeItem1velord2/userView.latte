@@ -1,0 +1,171 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		{include ../@userInfo.latte, 'uzivatel' => $user}
+
+		{if count($dogByCurrentOwner) > 0}
+			<div class="viewHeader">{=USER_VIEW_OWNER}</div>
+			<table class="table table-striped dogSiblings">
+				<tr>
+					<th colspan="4"></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+				</tr>
+				{foreach $dogByCurrentOwner as $recId => $dogCurrent}
+					<tr>
+						<td>
+							{if $amIAdmin}
+								<a class="colorRed" href="#" data-href={link deleteDogOwner, $recId, $user->getId()} data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_OWNER_DELETE}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							{/if}
+							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
+							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/if}
+
+		{if count($dogByPreviousOwner) > 0}
+			<div class="viewHeader">{=USER_VIEW_OWNER_PREVIOUS}</div>
+			<table class="table table-striped dogSiblings">
+				<tr>
+					<th colspan="4"></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+				</tr>
+				{foreach $dogByPreviousOwner as $recId => $dogCurrent}
+					<tr>
+						<td>
+							{if $amIAdmin}
+								<a class="colorRed" href="#" data-href={link deleteDogOwner, $recId, $user->getId()} data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_OWNER_DELETE}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							{/if}
+							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
+							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/if}
+
+		{if count($dogsByBreeder) > 0}
+			<div class="viewHeader">{=USER_VIEW_BREEDER}</div>
+			<table class="table table-striped dogSiblings">
+				<tr>
+					<th colspan="4"></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+				</tr>
+				{foreach $dogsByBreeder as $recId => $dogCurrent}
+					<tr>
+						<td>
+							{if $amIAdmin}
+								<a class="colorRed" href="#" data-href={link deleteDogBreeder, $recId, $user->getId()} data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_BREEDER_DELETE}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							{/if}
+							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
+							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/if}
+
+	</div>
+	{* mazání *}
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				</div>
+				<div class="modal-body">
+					{=DOG_FORM_PIC_DELETE_INFO}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+	</script>
+{/block}

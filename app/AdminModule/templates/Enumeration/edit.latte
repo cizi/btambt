@@ -1,0 +1,91 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'enumeration'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=ENUM_EDIT_TITLE}</h1>
+							<span>{=ENUM_EDIT_DESC|noescape}</span>
+							<br /><br />
+
+							<div class="form-group row">
+								{control enumerationForm}
+							</div>
+
+							<h1>{=ENUM_EDIT_ITEMS_LABEL}</h1>
+							<div class="form-group row">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+										{foreach $langs as $lang}
+											<th>{$lang}</th>
+										{/foreach}
+											<th class="alignRight">
+												<button type="button" class="btn btn-success" onclick="window.location.assign({link Enumeration:EditItem, "", $enumHeaderId});">
+													<span class="glyphicon glyphicon-plus"></span>	{=ENUM_EDIT_ITEM_ADD}
+												</button>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{foreach $enumItems as $item}
+											<tr>
+												{foreach $langs as $lang}
+													{if $item->getLang() == $lang}
+														<td>{$item->getItem()}</td>
+													{else}
+														<td>{$enumerationRepository->findEnumItemByOrder($lang, $item->getOrder())}</td>
+													{/if}
+												{/foreach}
+												<td class="alignRight">
+													<a href={link Enumeration:EditItem, $item->getOrder()} title={=ENUM_EDIT_ITEM_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+													<a href="#" data-href={link Enumeration:DeleteItem, $item->getEnumHeaderId(), $item->getOrder()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=ENUM_EDIT_ITEM_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+												</td>
+											</tr>
+										{/foreach}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=ENUM_EDIT_ITEM_DELETE}
+				</div>
+				<div class="modal-body">
+					{=ENUM_EDIT_ITEM_DELETE_MSG}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+	</script>
+{/block}
+

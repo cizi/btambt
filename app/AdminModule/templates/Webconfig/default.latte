@@ -1,0 +1,205 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'webconfig'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			{form configForm}
+				<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=WEBCONFIG_TITLE}</h1>
+							<span>{=WEBCONFIG_TITLE_INFO}</span>
+							<br /><br />
+
+							<form>
+								<fieldset class="form-group">
+									<legend>{=WEBCONFIG_SETTINGS_LANG_DEPENDS}</legend>
+									<div class="form-group row">
+										<div class="col-sm-10">
+											{label WEB_MUTATION/}
+											{input WEB_MUTATION}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEBMUTATION_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_TITLE/}
+											{input WEB_TITLE}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_NAME_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_KEYWORDS/}
+											{input WEB_KEYWORDS}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_KEYWORDS_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEG_GOOGLE_ANALYTICS/}
+											{input WEG_GOOGLE_ANALYTICS}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_GOOGLE_ANALYTICS_INFO|noescape}
+										</div>
+									</div>
+								</fieldset>
+
+
+								<div class="form-group row">
+									<fieldset>
+										<legend>{=WEBCONFIG_SETTINGS_LANG_COMMON}</legend>
+
+										<div class="col-sm-10">
+											{label WEB_WIDTH/}
+											{input WEB_WIDTH}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_WIDTH_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_FAVICON/}
+											{input WEB_FAVICON}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_FAVICON_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_CONFIG_BACKGROUND_COLOR/}
+											{input WEB_CONFIG_BACKGROUND_COLOR}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_BACKGROUND_COLOR_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											<label>{=WEBCONFIG_WEB_MENU_SHOW}</label>
+											{input WEB_SHOW_MENU}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_MENU_SHOW_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											<label>{=WEBCONFIG_SETTINGS_SHOW_HOME}</label>
+											{input WEB_SHOW_HOME}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_SETTINGS_SHOW_HOME_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_HOME_BLOCK/}
+											{input WEB_HOME_BLOCK}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_SETTINGS_SHOW_BLOCK_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_MENU_BG/}
+											{input WEB_MENU_BG}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_MENU_BACKGROUND_COLOR_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{label WEB_MENU_LINK_COLOR/}
+											{input WEB_MENU_LINK_COLOR}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=WEBCONFIG_WEB_MENU_LINK_COLOR_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											{input SITEMAP_BUTTON}
+										</div>
+										<div class="col-sm-10 field_info">
+											{=USER_EDIT_SITEMAP_BTN_INFO|noescape}
+										</div>
+
+										<div class="col-sm-10">
+											<h5>{=USER_EDIT_SITEMAP_AVAIL|noescape}</h5>
+											{foreach $sitemapfiles as $file}
+												<a href="{$file}">{$file}</a><br />
+											{/foreach}
+										</div>
+
+									</fieldset>
+
+									<div class="form-group row alignRight">
+										<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+											{input confirm}
+										</div>
+									</div>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			{/form}
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+	<script>
+		$(function() {
+			$("#minicolorsPickerWebBg").minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				format: $(this).attr('data-format') || 'hex',
+				keywords: $(this).attr('data-keywords') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+				theme: 'bootstrap'
+			});
+
+			$("#minicolorsPickerMenuBg").minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				format: $(this).attr('data-format') || 'hex',
+				keywords: $(this).attr('data-keywords') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+				theme: 'bootstrap'
+			});
+
+			$("#minicolorsPickerMenuLink").minicolors({
+				control: $(this).attr('data-control') || 'hue',
+				defaultValue: $(this).attr('data-defaultValue') || '',
+				format: $(this).attr('data-format') || 'hex',
+				keywords: $(this).attr('data-keywords') || '',
+				inline: $(this).attr('data-inline') === 'true',
+				letterCase: $(this).attr('data-letterCase') || 'lowercase',
+				opacity: $(this).attr('data-opacity'),
+				position: $(this).attr('data-position') || 'bottom left',
+				swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+				theme: 'bootstrap'
+			});
+		})
+	</script>
+
+{/block}
+

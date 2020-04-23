@@ -1,0 +1,248 @@
+{block content}
+	<style>
+		.prihlaska, .prihlaska td {
+			font-family:Arial, Helvetica;
+			font-size:7.5pt;
+		}
+
+		.prihlaska_top img {
+			margin:15px 0;
+			float:left;
+		}
+
+		.prihlaska_top img {
+			border:1px solid white;
+		}
+
+		.heading1 {
+			font-size:10pt;
+			padding-top:30px;
+			text-align:center;
+			font-weight:bold;
+			letter-spacing: 0.4ex;
+		}
+
+		.heading2 {
+			font-size:10pt;
+			margin-top:10px;
+			text-align:center;
+		}
+
+		.h2td td {
+			font-size:10pt;
+			margin-top:10px;
+			text-align:left;
+		}
+
+		.black1 td {
+			background:white;
+			text-align: center;
+			height:1.5cm;
+			vertical-align: top;
+			width:25%;
+		}
+
+		.itemFull {
+			margin-bottom:10px;
+			border-bottom:1px solid black;
+			margin-right:8cm;
+			width: 100%;
+		}
+
+		.itemFullName {
+			margin-bottom:10px;
+			margin-left:3%;
+			clear:left;
+			float:left;
+			width: 4cm;
+		}
+
+		.prihlaska_table td {
+			background-color:white;
+		}
+
+		.prihlaska_table td b {
+			font-size:9pt;
+			background-color:white;
+		}
+
+		input, textarea {
+			border:1px solid black;
+			margin-bottom:2px;
+		}
+
+		.tdleft {
+			text-align: left;
+		}
+
+		hr {
+			clear:both;
+			height:1px;
+			color:black;
+		}
+
+		.tdcenter {
+			text-align: center;
+		}
+
+		.tdbottom {
+			height:100px;
+			vertical-align: bottom;
+		}
+
+	</style>
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="prihlaska">
+							<table style="width: 100%;">
+								<tr>
+									<td style="width: 25%;">
+										<div class="prihlaska_top">
+											{if $cID == 89}
+												<img src="{$basePath|noescape}/images/logo-prihlaska.jpg" />
+											{else}
+												<img src="{$basePath|noescape}/images/logo-prihlaskaCKCHS.jpg" />
+											{/if}
+										</div>
+									</td>
+									<td style="text-align: center;">
+										<div class="heading1">{$title|upper}</div>
+										<div class="heading2">
+											<strong>{=LITTER_APPLICATION_FOR}</strong><br />
+											<small>{=LITTER_APPLICATION_FOR_WHO}</small><br /><br />
+											<div style="font-size: 14px;">{=MATING_FORM_TYPE}
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												{=DOG_FORM_BREED|lower}: {$Plemeno|lower}</div>
+											<div style="margin-left: -60px!important;">{=LITTER_APPLICATION_BREEDING}: {$ChovStaniceVrh}</div>
+										</div>
+									</td>
+								</tr>
+							</table><br /><br />
+
+							<table border="0" width="100%">
+								<tr>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NAME_FEMALE}</strong>: {$fIDJmeno}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_LITTER_DOG_DATE}</strong>: {$fIDDatNarozeni}</div></td>
+								</tr>
+								<tr>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_RECORD_NUM}</strong>: CMKU/{$fIDCisloZapisu }</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_FORM_BON_CODE}</strong>: {$fIDBonitace}</div></td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NAME_MALE}</strong>: {$pIDJmeno}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_LITTER_DOG_DATE}</strong>: {$pIDDatNarozeni}</div></td>
+								</tr>
+								<tr>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NO_OF_REC}</strong>: {$pIDCisloZapisu}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_FORM_BON_CODE}</strong>: {$pIDBonitace}</div></td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+
+
+								<tr style="vertical-align: top;">
+									<td class="tdleft" style="vertical-align: top;"><div class="heading2 tdleft"><strong>{=MATING_FORM_PLACE_DETAIL}</strong>: <br />{$MistoKryti}</div></td>
+									<td class="tdleft" style="vertical-align: top;">
+										<div class="heading2 tdleft" style="padding-left: 74px;"><strong>{=MATING_FORM_PLACE_DETAIL_DAY}</strong>: {$DatumKryti}</div><br />
+										<div class="heading2 tdleft" style="margin-top: 0;"><strong>{=MATING_FORM_PLACE_DETAIL_DAY_REPEAT}</strong>: {$DatumKrytiOpakovane}</div>
+									</td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td class="tdleft">
+										<div class="heading2 tdleft"><strong>{=MATING_FORM_ESTIMATE_DATE}</strong>: {$PredpokladDatum}</div>
+									</td>
+									<td class="tdleft">
+										<div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_BIRTH}</strong>: {$DatumPorodu}</div>
+									</td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td class="tdleft" colspan="2">
+										<div class="heading2 tdleft">
+											<strong>{=LITTER_APPLICATION_DOG_LIVE}</strong>: {$PocetStenat},
+											<strong>{=LITTER_APPLICATION_DOG_LIVE_MALE}</strong>: {$PocetStenatZTohoPsi},
+											<strong>{=LITTER_APPLICATION_DOG_LIVE_FEMALE}</strong>: {$PocetStenatZTohoFeny}
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<td colspan="2" class="tdleft">
+										<div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_DOG_DEATH}:</strong> {$PocetStenatMrtvych}</div><br />
+									</td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_PUPPIES_DETAILS}</strong>:<br /> {nl2br($PocetStenatPozn)|noescape}</div></td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong>: {if $Dohoda}{=SHOW_DONE}{else}{=SHOW_UNDONE}{/if}</div></td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td class="tdleft" style="vertical-align: top;">
+										<div class="heading2 tdleft" style="height: 360px!important;"><b>{=MATING_FORM_FEMALE_OWNER}:</b> <br />{nl2br($MajitelFeny)|noescape}</div><br />&nbsp;<br />&nbsp;
+										<div class="heading2 tdleft" style="margin-top: -20px;"><strong>{=USER_EDIT_PHONE_LABEL}</strong>: {$MajitelFenyTel}</div><br /><br />
+										<span class="heading2"><strong>{=MATING_FORM_SIGNATURE}</strong>: </span>....................................
+									</td>
+
+									<td class="tdleft" style="vertical-align: top;">
+										<div class="heading2 tdleft" style="height: 360px!important;"><b>{=LITTER_APPLICATION_OWNWER_MALE}:</b> <br />{nl2br($MajitelPsa)|noescape}</div><br />&nbsp;<br />&nbsp;
+										<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br />
+									</td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td colspan="2" class="tdleft">
+										<div class="heading2 tdleft"><strong>{=MATING_FORM_DATE_SHORT}</strong>: {$Datum}</div><br />
+									</td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td colspan="3" class="tdleft"  style="text-align: center;">
+										<div class="heading2 tdcenter"><strong>{=LITTER_APPLICATION_REVIEW}</strong></div>
+									</td>
+								</tr>
+
+								<tr><td colspan="2"><br /><br /></td></tr>
+
+								<tr>
+									<td colspan="3" class="tdleft"  style="text-align: center;">
+										<br /><div class="heading2 tdcenter">{=MATING_FORM_OWNER}</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}

@@ -1,0 +1,171 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'header'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		{form headerForm}
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=HEADER_TITLE}</h1>
+							<span>{=HEADER_INFO|noescape}</span>
+							<br /><br />
+
+							<div class="form-group row">
+								<div class="col-sm-10">
+									{label WEB_MUTATION/}
+									{input WEB_MUTATION}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=WEBCONFIG_WEBMUTATION_INFO|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									<label>{=HEADER_SHOW_HEADER}</label><br />
+									{input SHOW_HEADER}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									{label HEADER_WIDTH/}
+									{input HEADER_WIDTH}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=HEADER_WIDTH_INFO|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									{label HEADER_HEIGHT/}
+									{input HEADER_HEIGHT}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=HEADER_HEIGHT_INFO|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									<label>{=HEADER_BACKGROUND_COLOR}</label>
+									{input HEADER_BACKGROUND_COLOR}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									<label>{=HEADER_SETTING_COLOR}</label>
+									{input HEADER_COLOR}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									{label HEADER_CONTENT/}
+									{input HEADER_CONTENT}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=HEADER_CONTENT_TEXT|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									{label HEADER_FILES/}
+									{input HEADER_FILES}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=HEADER_CONTENT_PICS|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									<h3>{=HEADER_PIC_CONTENT}</h3>
+									<table class="footerPic">
+									{foreach $headerPics as $pic}
+											<tr>
+												<td style="width: 100px"><img src="{$pic->getPath()|noescape}" class="footerList"/><td>
+												<td>
+													<a href="#" data-href={link Header:DeletePic, $pic->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=HEADER_PIC_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+													<pre style="width: 100%">{$pic->getPath()}</pre>
+												</td>
+											</tr>
+									{/foreach}
+									</table>
+								</div>
+
+								<div class="form-group row alignRight">
+									<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+										{input confirm}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+		{/form}
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=HEADER_CONFIRM_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=HEADER_CONFIRM_DELETE}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=HEADER_CONFIRM_DELETE_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=HEADER_CONFIRM_DELETE_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		tinymce.init({
+			selector:'#mceFooterContent',
+			toolbar: "image",
+			plugins: "image imagetools",
+			relative_urls : false,
+			remove_script_host : false,
+			convert_urls : true
+		});
+
+		$("#headerBackgroundColor").minicolors({
+			control: $(this).attr('data-control') || 'hue',
+			defaultValue: $(this).attr('data-defaultValue') || '',
+			format: $(this).attr('data-format') || 'hex',
+			keywords: $(this).attr('data-keywords') || '',
+			inline: $(this).attr('data-inline') === 'true',
+			letterCase: $(this).attr('data-letterCase') || 'lowercase',
+			opacity: $(this).attr('data-opacity'),
+			position: $(this).attr('data-position') || 'bottom left',
+			swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+			theme: 'bootstrap'
+		});
+
+		$("#headerColor").minicolors({
+			control: $(this).attr('data-control') || 'hue',
+			defaultValue: $(this).attr('data-defaultValue') || '',
+			format: $(this).attr('data-format') || 'hex',
+			keywords: $(this).attr('data-keywords') || '',
+			inline: $(this).attr('data-inline') === 'true',
+			letterCase: $(this).attr('data-letterCase') || 'lowercase',
+			opacity: $(this).attr('data-opacity'),
+			position: $(this).attr('data-position') || 'bottom left',
+			swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+			theme: 'bootstrap'
+		});
+
+	</script>
+{/block}
+

@@ -1,0 +1,36 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						{control matingListForm}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$("#frm-matingListForm-pID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_MALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-matingListForm-fID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_FEMALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-matingListForm").submit(function( event ) {
+				if (($("#frm-matingListForm-pID").val() == "0") || ($("#frm-matingListForm-fID").val() == "0")) {
+					event.preventDefault();
+				}
+			});
+		})
+	</script>
+{/block}

@@ -1,0 +1,124 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'contact'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		{form contactSettingForm}
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=CONTACT_FORM_SETTING_TITLE|noescape}</h1>
+							<span>{=CONTACT_FORM_SETTING_TITLE_INFO|noescape}</span>
+							<br /><br />
+
+							<div class="form-group row">
+								<div class="col-sm-10">
+									{label WEB_MUTATION/}
+									{input WEB_MUTATION}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=WEBCONFIG_WEBMUTATION_INFO|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									{label CONTACT_FORM_TITLE/}
+									{input CONTACT_FORM_TITLE}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									{label CONTACT_FORM_RECIPIENT/}
+									{input CONTACT_FORM_RECIPIENT}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=CONTACT_FORM_SETTING_RECIPIENT_INFO|noescape}
+								</div>
+
+								<div class="col-sm-10">
+									{label CONTACT_FORM_CONTENT/}
+									{input CONTACT_FORM_CONTENT}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									{label CONTACT_FORM_BACKGROUND_COLOR/}
+									{input CONTACT_FORM_BACKGROUND_COLOR}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									{label CONTACT_FORM_COLOR/}
+									{input CONTACT_FORM_COLOR}
+								</div>
+								<div class="col-sm-10 field_info"></div>
+
+								<div class="col-sm-10">
+									<label>{=CONTACT_FORM_SETTING_ATTACHMENT}</label><br />
+									{input CONTACT_FORM_ATTACHMENT}
+								</div>
+								<div class="col-sm-10 field_info">
+									{=CONTACT_FORM_ATTACHMENT_INFO|noescape}
+								</div>
+
+								<div class="form-group row alignRight">
+									<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+										{input confirm}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+		{/form}
+	</div>
+	<!-- /#wrapper -->
+
+	<script>
+		tinymce.init({
+			selector:'#mceContactContent',
+			toolbar: "image",
+			plugins: "image imagetools",
+			relative_urls : false,
+			remove_script_host : false,
+			convert_urls : true
+		});
+
+		$("#contactFormBackgroundColor").minicolors({
+			control: $(this).attr('data-control') || 'hue',
+			defaultValue: $(this).attr('data-defaultValue') || '',
+			format: $(this).attr('data-format') || 'hex',
+			keywords: $(this).attr('data-keywords') || '',
+			inline: $(this).attr('data-inline') === 'true',
+			letterCase: $(this).attr('data-letterCase') || 'lowercase',
+			opacity: $(this).attr('data-opacity'),
+			position: $(this).attr('data-position') || 'bottom left',
+			swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+			theme: 'bootstrap'
+		});
+
+		$("#contactFormColor").minicolors({
+			control: $(this).attr('data-control') || 'hue',
+			defaultValue: $(this).attr('data-defaultValue') || '',
+			format: $(this).attr('data-format') || 'hex',
+			keywords: $(this).attr('data-keywords') || '',
+			inline: $(this).attr('data-inline') === 'true',
+			letterCase: $(this).attr('data-letterCase') || 'lowercase',
+			opacity: $(this).attr('data-opacity'),
+			position: $(this).attr('data-position') || 'bottom left',
+			swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+			theme: 'bootstrap'
+		});
+	</script>
+{/block}
+

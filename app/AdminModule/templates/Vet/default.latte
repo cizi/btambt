@@ -1,0 +1,76 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'vet'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>{=VET_TITLE}</h1>
+						<p>{=VET_INFO|noescape}</p>
+						<br /><br />
+
+						<div class="container userTable">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>{=VET_NAME}</th>
+										<th>{=VET_ADDRESS}</th>
+										<th class="alignRight">
+											<button type="button" class="btn btn-success" onclick="window.location.assign({link Vet:Edit});">
+												<span class="glyphicon glyphicon-plus"></span>	{=VET_ADD_VET}
+											</button>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+								{foreach $vets as $vet}
+									<tr>
+										<td>{$vet->getTitulyPrefix()} {$vet->getJmeno()} {$vet->getPrijmeni()} {$vet->getTitulySuffix()}</td>
+										<td>{$vet->getUlice()} {$vet->getMesto()} {$vet->getPSC()}</td>
+										<td class="alignRight">
+											<a href={link Vet:Edit, $vet->getID()} title={=VET_EDIT_VET}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+											<a href="#" data-href={link Vet:Delete, $vet->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=VET_DELETE_VET}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=VET_CONFIRM_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=VET_CONFIRM_DELETE}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=VET_CONFIRM_DELETE_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=VET_CONFIRM_DELETE_DELETE}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+	</script>
+{/block}
+

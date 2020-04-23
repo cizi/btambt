@@ -1,0 +1,24 @@
+{if $paginator->pageCount > 1}
+	{var maxPages=20}
+	{var offsetpages = 10}
+	{for $i=1; $i <= $paginator->pageCount; $i++}
+		{var writePage = true}
+		{if $paginator->pageCount > $maxPages}
+			{if (($i >= $paginator->getPage() - $offsetpages) && ($i <= $paginator->getPage() + $offsetpages)) || ($i == 1) || ($i == $paginator->pageCount)}
+				{var writePage = true}
+			{else}
+				{var writePage = false}
+			{/if}
+		{/if}
+
+		{if $writePage}
+			{if $paginator->getPage() == $i}
+				<span>{$i}</span>
+			{else}
+				<a href={link default, $i}>{$i}</a>
+			{/if}
+		{else}
+			{* .  NIC NEVYPISOVAT*}
+		{/if}
+	{/for}
+{/if}

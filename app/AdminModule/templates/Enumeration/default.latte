@@ -1,0 +1,107 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'enumeration'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-0">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<h1>{=ENUM_TITLE}</h1>
+							<span>{=ENUM_TITLE_DESCRIPTION|noescape}</span>
+							<br /><br />
+
+							<div class="container userTable">
+								<div class="container userTable">
+									<table class="table table-striped">
+										<thead>
+										<tr>
+											<th>{=ENUM_TABLE_ENUM_NAME}</th>
+											<th>{=ENUM_TABLE_FIELDS_PREVIEW}</th>
+											<th class="alignRight">
+												<button type="button" class="btn btn-success" onclick="window.location.assign({link Enumeration:Edit});">
+													<span class="glyphicon glyphicon-plus"></span>	{=ENUM_TABLE_ADD_NEW_ENUM}
+												</button>
+											</th>
+										</tr>
+										</thead>
+										<tbody>
+										{foreach $enums as $enum}
+											<tr>
+												<td>{$enum->getDescription()}</td>
+												<td>
+													{foreach $enum->getItems() as $enumItem}
+														{$enumItem->getItem()},
+													{/foreach}
+												</td>
+												<td class="alignRight">
+													<a href={link Enumeration:Edit, $enum->getId()} title={=ENUM_TABLE_ENUM_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+													<a href="#" data-href={link Enumeration:Delete, $enum->getEnumHeaderId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=ENUM_TABLE_ENUM_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+												</td>
+											</tr>
+										{/foreach}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=ENUM_TABLE_ENUM_WARNING_TITLE}
+				</div>
+				<div class="modal-body">
+					{=ENUM_TABLE_ENUM_WARNING_TEXT}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		// modal for errors
+		function requiredFields() {
+			submitForm = true;
+			$($(".tinym_required_field").get().reverse()).each(function() {
+				console.log($(this).val());
+				if ($(this).val() == "") {
+					$(this).addClass("form-control-danger");
+					$("#tinym_info_modal_message").text($(this).attr("validation"));
+					$("#tinym_info_modal").modal();
+					$(this).focus();
+					submitForm = false;
+				} else {
+					$(this).removeClass("form-control-danger");
+					$(this).addClass("form-control-success");
+				}
+			});
+
+			return submitForm;
+		}
+	</script>
+
+{/block}
+

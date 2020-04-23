@@ -1,0 +1,103 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>{ifset title}{include title|striptags} | {/ifset}Tynim</title>
+	<link rel="stylesheet" href="{$basePath}/css/style.css">
+	<link rel="stylesheet" href="{$basePath}/css/simple-sidebar.css">
+	<link rel="stylesheet" href="{$basePath}/boostrap/css/bootstrap.css">
+	<link rel="stylesheet" href="{$basePath}/css/bootstrap2-toggle.min.css">
+	<link rel="stylesheet" href="{$basePath}/css/jquery.minicolors.css">
+	<link rel="stylesheet" href="{$basePath}/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="{$basePath}/css/chosen.css">
+	<link rel="stylesheet" href="{$basePath}/css/chosen_form_control.css">
+
+	{* favicon *}
+	<link rel="apple-touch-icon" sizes="57x57" href="{$basePath}/favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="{$basePath}/favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="{$basePath}/favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="{$basePath}/favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="{$basePath}/favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="{$basePath}/favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="{$basePath}/favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="{$basePath}/favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="{$basePath}/favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="{$basePath}/favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="{$basePath}/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="{$basePath}/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="{$basePath}/favicon/favicon-16x16.png">
+	<link rel="manifest" href="{$basePath}/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="{$basePath}/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	{* favicon - end*}
+	{block scripts}
+		<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
+		<script src="{$basePath}/js/jquery-2.2.3.min.js"></script>
+		<script src="{$basePath}/js/bootstrap2-toggle.min.js"></script>
+		<script src="{$basePath}/boostrap/js/bootstrap.js"></script>
+		<script src="{$basePath}/js/main.js"></script>
+		<script src="{$basePath}/js/jquery.minicolors.min.js"></script>
+		<script src="{$basePath}/js/tinymce/tinymce.min.js"></script>
+		<script src="{$basePath}/js/bootstrap-datetimepicker.js"></script>
+		<script src="{$basePath}/js/datetimepicker-locales/bootstrap-datetimepicker.cs.js"></script>
+		<script src="{$basePath}/js/chosen.jquery.min.js"></script>
+	{/block}
+
+	<meta name="viewport" content="width=device-width">
+	{block head}{/block}
+</head>
+
+<body>
+
+{include content}
+
+		{* modální okno *}
+		<div class="modal fade" id="tinym_info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						{=MODAL_WINDOWS_WARNING_TITLE}
+					</div>
+					<div class="modal-body" id="tinym_info_modal_message"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">{=MODAL_BUTTON_OK}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// modal for errors
+			function requiredFields() {
+				submitForm = true;
+				$($(".tinym_required_field").get().reverse()).each(function() {
+					console.log($(this).val());
+					if ($(this).val() == "") {
+						$(this).addClass("form-control-danger");
+						$("#tinym_info_modal_message").text($(this).attr("validation"));
+						$("#tinym_info_modal").modal();
+						$(this).focus();
+						submitForm = false;
+					} else {
+						$(this).removeClass("form-control-danger");
+						$(this).addClass("form-control-success");
+					}
+				});
+
+				return submitForm;
+			}
+
+			 // -- Menu Toggle Script --
+			$("#menu-toggle").click(function(e) {
+				e.preventDefault();
+				$("#wrapper").toggleClass("toggled");
+			});
+		</script>
+	</body>
+</html>

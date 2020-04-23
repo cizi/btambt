@@ -1,0 +1,37 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'show'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>{=SHOW_DOG_FORM_DOG}</h1>
+						<br /><br />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-3"></div>
+					<div class="col-lg-6">
+						{control showDogForm}
+					</div>
+					<div class="col-lg-3"></div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<script>
+		$("#frm-showDogForm-pID").chosen({
+			placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+			no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+		});
+	</script>
+{/block}
+

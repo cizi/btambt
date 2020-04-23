@@ -1,0 +1,28 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container">
+							<br />&nbsp;
+							<div class="dogViewName">{=CHS_TITLE}</div>
+							<br />&nbsp;
+							<ul>
+							{foreach $users as $user}
+								<li>
+									{include '../@userInfoForList.latte', 'user' => $user}
+									<br />&nbsp;
+								</li>
+							{/foreach}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}

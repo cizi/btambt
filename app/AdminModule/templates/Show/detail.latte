@@ -1,0 +1,160 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'show'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>{=SHOW_TITLE}</h1>
+						<p>{=SHOW_INFO|noescape}</p>
+						<br /><br />
+						{if $show !=null}
+							<b>{=SHOW_TABLE_TYPE}: </b>{$enumRepo->findEnumItemByOrder($lang, $show->getTyp())}<br />
+							<b>{=SHOW_TABLE_DATE}:</b>{if $show->getDatum() != null}{$show->getDatum()->format('d.m.Y')}{/if}<br />
+							<b>{=SHOW_TABLE_NAME}:</b>{$show->getNazev()}<br />
+							<b>{=SHOW_TABLE_PLACE}:</b>{$show->getMisto()}<br />
+							<b>{=SHOW_TABLE_DONE}: </b>
+							{if $show->isHotovo()}
+								{=SHOW_DONE}
+							{else}
+								{=SHOW_UNDONE}
+							{/if}<br />
+							<b>{=SHOW_TABLE_REFEREE}:</b>
+							{if $show->getRozhodci() != null}
+								{var refes = explode(App\Model\Entity\RefereeEntity::REFEREE_SHOW_DELIMITER, $show->getRozhodci())}
+								{foreach $refes as $ref}
+									{var refe = $refereeRepository->getReferee($ref)}
+									{$refe->getCeleJmeno()}{if $iterator->isLast() == false}, {/if}
+								{/foreach}
+							{else}
+								-
+							{/if}<br />
+						{/if}
+
+						<div class="container userTable">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>{=SHOW_REFEREE_FORM_REFEREE}</th>
+										<th>{=SHOW_REFEREE_FORM_CLASS}</th>
+										<th>{=SHOW_REFEREE_FORM_BREED}</th>
+										<th class="alignRight">
+											<button type="button" class="btn btn-success" onclick="window.location.assign({link editShowReferee, $show->getID()});">
+												<span class="glyphicon glyphicon-plus"></span>	{=REFEREE_ADD}
+											</button>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+								{foreach $referees as $referee}
+									<tr>
+										<td>
+											{var ref = $refereeRepository->getReferee($referee->getRID())}
+											{$ref->getTitulyPrefix()} {$ref->getJmeno()} {$ref->getPrijmeni()} {$ref->getTitulySuffix()}
+										</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getTrida())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getPlemeno())}</td>
+										<td class="alignRight">
+											{* <a href={link editShowReferee, $show->getID()} title={=SHOW_TABLE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp; *}
+											<a href="#" data-href={link deleteShowReferee, $referee->getID(), $referee->getVID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=SHOW_ITEM_DELETE_HEADER}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>{=SHOW_DOG_FORM_DOG}</th>
+									<th>{=SHOW_DOG_FORM_CLASS}</th>
+									<th>{=SHOW_DOG_FORM_REPUTATION}</th>
+									<th>{=SHOW_DOG_FORM_DOG_ORDER}</th>
+									<th>{=SHOW_DOG_FORM_DOG_TITLES}</th>
+									<th>{=SHOW_DOG_FORM_DOG_TITLES_ADDON}</th>
+									<th class="alignRight">
+										<button type="button" class="btn btn-success" onclick="window.location.assign({link editShowDog, $show->getID()});">
+											<span class="glyphicon glyphicon-plus"></span>	{=DOG_FORM_PEDIGREE_ADD_MISSING}
+										</button>
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach $dogs as $dog}
+									<tr>
+										<td>
+											{var dogDetail = $dogRepository->getDog($dog->getPID())}
+											{$dogDetail->getTitulyPredJmenem()} {$dogDetail->getJmeno()} {$dogDetail->getTitulyZaJmenem()}
+										</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getTrida())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getOceneni())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPoradi())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getTitul())}</td>
+										<td>{$dog->getTitulyDodatky()}</td>
+										<td class="alignRight">
+											{* <a href={link editShowDog, $show->getID()} title={=SHOW_TABLE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp; *}
+											<a href="#" data-href={link deleteShowDog, $dog->getID(), $dog->getVID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=SHOW_TABLE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=SHOW_ITEM_DELETE_HEADER}
+				</div>
+				<div class="modal-body">
+					{=SHOW_ITEM_DELETE_QUESTION}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=VET_CONFIRM_DELETE_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=VET_CONFIRM_DELETE_DELETE}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$(function() {
+			$('.activeToggleEvent').change(function() {
+				var idShow = $(this).attr("user-data");
+				var changeTo = (($(this).prop("checked") !== typeof undefined) && ($(this).prop("checked") !== false));
+				$.ajax({
+					url: {link doneSwitch!},
+					data: {
+						idShow: idShow,
+						to: changeTo
+					},
+					success: function() {
+
+					},
+					error: function() {
+						alert({=USER_ERROR_ACTIVE_SWITCH});
+					}
+				});
+			})
+		})
+	</script>
+{/block}
+

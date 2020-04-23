@@ -1,0 +1,77 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-2"></div>
+					<div class="col-lg-8">
+						{control litterApplicationFilterForm}
+					</div>
+					<div class="col-lg-2"></div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container userTable">
+							<table class="table table-striped dogList">
+								<thead>
+									<tr>
+										<th>{=DOG_FORM_BREED}</th>
+										<th>{=DOG_FORM_BIRT}</th>
+										<th>{=USER_EDIT_STATION_LABEL_SHORT}</th>
+										<th>{=DOG_FORM_MALE}</th>
+										<th>{=DOG_FORM_FEMALE}</th>
+										<th>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES}</th>
+										<th>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES}</th>
+										{if $amIAdmin}
+											<th></th>
+										{/if}
+									</tr>
+								</thead>
+								<tbody>
+									{foreach $applications as $application}
+										<tr>
+											<td>{$enumRepo->findEnumItemByOrder($currentLang, $application->getPlemeno())}</td>
+											<td>{if $formData[$application->getID()]['birth'] != null}{$formData[$application->getID()]['birth']->format('d.m.Y')}{/if}</td>
+											<td>{$formData[$application->getID()]['chs']}</td>
+											<td><a href={link FeItem1velord2:view, $application->getOID()}>{$dogRepo->getName($application->getOID())}</a></td>
+											<td><a href={link FeItem1velord2:view, $application->getMID()}>{$dogRepo->getName($application->getMID())}</a></td>
+											<td nowrap="nowrap">{$formData[$application->getID()]['males']}{$formData[$application->getID()]['birthMales']}</td>
+											<td nowrap="nowrap">{$formData[$application->getID()]['females']}{$formData[$application->getID()]['birthFemales']}</td>
+											{if $amIAdmin}
+												<td>
+                                                    <a href={link FeItem2velord17:Default, $application->getID()} title={=LITTER_APPLICATION_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+                                                </td>
+											{/if}
+										</tr>
+									{/foreach}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+		</div>
+	</div>
+
+	<script>
+		$("#frm-litterApplicationFilterForm-DatumNarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationFilterForm-chs").chosen({
+			placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+			no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+		});
+	</script>
+{/block}

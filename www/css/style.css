@@ -1,0 +1,476 @@
+@media (max-width:992px) {
+	.container {
+		width: 100%!important;
+	}
+	.webMenu {
+		width: 100%!important;
+	}
+	.bx-wrapper{
+		width: 100%!important;
+	}
+}
+
+body {
+	font-size: 15px;
+	line-height: 1.6;
+	color: #333;
+	background: white;
+}
+
+h1 {
+	color: #3484D2;
+}
+
+#ajax-spinner {
+	margin: 15px 0 0 15px;
+	padding: 13px;
+	background: white url('../images/spinner.gif') no-repeat 50% 50%;
+	font-size: 0;
+	z-index: 123456;
+	display: none;
+}
+div.flash {
+	color: black;
+	background: #FFF9D7;
+	border: 1px solid #E2C822;
+	padding: 1em;
+	margin: 1em 0;
+}
+
+a[href^="#error:"] {
+	background: red;
+	color: white;
+}
+
+form th, form td {
+	vertical-align: top;
+	font-weight: normal;
+}
+
+form th {
+	text-align: right;
+}
+
+form .required label {
+	font-weight: bold;
+}
+
+form .error {
+	color: #D00;
+	font-weight: bold;
+}
+div.login{
+	margin-top: 120px;
+}
+div.menu {
+	width: 100%;
+	min-height: 100%;
+	background-color: #524e4e;
+}
+div.adminBody{
+	height: 100%;
+}
+img.adminMenuHeader{
+	margin-top: 10px;
+	width: 250px;
+	height: auto;
+}
+img.adminMenuFooter {
+	width: 200px;
+	margin-left: 16px;
+	margin-top: 680px;
+}
+span.menuItem{
+	margin-left: -20px;
+	margin-right: 10px;
+}
+.colorWhite{
+	color: white;
+}
+.colorRed{
+	color: darkred;
+}
+.colorRedMandatory{
+	color: red;
+	font-size: 16px;
+	font-weight: bold;
+}
+.colorGreen {
+	color: #5cb85c;
+}
+.colorGrey {
+	color: dimgray;
+}
+a.menuToggle {
+	width: 20px;
+	height: 20px;
+	background-color: black;
+	color: white;
+	font-size: 16px;
+	padding: 0;
+	position: absolute;
+	z-index: 999;
+}
+a.menuToggle:hover {
+	color: lightgrey;
+}
+.alignRight{
+	text-align: right;
+}
+.alignLeft{
+	text-align: left;
+}
+div.userTable{
+	width: 95%;
+}
+.field_info {
+	color: grey;
+	font-size: 11px;
+	margin: 4px;
+	padding-bottom: 15px;
+}
+img.sliderPic{
+	width: 15%;
+	padding: 4px;
+	float: right;
+	height: auto;
+}
+a.sliderPicDelete{
+
+}
+a.sliderPicDelete:hover{
+	color: darkred;
+	opacity: 0.5;
+}
+
+/* slider override */
+.bx-viewport {
+	position: static!important;
+	border: 0!important;
+	-webkit-box-shadow: none!important;
+	box-shadow: none!important;
+}
+.bxslider li img {
+	display: block;
+	margin: 0 auto;
+}
+/* slider override end */
+/* navbar override */
+.navbar .navbar-nav {
+	display: inline-block;
+	float: none;
+	vertical-align: top;
+}
+.navbar .navbar-collapse {
+	text-align: center;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+	background-color: #000!important;
+}
+.dropdown-menu > li > a:hover{
+	background-color: #000!important;
+}
+/* navbar override end*/
+img.footerList{
+	width: auto;
+	height: 100px;
+	padding: 4px;
+}
+table.footerPic{
+	margin: auto;
+}
+div.contactForm{
+	padding: 10px;
+}
+input.contactForm {
+	margin: 5px;
+}
+div.formRow {
+	margin-right: 0;
+}
+input.menuItem {
+	margin: 5px;
+}
+#frm-menuForm table tbody tr th label {
+	padding-top: 10px;
+	padding-right: 4px;
+}
+
+#frm-menuForm table tbody tr td {
+	text-align: right;
+	padding-left: 10px;
+}
+
+#frm-blockForm table {
+	width: 100%;
+}
+
+#frm-blockForm table tbody tr th label {
+	padding-top: 10px;
+	padding-right: 4px;
+}
+
+#frm-blockForm table tbody tr td {
+	padding-top: 5px;
+	text-align: right;
+	padding-left: 10px;
+}
+
+input.langDivider{
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+
+div.menuMoverPlaceholder {
+	width: 25px;
+	display: inline-block;
+}
+.blockHeader{
+	margin-left: 150px;
+}
+div.colorExample {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+}
+.alignCenter{
+	margin: auto;
+}
+.noBlocks {
+	font-style: italic;
+	padding: 10px;
+	font-size: 16px;
+}
+.content {
+	margin-top: -20px;
+	margin-bottom: 16px;
+}
+.contentRow{
+	padding: 15px;
+	margin: auto;
+}
+.menuDelimiter {
+	padding: 0 10px;
+	width: 90%;
+	height: 1px;
+	background-color: #c9c9c9;
+	opacity: 0.8;
+	margin: auto
+}
+.flagTable{
+	height: 25px;
+	width: 40px;
+}
+.valignMiddle{
+	vertical-align: middle;
+}
+.langStrap{
+	padding: 5px 20px 5px 0;
+	text-align: right;
+	margin: auto;
+}
+.flagStrap{
+	height: 20px;
+	width: 35px;
+	margin-right: 15px;
+}
+
+.pageStaticHeader{
+	vertical-align: middle;
+	text-align: center;
+	margin: auto;
+}
+.hidden{
+	display: none;
+}
+
+.myContent{
+	background-color: #ffffff;
+	outline: 15px solid #ffffff;
+	color: #000000;
+	width: 100%;
+}
+.resetPasswordLink {
+	padding: 10px 25px ;
+}
+.spacer10{
+	height: 10px;
+}
+.margin10 {
+	margin: 10px!important;
+}
+.margin5 {
+	margin: 5px!important;
+}
+.dogEditPic{
+	width: 260px;
+	margin: 10px;
+	display: block;
+}
+.dogPicSmall{
+	max-width: 300px;
+	margin: 10px;
+	display: inline;
+	width: auto;
+}
+.paginator{
+	margin: auto;
+	text-align: center;
+	padding-top: 20px;
+}
+.paginator span{
+	color: white;
+	font-weight: bold;
+	background-color: #5cb85c;
+	padding: 4px;
+	border-radius: 3px;
+}
+.paginator a{
+	color: white;
+	background-color: #bce104;
+	padding: 4px;
+	border-radius: 3px;
+}
+.paginator a:hover{
+	color: white;
+}
+.paginatorBackend{
+	margin: auto;
+	text-align: center;
+	padding-top: 20px;
+}
+.paginatorBackend span{
+	color: white;
+	font-weight: bold;
+	background-color: #286090;
+	padding: 4px;
+	border-radius: 3px;
+}
+.paginatorBackend a{
+	color: white;
+	background-color: #286090;
+	padding: 4px;
+	border-radius: 3px;
+}
+.paginatorBackend a:hover{
+	color: white;
+}
+.showDetail {
+	font-size: 12px!important;
+	width: 92%!important;
+}
+.showDetail tbody tr td a {
+	font-weight: bold;
+}
+.dogList {
+	font-size: 12px!important;
+}
+.dogList tbody tr td a {
+	font-weight: bold;
+}
+.showList {
+	font-size: 12px!important;
+}
+.showList thead tr th{
+	width: 14%;
+}
+.dogView{
+	font-size: 12px!important;
+}
+.dogView tr th {
+	width: 25%;
+}
+.dogView tr td {
+	width: 25%;
+}
+.dogSiblings {
+	font-size: 12px!important;
+	margin-top: -9px;
+}
+.pedigreeCoef {
+	font-weight: bold;;
+}
+.genTable{
+	width: 100%;
+	margin-top: -10px;
+	font-size: 12px;
+}
+.genTable tr td {
+	border: 1px solid lightgrey;
+	padding: 5px;
+}
+.parentMarker{
+	font-weight: bold;
+}
+.dogViewName {
+	font-size: 30px;
+	background-color: white;
+}
+.noBorder{
+	border: none!important;
+}
+.viewHeader{
+	width: 100%;
+	font-weight: bold;
+	margin-top: 15px;
+	margin-bottom: 9px;
+	height: 30px;
+	background-color: dimgray;
+	color: #FFF;
+	padding: 5px 10px;
+}
+.viewHeaderTitle{
+	font-size: 16px;
+}
+.viewHeader tr td {
+	padding: 5px 10px;
+}
+table.viewHeader{
+	margin-top: -5px;
+}
+.viewHeader tr td a {
+	color:  white;
+	font-weight: normal;
+}
+.viewHeaderNew th {
+	height: 30px;
+	background-color: dimgray;
+	color: #FFF;
+}
+.black{
+	color: black;
+}
+.dogViewSingleContent{
+	margin: 10px 30px;
+}
+#frm-litterApplicationRewriteForm > table > tbody > tr > th > label {
+	padding: 5px 10px;
+}
+
+.dogRewriteDelimiter{
+	margin-bottom: 30px;
+}
+.userSearchFiled {
+	margin: -5px 0 0 15px!important;
+}
+.marginMinus10 {
+	margin-top: -6px!important;
+}
+.marginMinus12 {
+	margin-top: -12px!important;
+}
+hr.motherFatherDelimiter {
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid lightgrey;
+}
+.fontBold{
+	font-weight: bold!important;
+}
+.dogRewriteDelimiter{
+	margin-bottom: 30px;
+}

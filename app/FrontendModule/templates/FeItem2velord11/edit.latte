@@ -1,0 +1,177 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		{form dogForm}
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<fieldset>
+						<legend>{=DOG_FORM_HEADER}{if $currentDog != null}: {$currentDog->getTitulyPredJmenem()} {$currentDog->getJmeno()} {$currentDog->getTitulyZaJmenem()} {/if} </legend>
+						<div class="col-lg-9"><br /><br />
+							{control dogForm}
+						</div>
+						<div class="col-lg-3">
+							{* if count($previousOwners) > 0}
+								<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
+								<div>
+									{foreach $previousOwners as $user}
+										{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+										{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
+									{/foreach}
+								</div>
+							{/if *}
+
+							<form action="">
+								{if $currentDog != null}<input type="hidden" id="currentDogId" value={$currentDog->getID()}>{/if}
+								{if count($dogPics) > 0}
+									<h4>{=DOG_FORM_PICS}</h4>
+									{foreach $dogPics as $dogPic}
+										<input type="radio" name="defaultPic" value={$dogPic->getId()}  {if $dogPic->isVychozi()} checked="checked" {/if}> {=DOG_FORM_PIC_DEFAULT}
+										<a href="#" data-href={link deleteDogPic, $dogPic->getId(), $dogPic->getpID()}  data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_PIC_DELETE}>
+											<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
+										</a>
+									{/foreach}
+								{/if}
+							</form>
+
+							{if count($dogFiles) > 0}
+								<h4>{=DOG_FORM_FILES}</h4>
+								{foreach $dogFiles as $file}
+									<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
+									{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
+										{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+										<small>({constant($typ)|lower})</small>
+									{/if}
+									<br />
+								{/foreach}
+							{/if}
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+		{/form}
+	</div>
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_FORM_PIC_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=DOG_FORM_PIC_DELETE_INFO}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{* modální start *}
+	<div class="modal fade" id="tinym_info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_FORM_MID_OID_FAILED_TITLE}
+				</div>
+				<div class="modal-body">{=DOG_FORM_MID_OID_FAILED_MESSAGE}</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">{=MODAL_BUTTON_OK}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$("input[name='defaultPic']").change(function(){
+			var dogId = $("#currentDogId").val();
+			var picId = $(this).val();
+			$.ajax({
+				url: {link defaultDogPic},
+				data: {
+					dogId: dogId,
+					picId: picId
+				},
+				success: function(){
+					//
+				}
+			});
+		});
+		$(document).ready(function(){
+			$("#DatNarozeni").datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: {$currentLang},
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+			});
+
+			$("#DatUmrti").datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: {$currentLang},
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+			});
+
+			$(".healthDatePicker").datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: {$currentLang},
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+			});
+
+			$("#frm-dogForm-owners-uID").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			$("#frm-dogForm-oID").chosen({
+				placeholder_text: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			$("#frm-dogForm-mID").chosen({
+				placeholder_text: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			$("#frm-dogForm-breeder-uID").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			{if $mIDFound == false}
+				$("#tinym_info_modal").modal();
+			{/if}
+
+			{if $oIDFound == false}
+				$("#tinym_info_modal").modal();
+			{/if}
+		});
+
+		$("[type=text][name^='dogHealth']").parent().parent().toggle();
+		$("select[name^='dogHealth']").parent().parent().toggle();
+		$("#healthHelper").on('click' , function(e) {
+			$("[type=text][name^='dogHealth']").parent().parent().toggle();
+			$("select[name^='dogHealth']").parent().parent().toggle();
+		});
+	</script>
+{/block}

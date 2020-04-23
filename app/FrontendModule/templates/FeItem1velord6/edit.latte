@@ -1,0 +1,41 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container">
+							 {control puppyForm}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+		</div>
+	</div>
+
+	<script>
+		$("#frm-puppyForm-oID").chosen({
+			placeholder_text: {=MATING_FORM_PICK_MALE},
+			no_results_text: {=MATING_FORM_NO_MATCH}
+		});
+
+		$("#frm-puppyForm-mID").chosen({
+			placeholder_text: {=MATING_FORM_PICK_MALE},
+			no_results_text: {=MATING_FORM_NO_MATCH}
+		});
+
+		$("#frm-puppyForm-Termin").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+	</script>
+{/block}

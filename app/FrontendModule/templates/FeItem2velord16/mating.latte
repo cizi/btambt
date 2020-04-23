@@ -1,0 +1,329 @@
+{block content}
+	<style>
+		.prihlaska, .prihlaska td {
+			font-family:Arial, Helvetica;
+			font-size:7.5pt;
+		}
+
+		.prihlaska_top img {
+			margin:15px 0px;
+			float:left;
+		}
+
+		.prihlaska_top img {
+			border:1px solid white;
+		}
+
+		.heading1 {
+			font-size:10pt;
+			padding-top:30px;
+			text-align:center;
+			font-weight:bold;
+			letter-spacing: 0.4ex;
+		}
+
+		.heading2 {
+			font-size:10pt;
+			margin-top:10px;
+			text-align:center;
+		}
+
+		.h2td td {
+			font-size:10pt;
+			margin-top:10px;
+			text-align:left;
+		}
+
+		.black1 td {
+			background:white;
+			text-align: center;
+			height:1.5cm;
+			vertical-align: top;
+			width:25%;
+		}
+
+		.itemFull {
+			margin-bottom:10px;
+			border-bottom:1px solid black;
+			margin-right:8cm;
+			width: 100%;
+		}
+
+		.itemFullName {
+			margin-bottom:10px;
+			margin-left:3%;
+			clear:left;
+			float:left;
+			width: 4cm;
+		}
+
+		.prihlaska_table td {
+			background-color:white;
+		}
+
+		.prihlaska_table td b {
+			font-size:9pt;
+			background-color:white;
+		}
+
+		input, textarea {
+			border:1px solid black;
+			margin-bottom:2px;
+		}
+
+		.tdleft {
+			text-align: left;
+		}
+
+		hr {
+			clear:both;
+			height:1px;
+			color:black;
+		}
+
+		.tdcenter {
+			text-align: center;
+		}
+
+		.tdbottom {
+			height:100px;
+			vertical-align: bottom;
+		}
+
+	</style>
+
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						{form matingListDetailForm}
+
+							<div class="prihlaska">
+								<div class="prihlaska_top">
+									{if $cID == 89}
+										<img src="{$basePath|noescape}/images/logo-prihlaska.jpg" />
+									{else}
+										<img src="{$basePath|noescape}/images/logo-prihlaskaCKCHS.jpg" />
+									{/if}
+								</div>
+								<div class="heading1">{$title|upper}</div>
+								<div class="heading2">
+									<strong>{=LITTER_APPLICATION_FOR}</strong><br />
+									<small>{=LITTER_APPLICATION_FOR_WHO}</small>
+								</div>
+
+								<table style="width: 70%;">
+									<tr>
+										<td style="width: 33%"></td>
+										<td style="width: 33%; font-size: 14px;"><div>{=MATING_FORM_TYPE}</div></td>
+										<td><div class="heading2" style="margin-top: 0">{label Plemeno/}: {input Plemeno}</div></td>
+									</tr>
+								</table>
+
+								<div class="heading2">{label ChovStaniceVrh/}: {input ChovStaniceVrh}</div>
+								<hr>
+
+								<table border="0" width="100%">
+									{formContainer fID}
+										<tr>
+											<td class="tdleft"><div class="heading2 tdleft">{label Jmeno/}: {input Jmeno}</div></td>
+											<td class="tdleft"><div class="heading2 tdleft">{label DatNarozeni/}: {input DatNarozeni}</div></td>
+										</tr>
+										<tr>
+											<td class="tdleft"><div class="heading2 tdleft">{label CisloZapisu/} {input CisloZapisu}</div></td>
+											<td class="tdleft"><div class="heading2 tdleft">{label Bonitace/}: {input Bonitace}</div></td>
+										</tr>
+										<tr><td colspan="2"><hr></td></tr>
+									{/formContainer}
+
+									{formContainer pID}
+										<tr>
+											<td class="tdleft"><div class="heading2 tdleft">{label Jmeno/}: {input Jmeno}</div></td>
+											<td class="tdleft"><div class="heading2 tdleft">{label DatNarozeni/}: {input DatNarozeni}</div></td>
+										</tr>
+										<tr>
+											<td class="tdleft"><div class="heading2 tdleft">{label CisloZapisu/}: {input CisloZapisu}</div></td>
+											<td class="tdleft"><div class="heading2 tdleft">{label Bonitace/}: {input Bonitace}</div></td>
+										</tr>
+										<tr><td colspan="2"><hr></td></tr>
+									{/formContainer}
+
+									<tr>
+										<td class="tdleft"><div class="heading2 tdleft">{label MistoKryti/} : {input MistoKryti}</div></td>
+										<td class="tdleft">
+											<div class="heading2 tdleft" style="padding-left: 74px;">{label DatumKryti/}: {input DatumKryti}</div><br />
+											<div class="heading2 tdleft" style="margin-top: 0;">{label DatumKrytiOpakovane/}: {input DatumKrytiOpakovane}</div>
+										</td>
+
+									</tr>
+
+									<tr><td colspan="2"><hr></td></tr>
+
+									<tr>
+										<td class="tdleft">
+											<div class="heading2 tdleft">{label PredpokladDatum/}: {input PredpokladDatum}</div><br />
+										</td>
+										<td class="tdleft">
+											<div class="heading2 tdleft">{label DatumPorodu/}: {input DatumPorodu}</div><br />
+										</td>
+									</tr>
+
+									<tr><td colspan="2"><hr></td></tr>
+
+									<tr>
+										<td class="tdleft" colspan="2">
+											<div class="heading2 tdleft">
+												{label PocetStenat/}: {input PocetStenat},
+												{label PocetStenatZTohoPsi/}: {input PocetStenatZTohoPsi},
+												{label PocetStenatZTohoFeny/}: {input PocetStenatZTohoFeny}
+											</div>
+										</td>
+									</tr>
+
+									<tr>
+										<td colspan="2" class="tdleft">
+											<div class="heading2 tdleft">{label PocetStenatMrtvych/}: {input PocetStenatMrtvych}</div><br />
+										</td>
+									</tr>
+
+									<tr>
+										<td colspan="2" class="tdleft">
+											<div class="heading2 tdleft">{label PocetStenatPozn/}: <br /> {input PocetStenatPozn}</div><br />
+										</td>
+									</tr>
+
+									<tr>
+										<td colspan="2" class="tdleft">
+											<div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong>: {input Dohoda}</div>
+										</td>
+									</tr>
+
+									<tr><td colspan="2"><hr></td></tr>
+
+									<tr>
+										<td class="tdleft">
+											<div class="heading2 tdleft"><b>{label MajitelFeny/}:</b></div> {input MajitelFeny}<br />&nbsp;<br />&nbsp;
+											<div class="heading2 tdleft"  style="margin-top: -20px;"><strong>{label MajitelFenyTel/}: {input MajitelFenyTel}</div><br /><br />
+											{=MATING_FORM_SIGNATURE}....................................
+										</td>
+
+										<td class="tdleft">
+											<div class="heading2 tdleft"><b>{label MajitelPsa/}:</b></div> {input MajitelPsa}<br />&nbsp;<br />&nbsp;
+											<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br />
+										</td>
+									</tr>
+
+									<tr><td colspan="2"><hr></td></tr>
+
+									<tr>
+										<td colspan="2" class="tdleft">
+											<div class="heading2 tdleft">{label Datum/}: {input Datum}</div><br />
+										</td>
+									</tr>
+
+									<tr><td colspan="2"><hr></td></tr>
+
+									<tr>
+										<td colspan="3" class="tdleft">
+											<div class="heading2 tdcenter"><strong>{=LITTER_APPLICATION_REVIEW}</strong></div>
+										</td>
+									</tr>
+
+									<tr><td colspan="2"></td></tr>
+
+									<tr>
+										<td colspan="3" class="tdleft">
+											<br /><div class="heading2 tdcenter">{=MATING_FORM_OWNER}</div>
+										</td>
+									</tr>
+								</table>
+							</div><br /><br />
+							<div class="form-group row alignRight">
+								<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+									{input generate}
+									{input back}
+								</div>
+							</div>
+						{/form}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$("#frm-matingListDetailForm-fID-DatumNarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-matingListDetailForm-pID-DatumNarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-matingListDetailForm-DatumKryti").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-matingListDetailForm-DatumKrytiOpakovane").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-matingListDetailForm-PredpokladDatum").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-matingListDetailForm-Datum").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-matingListDetailForm-DatumPorodu").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+	</script>
+{/block}

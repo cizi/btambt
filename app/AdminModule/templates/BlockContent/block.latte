@@ -1,0 +1,53 @@
+	{if count($blocks) == 0}
+		<div class="alignCenter noBlocks">
+			{=BLOCK_CONTENT_SETTINGS_NO_BLOCKS|noescape}
+		</div>
+	{else}
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th style="width: 55%">{=BLOCK_SETTING_CONTENT}</th>
+				<th>{=BLOCK_SETTING_BG_COLOR}</th>
+				<th>{=BLOCK_SETTING_COLOR}</th>
+				<th class="alignRight"></th>
+			</tr>
+			</thead>
+			<tbody>
+			{foreach $blocks as $blockEntity}
+				<tr>
+					<td>
+						{$blockEntity->getBlockContent()->getContentText()|noescape}
+					</td>
+					<td>
+						{if $blockEntity->getBackgroundColor() !=""}
+							<div class="colorExample" style="background-color: {$blockEntity->getBackgroundColor()|noescape}"></div>
+						{/if}
+					</td>
+					<td>
+						{if $blockEntity->getColor() != ""}
+							<div class="colorExample" style="background-color: {$blockEntity->getColor()|noescape}"></div>
+						{/if}
+					</td>
+					<td class="alignRight" nowrap="nowrap">
+						{if $included}
+							{if !$iterator->first}
+								<a href='{link movePageUp, $menuItem->getId(), $blockEntity->getId()}' title={=BLOCK_CONTENT_SETTINGS_MOVE_BLOCK_UP}><span class='glyphicon glyphicon-chevron-up colorGrey'></span></a> &nbsp;&nbsp;
+							{else}
+								<div class='menuMoverPlaceholder'></div>
+							{/if}
+
+							{if !$iterator->last}
+								<a href='{link movePageDown, $menuItem->getId(), $blockEntity->getId()}' title={=BLOCK_CONTENT_SETTINGS_MOVE_BLOCK_DOWN}><span class='glyphicon glyphicon-chevron-down colorGrey'></span></a> &nbsp;&nbsp;
+							{else}
+								<div class='menuMoverPlaceholder'></div>
+							{/if}
+							<a href='{link removeBlockFromLink, $menuItem->getId(), $blockEntity->getId()}' title={=BLOCK_CONTENT_SETTINGS_REMOVE_TITLE}><span class='glyphicon glyphicon-minus'></span></a> &nbsp;&nbsp;
+						{else}
+							<a href='{link addBlockToLink, $menuItem->getId(), $blockEntity->getId()}' title={=BLOCK_CONTENT_SETTINGS_ADD_TITLE}><span class='glyphicon glyphicon-plus'></span></a> &nbsp;&nbsp;
+						{/if}
+					</td>
+				</tr>
+			{/foreach}
+			</tbody>
+		</table>
+	{/if}

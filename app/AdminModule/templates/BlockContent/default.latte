@@ -1,0 +1,49 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'blockContent'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		{* form contactSettingForm *}
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-0">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<h1>{=BLOCK_CONTENT_SETTINGS}</h1>
+							<span>{=BLOCK_CONTENT_SETTINGS_INFO|noescape}</span>
+							<br /><br />
+
+							<div class="container userTable">
+								<table class="table table-striped">
+									<thead>
+									<tr>
+										<th>{=MENU_SETTINGS_TABLE_ORDER}</th>
+										<th>{=MENU_SETTINGS_IN_MENU_TITLE}</th>
+										<th>{=MENU_SETTINGS_LINK}</th>
+										<th>{=MENU_SETTINGS_ALT}</th>
+										<th class="alignRight"></th>
+									</tr>
+									</thead>
+									<tbody>
+									{$menuController->renderMenuItemWithSubItemsInBlockContent($presenter, $topMenuEntities)|noescape}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /#page-content-wrapper -->
+		{* /form *}
+	</div>
+	<!-- /#wrapper -->
+{/block}
+

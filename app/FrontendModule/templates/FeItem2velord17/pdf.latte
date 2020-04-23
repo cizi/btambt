@@ -1,0 +1,409 @@
+{block content}
+<style>
+.myContent{
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
+}
+.prihlaska, .prihlaska td {
+		font-size: 8pt;
+	}
+	.prihlaska_top img {
+		margin:0 0;
+		float:left;
+	}
+	.prihlaska_top img {
+		border:1px solid white;
+	}
+	.heading1 {
+		font-size: 10pt;
+		padding-top: -60px;
+		text-align:center;
+		font-weight:bold;
+		letter-spacing: 0.4ex;
+	}
+	.heading2 {
+		font-size:10pt;
+		margin-top:10px;
+		text-align:center;
+	}
+	.h2td td {
+		font-size:10pt;
+		margin-top:10px;
+		text-align:left;
+	}
+	.black1 td {
+		background:white;
+		text-align: center;
+		height:1.5cm;
+		vertical-align: top;
+		width:25%;
+	}
+	.PKblock {
+		padding:10px;
+		margin-top:10px;
+		text-align:left;
+		float:right;
+		border:3px solid black;
+		width:6.5cm;
+	}
+	.clear {
+		clear:both;
+	}
+	.clearL {
+		clear:left;
+	}
+	.itemFull {
+		margin-bottom:10px;
+		border-bottom:1px solid black;
+		margin-right:8cm;
+	}
+	.itemFullName {
+		margin-bottom:10px;
+		margin-left:3%;
+		clear:left;
+		float:left;
+		width: 4cm;
+	}
+	.itemShim {
+		clear:left;
+		margin-bottom:10px;
+	}
+	.itemFullName2 {
+		clear:left;
+		float:left;
+		width: 2.5cm;
+	}
+	.prihlaska_left {
+		float:left;
+		margin-left:3%;
+		width:42%;
+	}
+	.prihlaska_right {
+		float:right;
+		margin-right:3%;
+		width:42%;
+	}
+	.prihlaska_border {
+		border:1px solid black;
+		margin:0 3%;
+	}
+	.pro3 {
+		margin-left:3%;
+		margin-right:3%;
+	}
+	.prihlaska_table {
+		background-color:black;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
+	}
+	.prihlaska_table td {
+		background-color:white;
+	}
+	.prihlaska_table td b {
+		font-size:9pt;
+		background-color:white;
+	}
+	.rbold {
+		border-right:1px solid black;
+	}
+	.h30 {
+		height:12pt;
+	}
+	.prihlaska_full {
+		width:100%;
+		height:50px;
+	}
+	.tright {
+		text-align:center;
+	}
+	.pagebreak {
+		clear:both;
+		page-break-before: always;
+		margin-top:20px;
+	}
+	.bcenter {
+		font-weight:bold;
+		text-align:center;
+	}
+	.plusb {
+		border:1px solid black;
+	}
+	.prihlaskaMaxHeight {
+		height:1.7cm;
+	}
+	.morept {
+		font-size:10pt;
+	}
+	input, textarea {
+		border:1px solid black;
+		margin-bottom:2px;
+	}
+	hr {
+		clear:both;
+		height:1px;
+		color:black;
+	}
+	.fright {
+		float:right;
+	}
+	.FlyToL {
+		float: left;
+	}
+	form td {
+		vertical-align: middle;
+		font-weight: normal;
+	}
+</style>
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="prihlaska">
+							<div class="prihlaska_top">
+								{if isset($cID) && ($cID == 159)}
+									<img src="{$basePath}/images/logo-prihlaskaCKCHS.jpg" />
+								{else}
+									<img src="{$basePath}/images/logo-prihlaska.jpg" />
+								{/if}
+							</div>
+							<div class="heading1">{if isset($title)}{$title|upper}{/if}</div>
+							{if isset($cID) && ($cID == 159)}
+								<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST|upper}</div>
+							{else}
+								<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION|upper}</div>
+							{/if}
+
+							<div class="PKblock">{=LITTER_APPLICATION_DETAIL_BOOK_MANAGER|noescape}</div>
+
+							<div class="clearL"></div>
+							<br /><br /><br />
+
+							<div class="itemFull">
+								{=DOG_FORM_BREED}:
+								<strong>
+									{if $Plemeno == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $Plemeno)}
+									{/if}
+								</strong>
+							</div>
+
+							<div class="itemFull">
+								{=LITTER_APPLICATION_DETAIL_STATION_TITLE}:<strong>{$chs}</strong>
+							</div>
+
+							<div class="clear"></div>
+							&nbsp;<br />
+
+							<div class="prihlaska_left">
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_FATHER|noescape}: </div><strong>{$otec}</strong><br />
+								<div class="itemFullName2"> &nbsp; {=DOG_TABLE_HEADER_BIRT|noescape}: </div><strong>{$otecDN}</strong><br />
+								<div class="itemShim">&nbsp; {=LITTER_APPLICATION_DETAIL_DOG_TITLES|noescape}: </div> <strong>{$otecV}</strong><br /><br />
+							</div>
+							<div class="prihlaska_right">
+								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: <strong>{$otecPP}</strong><br />
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>
+								<strong>
+									{if $otecBarva == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $otecBarva)}
+									{/if}
+								</strong><br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>
+								<strong>
+									{if $otecSrst == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $otecSrst)}
+									{/if}
+								</strong><br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div><strong>{$otecBon}</strong> {*, {=DOG_TABLE_HEADER_HEIGHT|noescape}: <strong>{$otecHeight}</strong> cm *}
+							</div>
+
+							<div class="clear"></div>
+
+							<div class="prihlaska_left">
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_MOTHER|noescape}: </div><strong>{$matka}</strong><br />
+								<div class="itemFullName2"> &nbsp; {=DOG_TABLE_HEADER_BIRT|noescape}: </div><strong>{$matkaDN}</strong><br />
+								<div class="itemShim">&nbsp;  {=LITTER_APPLICATION_DETAIL_DOG_TITLES|noescape}: </div> <strong>{$matkaV}</strong><br /><br />
+							</div>
+							<div class="prihlaska_right">
+								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: <strong>{$matkaPP}</strong><br />
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>
+								<strong>
+									{if $matkaBarva == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $matkaBarva)}
+									{/if}
+								</strong><br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>
+								<strong>
+									{if $matkaSrst == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $matkaSrst)}
+									{/if}
+								</strong><br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div><strong>{$matkaBon}</strong> {* , {=DOG_TABLE_HEADER_HEIGHT|noescape}: <strong>{$matkaHeight}</strong> cm *}
+							</div>
+
+							<div class="clear"></div>
+
+							<div class="itemFullName">{=LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS|noescape}: </div> <strong>{$chovatel}</strong>
+							<div class="itemFullName">{=MATING_FORM_DATE|noescape}: </div> <strong>{$datumkryti}</strong>
+							&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {=LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY|noescape}: &nbsp; &nbsp; &nbsp; <strong>{$datumnarozeni}</strong><br /><br />
+
+							<div class="pro3"><b>{=LITTER_APPLICATION_DETAIL_PUPPIES_INFO}:</b></div>
+
+							<div class="prihlaska_border">
+								<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+									<tr>
+										<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_COUNT}</td>
+										<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_COUNT}</td>
+										<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_FORCE_DEATH_COUNT}</td>
+										<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_APPLICATION_FOR}</td>
+										<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_TO_NURSE}</td>
+										<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_BEFORE_APPLICATION}</td>
+									</tr>
+									<tr>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$porozenoPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$porozenoFen}</td>
+										<td class="fontBold" title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$porozenoNez}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$mrtvychPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$mrtvychFen}</td>
+										<td class="fontBold" title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$mrtvychNez}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$usmrcenoPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$usmrcenoFen}</td>
+										<td class="fontBold" title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$usmrcenoNez}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$kzapisuPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$kzapisuFen}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$kojnePsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$kojneFen}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$zahynuloPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$zahynuloFen}</td>
+									</tr>
+								</table>
+								<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+									<tr>
+										<td align="center" class="rbold" style="width:2.3cm; vertical-align: top"><div class="FlyToL">1)</div>{=LITTER_APPLICATION_DETAIL_TEXT_1|noescape}</td>
+										<td align="center" class="rbold" style="width:4.4cm; vertical-align: top"><div class="FlyToL">2)</div>{=LITTER_APPLICATION_DETAIL_TEXT_2|noescape}</td>
+										<td align="center" style="width:4.7cm; vertical-align: top"><div class="FlyToL">3)</div>{=LITTER_APPLICATION_DETAIL_TEXT_3|noescape}</td>
+										<td align="center" style="width:3cm; vertical-align: top"><div class="FlyToL">4)</div>{=LITTER_APPLICATION_DETAIL_TEXT_4|noescape}</td>
+										<td align="center" style="width:4.6cm; vertical-align: top"><div class="FlyToL">5)</div>{=LITTER_APPLICATION_DETAIL_TEXT_5|noescape}</td>
+									</tr>
+
+									{for $i = 1; $i <= $puppiesLines; $i++}
+										<tr id="tr{$i}">
+											{if (${"mikrocip".$i} == "") && (${"jmeno".$i} == "")}
+												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold"></td>
+												<td align="center"></td>
+												<td align="center"></td>
+												<td align="center"></td>
+											{else}
+												<td align="center" class="rbold h30 fontBold" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold fontBold">{${"mikrocip".$i}}</td>
+												<td class="fontBold" align="center">{${"jmeno".$i}}</td>
+												<td class="fontBold" align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
+												<td class="fontBold" align="center">{$enumRepository->findEnumItemByOrder($currentLang,  ${"srst".$i})}, {$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
+											{/if}
+										</tr>
+									{/for}
+
+								</table><!--tp-->
+							</div>
+
+							<div class="clear"></div>
+							&nbsp;<br />
+
+							<div class="pro3">{=LITTER_APPLICATION_DETAIL_CONTROL}: {$kontrolaVrhu}
+							</div>
+
+							<p class="pro3">{=LITTER_APPLICATION_DETAIL_INC}:
+								{if isset($kryci_list)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_LIST} &bull;
+								{if isset($pp_psa)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG} &bull;
+								{if isset($pp_feny)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_FEMALE_PREREG} &bull;
+								{if isset($poplatky)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_FEES} &bull;
+								{if isset($fotokopiechs)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_PHOTO} &bull;
+								{if isset($fotokopietitulu)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_TITLES}
+								{=LITTER_APPLICATION_DETAIL_TEXT_6|noescape}
+							</p>
+							<div class="prihlaska_left">
+								{=LITTER_APPLICATION_DETAIL_IN} {$misto}
+							</div>
+							<div class="prihlaska_right tright">
+								{=LITTER_APPLICATION_DETAIL_TEXT_7|noescape}
+							</div>
+
+							<p class="bcenter pagebreak morept"><strong>{=LITTER_APPLICATION_DETAIL_TEXT_8|noescape}</strong></p>
+
+							<table class="prihlaska_table plusb" cellspacing="0" border="1" align="center">
+								<tr>
+									<td style="width:3.9cm;height:1.7cm" align="center">{=LITTER_APPLICATION_DETAIL_NO}</td>
+									<td style="width:7.4cm" align="center">{=LITTER_APPLICATION_DETAIL_CHIP_BLISTER}</td>
+								</tr>
+								<tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr><tr>
+									<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+								</tr>
+							</table>
+							<br />&nbsp;<br />
+
+							<!--<div class="prihlaska_left morept">
+								Další sadu samolepek <b>volně přiložte</b> k přihlášce <br />	pro nalepení do průkazů původu <b>plemennou knihou ČMKU</b>!
+							</div>-->
+
+							<div class="pro3 fright tright morept">{=LITTER_APPLICATION_DETAIL_TEXT_9|noescape}</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}

@@ -1,0 +1,82 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container userTable">
+							<table class="table table-striped dogList">
+								<thead>
+								<tr>
+									<th>{=DOG_FORM_BREED}</th>
+									<th>{=DOG_FORM_FEMALE}</th>
+									<th>{=DOG_FORM_MALE}</th>
+									<th>{=PUPPY_TABLE_TERM}</th>
+									<th>{=PUPPY_TABLE_DETAILS}</th>
+									<th>{=PUPPY_TABLE_CONTACT}</th>
+									<th class="alignRight">
+										{if $isUserLoggedIn}
+											<button type="button" class="btn btn-success" onclick="window.location.assign({link FeItem1velord6:Edit});">
+												<span class="glyphicon glyphicon-plus"></span> {=PUPPY_ADD_NEW}
+											</button>
+										{/if}
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach $puppies as $puppy}
+									<tr>
+										<td>{$enumRepo->findEnumItemByOrder($currentLang, $puppy->getPlemeno())}</td>
+										<td><a href={link FeItem1velord2:view, $puppy->getMID()}>{$dogRepo->getName($puppy->getMID())}</a></td>
+										<td><a href={link FeItem1velord2:view, $puppy->getOID()}>{$dogRepo->getName($puppy->getOID())}</a></td>
+										<td>{if $puppy->getTermin() != null}{$puppy->getTermin()->format('d.m.Y')}{/if}</td>
+										<td>{$puppy->getPodrobnosti()|noescape}</td>
+										<td>
+											{var user = $userRepo->getUser($puppy->getUID())}
+											{include ../@userInfoForList.latte, 'user' => $user}
+										</td>
+										<td class="alignRight">
+											{if ($puppy->getUID() == $loggedUserId) && $isUserLoggedIn}
+												<a href={link FeItem1velord6:Edit, $puppy->getID()} title={=PUPPY_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+												<a href="#" data-href={link FeItem1velord6:Delete, $puppy->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=PUPPY_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											{/if}
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+		</div>
+	</div>
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=PUPPY_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=PUPPY_DELETE_BODY}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=DOG_TABLE_DOG_DELETATION_CONFIRM_YES}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+	</script>
+
+{/block}

@@ -1,0 +1,96 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+    language:
+        default: cs
+
+    database:
+        host: host
+        username: user
+        password: pass
+        database: db
+        lazy: TRUE
+        profiler:
+            run: false
+            explain: true
+            filter: DibiEvent::ALL
+            file: log.sql
+
+php:
+	date.timezone: Europe/Prague
+
+application:
+	errorPresenter: 'App\FrontendModule\Presenters\ErrorPresenter'
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+session:
+	expiration: 14 days
+
+services:
+	- App\Forms\FormFactory
+	- App\Forms\SignForm
+	- App\Forms\WebconfigForm
+	- App\Forms\UserForm
+	- App\Forms\UserChangePasswordForm
+	- App\Forms\PasswordResetForm
+	- App\Forms\SliderForm
+	- App\Forms\MenuForm
+	- App\Forms\ContactForm
+	- App\Forms\ContactSettingForm
+	- App\Forms\FooterForm
+	- App\Forms\HeaderForm
+	- App\Forms\BlockForm
+	- App\Forms\LangForm
+	- App\Forms\LangItemForm
+	- App\Forms\EnumerationForm
+	- App\Forms\EnumerationItemForm
+	- App\Forms\DogForm
+	- App\Forms\DogFilterForm
+	- App\Forms\VetForm
+	- App\Forms\RefereeForm
+	- App\Forms\MatingListForm
+	- App\Forms\MatingListDetailForm
+	- App\Forms\ShowForm
+	- App\Forms\ShowDogForm
+	- App\Forms\ShowRefereeForm
+	- App\Forms\KinshipVerificationForm
+	- App\Forms\LitterApplicationForm
+	- App\Forms\LitterApplicationDetailForm
+	- App\Forms\LitterApplicationRewriteForm
+	- App\Forms\PuppyForm
+	- App\Forms\UserFilterForm
+	- App\Forms\LitterApplicationFilterForm
+	- App\Forms\CoverageMatingListDetailForm
+	- App\Model\UserRepository
+	- App\Model\WebconfigRepository
+	- App\Model\LangRepository
+	- App\Model\SliderPicRepository
+	- App\Model\SliderSettingRepository
+	- App\Model\MenuRepository
+	- App\Model\PicRepository
+	- App\Model\BlockRepository
+	- App\Model\EnumerationRepository
+	- App\Model\DogRepository
+	- App\Model\VetRepository
+	- App\Model\RefereeRepository
+	- App\Model\ShowRepository
+	- App\Model\ShowDogRepository
+	- App\Model\ShowRefereeRepository
+	- App\Model\AwaitingChangesRepository
+	- App\Model\LitterApplicationRepository
+	- App\Model\PuppyRepository
+	- App\Controller\MenuController
+	- App\Controller\FileController
+	- App\Controller\DogChangesComparatorController
+	router: App\RouterFactory::createRouter
+	connection:
+	    class: \Dibi\Connection(%database%)
+
+tracy:
+    bar:
+        - Dibi\Bridges\Tracy\Panel
+
+

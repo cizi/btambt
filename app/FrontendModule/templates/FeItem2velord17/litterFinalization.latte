@@ -1,0 +1,19 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4">
+						<a href={link "LitterApplicationPdfGenerator:default", $id} class="btn btn-primary">{=LITTER_APPLICATION_GENERATE_PDF}</a>
+						<a href={link "FeItem2velord17:default"} class="btn btn-default">{=LITTER_APPLICATION_ADD_NEW}</a>
+					</div>
+					<div class="col-lg-4"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}

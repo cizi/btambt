@@ -1,0 +1,143 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'slider'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		{form sliderForm}
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=SLIDER_SETTINGS}</h1>
+							<span>{=SLIDER_SETTINGS_INFO|noescape}</span>
+							<br /><br />
+
+							<form>
+								<div class="form-group row">
+									<div class="col-sm-10">
+										{label SLIDER_FILES_UPLOAD/}
+										{input SLIDER_FILES_UPLOAD}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=SLIDER_SETTINGS_PICS_INFO|noescape}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										<label>{=SLIDER_SETTINGS_CURRENT_PICS}</label>
+									</div><br />
+									{foreach $sliderPics as $sliderPic}
+										<a href="#" data-href={link Slider:PicDelete, $sliderPic->getId()} class="sliderPicDelete" data-toggle="modal" data-target="#confirm-delete" title={=SLIDER_SETTINGS_DELETE_TITLE}>
+											<img src="{$sliderPic->getPath()|noescape}" class="sliderPic"  />
+										</a>
+									{/foreach}
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										<label class="form-control-label">{=SLIDER_SETTINGS_SLIDER_ACTIVE_LABEL}</label> &nbsp;&nbsp;
+										{input SLIDER_ON}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=SLIDER_SETTINGS_SLIDER_ACTIVE_INFO|noescape}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										<label class="form-control-label">{=SLIDER_SETTINGS_SLIDER_SLIDING_LABEL}</label> &nbsp;&nbsp;
+										{input SLIDER_SLIDE_SHOW}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=SLIDER_SETTINGS_SLIDER_SLIDING_INFO|noescape}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										<label class="form-control-label">{=SLIDER_SETTINGS_SLIDER_ARROWS_LABEL}</label> &nbsp;&nbsp;
+										{input SLIDER_CONTROLS}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=SLIDER_SETTINGS_SLIDER_ARROWS_INFO|noescape}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										{label SLIDER_WIDTH/}
+										{input SLIDER_WIDTH}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=SLIDER_SETTINGS_SLIDER_WITDH_INFO|noescape}
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-10">
+										{label SLIDER_TIMING/}
+										{input SLIDER_TIMING}
+									</div>
+									<div class="col-sm-10 field_info">
+										{=SLIDER_SETTINGS_TIMING_INFO|noescape}
+									</div>
+								</div>
+
+								<div class="form-group row alignRight">
+									<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+										{input confirm}
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- /#page-content-wrapper -->
+		{/form}
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=SLIDER_SETTINGS_CONFIRM_MODAL_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=SLIDER_SETTINGS_CONFIRM_MODAL_DELETE_MSG}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$(function() {
+			$("#sliderTiming").keypress(function (e) {
+				//if the letter is not digit then display error and don't type anything
+				if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+					return false;
+					//display error message
+					//$("#errmsg").html("Digits Only").show().fadeOut("slow");
+				}
+			})
+		})
+	</script>
+{/block}
+

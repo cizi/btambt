@@ -1,0 +1,54 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'litter'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<h2>{=LITTER_APPLICATION}</h2>
+						<div class="container userTable">
+							<div class="col-lg-3"></div>
+							<div class="col-lg-6">
+								{control litterApplicationRewriteForm}
+							</div>
+							<div class="col-lg-3"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=LITTER_APPLICATION_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=LITTER_APPLICATION_DELETE_INFO}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=USER_CONFIRM_DELETE_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$("#frm-litterApplicationRewriteForm-breeder-uID").chosen({
+				placeholder_text: {=MATING_FORM_PICK_MALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+		})
+	</script>
+
+{/block}

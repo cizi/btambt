@@ -1,0 +1,106 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'litter'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<h2>{=LITTER_APPLICATION}</h2>
+
+						<div class="row">
+							<div class="col-lg-12">
+								{control litterApplicationFilterForm}
+							</div>
+						</div>
+						<br />
+
+						<div class="container userTable">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>{=DOG_FORM_BREED}</th>
+									<th>{=LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY}</th>
+									<th>{=DOG_FORM_MALE}</th>
+									<th>{=DOG_FORM_FEMALE}</th>
+									<th>{=LITTER_APPLICATION_SAVE_REWRITTEN}</th>
+									<th class="alignRight">
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+									{foreach $applications as $application}
+										<tr>
+											<td>{if $application->getPlemeno() != null}{$enumRepo->findEnumItemByOrder($currentLang, $application->getPlemeno())}{/if}</td>
+											<td>{if $application->getDatumNarozeni() != null}{$application->getDatumNarozeni()->format('d.m.Y')}{/if}</td>
+											<td>{$dogRepo->getName($application->getOID())}</td>
+											<td>{$dogRepo->getName($application->getMID())}</td>
+											<td>{if $application->getZavedeno() == $litterApplicationStateEnumInsert}{=SHOW_UNDONE}{else}{=SHOW_DONE}{/if}</td>
+											<td class="alignRight" nowrap="nowrap">
+												<a href={link :Frontend:LitterApplicationPdfGenerator:default, $application->getID()} title={=LITTER_APPLICATION_GENERATE_PDF}><span class="glyphicon glyphicon-print black"></span></a> &nbsp;&nbsp;
+												{if $application->getZavedeno() == $litterApplicationStateEnumInsert}
+													<a href={link RewriteDescendants, $application->getID()} title={=LITTER_APPLICATION_REWRITE_DESCENDANTS}><span class="glyphicon glyphicon-indent-left"></span></a> &nbsp;&nbsp;
+												{else}
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												{/if}
+												{if $amIAdmin}
+													<a href={link :Frontend:FeItem2velord17:Default, $application->getID()} title={=LITTER_APPLICATION_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+												{/if}
+												<a href="#" data-href={link Delete, $application->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=LITTER_APPLICATION_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											</td>
+										</tr>
+									{/foreach}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=LITTER_APPLICATION_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=LITTER_APPLICATION_DELETE_INFO}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=USER_CONFIRM_DELETE_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$("#frm-litterApplicationFilterForm-DatumNarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationFilterForm-chs").chosen({
+			placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+			no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+		});
+	</script>
+
+{/block}
+

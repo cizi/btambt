@@ -1,0 +1,175 @@
+{block content}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+	<div class="myContent">
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row" id="dogFilterForm" style="display:none;">
+					 {control dogFilterForm}
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container userTable">
+							<div class="paginator">
+								{include "../@paginator.latte", $paginator}
+							</div>
+							{=DOG_TABLE_RECORD_COUNT} {$recordCount} ({=DOG_TABLE_RECORD_COUNT_PAGES} {$pageCount})
+							<table class="table table-striped dogList">
+								<thead>
+								<tr>
+									<th>{=DOG_TABLE_HEADER_NAME}</th>
+									<th>{=DOG_TABLE_HEADER_BREED}</th>
+									<th>{=DOG_TABLE_HEADER_COLOR}</th>
+									<th>{=DOG_TABLE_HEADER_SEX}</th>
+									<th>{=DOG_TABLE_HEADER_BIRT}</th>
+									<th>{=DOG_TABLE_HEADER_BREEDING}</th>
+									<th>{=DOG_TABLE_HEADER_PROB_DKK}</th>
+									<th>{=DOG_TABLE_HEADER_PROB_DLK}</th>
+									<th>{=DOG_TABLE_HEADER_HEALTH}</th>
+									<th>
+										{=DOG_TABLE_HEADER_FATHER}
+										<hr class="motherFatherDelimiter"/>
+										{=DOG_TABLE_HEADER_MOTHER}
+									</th>
+									<th class="alignRight">
+										<button type="button" class="btn btn-group" id="filterToggle">
+											<span class="glyphicon glyphicon-filter"></span> {=DOG_TABLE_FILTER_TOGGLE}
+										</button>
+										{if $canDirectEdit}
+											<button type="button" class="btn btn-success" onclick="window.location.assign({link FeItem1velord2:Edit});">
+												<span class="glyphicon glyphicon-plus"></span> {=DOG_TABLE_HEADER_ADD_DOG}
+											</button>
+										{/if}
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach $dogs as $dog}
+									<tr>
+										{var $fullName = trim($dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem())}
+										<td {if strlen($fullName) <= 38}nowrap{/if}>
+											{if count($dogRepository->findDogPics($dog->getID())) > 0}
+												<img src="{$baseUrl|noescape}/images/ifoto.gif" />
+											{/if}
+											{if $dog->isPesMrtvy()}
+												<img src="{$baseUrl|noescape}/images/mrtvy.gif" />
+											{/if}
+											<a href={link view, $dog->getID()}>{$fullName}</a>
+											{* if $amIAdmin}
+												<a href={link edit, $dog->getID()}>{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</a>
+											{else}
+
+											{/if *}
+											<br /><i>{$dog->getCisloZapisu()}</i>
+										</td>
+										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPlemeno())}</td>
+										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getBarva())}</td>
+										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPohlavi())}</td>
+										<td nowrap>{if $dog->getDatNarozeni() != NULL}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
+										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getChovnost())}</td>
+										<td nowrap>
+											{var dkk = $dogRepository->getDkkByDogId($dog->getID())}
+											{if $dkk}
+												{$dkk->getVysledek()}
+											{/if}
+										</td>
+										<td nowrap>
+											{var dlk = $dogRepository->getDlkByDogId($dog->getID())}
+											{if $dlk}
+												{$dlk->getVysledek()}
+											{/if}
+										</td>
+										<td>
+											{var healths = $dogRepository->findHealthsByDogId($dog->getID())}
+											{if count($healths) > 0}
+												{foreach $healths as $health}
+													{if ($health->getTyp() != App\Model\DogRepository::DKK_ORDER) && ($health->getTyp() != App\Model\DogRepository::DLK_ORDER)}
+														<span style="white-space: nowrap;">
+															{$enumRepository->findEnumItemByOrder($currentLang, $health->getTyp())}: {$health->getVysledek()}<br />
+														</span>
+													{/if}
+												{/foreach}
+											{/if}
+										</td>
+										<td {if $amIAdmin == false} colspan="2" {/if}>
+											{if $dog->getOID() != 0}
+												{var otec = $dogRepository->getDog($dog->getOID())}
+												<a href={link view, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
+											{/if}
+											{if $dog->getMID() != 0}
+												<hr class="motherFatherDelimiter"/>
+												{var matka = $dogRepository->getDog($dog->getMID())}
+												<a href={link view, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
+											{/if}
+										</td>
+
+										<td class="alignRight" nowrap="nowrap">
+											<a href={link view, $dog->getID()} title={=DOG_TABLE_DOG_DETAIL}><span class="glyphicon glyphicon-list-alt black"></span></a> &nbsp;&nbsp;
+											{if $canDirectEdit}
+												<a href={link FeItem1velord2:Edit, $dog->getID()} title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+											{/if}
+											{if $amIAdmin}
+												<a href="#" data-href={link FeItem1velord2:Delete, $dog->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											{/if}
+										</td>
+									</tr>
+								{/foreach}
+
+								</tbody>
+							</table>
+							<div class="paginator">
+								{include "../@paginator.latte", $paginator}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- /#page-content-wrapper -->
+		</div>
+	</div>
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_TABLE_DOG_DELETATION_TITLE}
+				</div>
+				<div class="modal-body">
+					{=DOG_TABLE_DOG_DELETATION_CONFIRM}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=DOG_TABLE_DOG_DELETATION_CONFIRM_YES}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		$( document ).ready(function() {
+			$( "#filterToggle" ).click(function() {
+				$( "#dogFilterForm" ).toggle( "slow" );
+			});
+			{if $filterActivated}
+				$( "#dogFilterForm" ).toggle();
+			{/if}
+		});
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		{*
+		$("#DatNarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+		*}
+	</script>
+{/block}

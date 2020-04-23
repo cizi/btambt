@@ -1,0 +1,394 @@
+{block content}
+<style>
+.prihlaska, .prihlaska td {
+		font-size: 8pt;
+	}
+	.prihlaska_top img {
+		margin:15px 0px;
+		float:left;
+	}
+	.prihlaska_top img {
+		border:1px solid white;
+	}
+	.heading1 {
+		font-size:10pt;
+		padding-top:30px;
+		text-align:center;
+		font-weight:bold;
+		letter-spacing: 0.4ex;
+	}
+	.heading2 {
+		font-size:10pt;
+		margin-top:10px;
+		text-align:center;
+	}
+	.h2td td {
+		font-size:10pt;
+		margin-top:10px;
+		text-align:left;
+	}
+	.black1 td {
+		background:white;
+		text-align: center;
+		height:1.5cm;
+		vertical-align: top;
+		width:25%;
+	}
+	.PKblock {
+		padding:10px;
+		margin-top:10px;
+		text-align:left;
+		float:right;
+		border:3px solid black;
+		width:6.5cm;
+	}
+	.clear {
+		clear:both;
+	}
+	.clearL {
+		clear:left;
+	}
+	.itemFull {
+		margin-bottom:10px;
+		border-bottom:1px solid black;
+		margin-right:8cm;
+	}
+	.itemFullName {
+		margin-bottom:10px;
+		margin-left:3%;
+		clear:left;
+		float:left;
+		width: 4cm;
+	}
+	.itemShim {
+		clear:left;
+		margin-bottom:10px;
+	}
+	.itemFullName2 {
+		clear:left;
+		float:left;
+		width: 2.5cm;
+	}
+	.prihlaska_left {
+		float:left;
+		margin-left:3%;
+		width:42%;
+	}
+	.prihlaska_right {
+		float:right;
+		margin-right:3%;
+		width:42%;
+	}
+	.prihlaska_border {
+		border:1px solid black;
+		margin:0 3%;
+	}
+	.pro3 {
+		margin-left:3%;
+		margin-right:3%;
+	}
+	.prihlaska_table {
+		background-color:black;
+	}
+	.prihlaska_table td {
+		background-color:white;
+	}
+	.prihlaska_table td b {
+		font-size:9pt;
+		background-color:white;
+	}
+	.rbold {
+		border-right:1px solid black;
+	}
+	.h30 {
+		height:12pt;
+	}
+	.prihlaska_full {
+		width:100%;
+		height:50px;
+	}
+	.tright {
+		text-align:center;
+	}
+	.pagebreak {
+		clear:both;
+		page-break-before: always;
+		margin-top:20px;
+	}
+	.bcenter {
+		font-weight:bold;
+		text-align:center;
+	}
+	.plusb {
+		border:1px solid black;
+	}
+	.prihlaskaMaxHeight {
+		height:1.7cm;
+	}
+	.morept {
+		font-size:10pt;
+	}
+	input, textarea {
+		border:1px solid black;
+		margin-bottom:2px;
+	}
+	hr {
+		clear:both;
+		height:1px;
+		color:black;
+	}
+	.fright {
+		float:right;
+	}
+	.FlyToL {
+		float: left;
+	}
+	form td {
+		vertical-align: middle;
+		font-weight: normal;
+	}
+</style>
+
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						{form litterApplicationDetailForm}
+							<div class="prihlaska">
+								<div class="prihlaska_top">
+									{if $cID == 159}
+										<img src="{$basePath|noescape}/images/logo-prihlaskaCKCHS.jpg" />
+									{else}
+										<img src="{$basePath|noescape}/images/logo-prihlaska.jpg" />
+									{/if}
+								</div>
+								<div class="heading1">{$title|upper}</div>
+								{if $cID == 159}
+									<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST|upper}</div>
+								{else}
+									<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION|upper}</div>
+								{/if}
+
+								<div class="PKblock">{=LITTER_APPLICATION_DETAIL_BOOK_MANAGER|noescape}</div>
+
+								<div class="clearL"></div>
+
+								<div class="itemFull">
+									<div class="itemFullName">{label Plemeno/}</div>
+									{input Plemeno}
+								</div>
+
+								<div class="itemFull">
+									<div class="itemFullName">{label chs/}:</div> {input chs}
+								</div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<div class="prihlaska_left">
+									<div class="itemFullName2">{label otec/}:</div>{input otec}<br />
+									<div class="itemFullName2"> &nbsp; {label otecDN/}:</div>{input otecDN}<br />
+									<div class="itemShim">&nbsp; {label otecV/}:</div> {input otecV}<br /><br />
+								</div>
+								<div class="prihlaska_right">
+									{label otecPP/}: {input otecPP}<br />
+									<div class="itemFullName2">{label otecBarva/}:</div>{input otecBarva}<br />
+									<div class="itemFullName2">{label otecSrst/}:</div>{input otecSrst}<br />
+									<div class="itemFullName2">{label otecBon/}:</div>{input otecBon}
+								</div>
+
+								<div class="clear"></div>
+
+								<div class="prihlaska_left">
+									<div class="itemFullName2">{label matka/}: </div>{input matka}<br />
+									<div class="itemFullName2"> &nbsp; {label matkaDN/}: </div>{input matkaDN}<br />
+									<div class="itemShim">&nbsp;  {label matkaV/}: </div> {input matkaV}<br /><br />
+								</div>
+								<div class="prihlaska_right">
+									{label matkaPP/}: {input matkaPP}<br />
+									<div class="itemFullName2">{label matkaBarva/}: </div>{input matkaBarva}<br />
+									<div class="itemFullName2">{label matkaSrst/}: </div>{input matkaSrst}<br />
+									<div class="itemFullName2">{label matkaBon/}: </div>{input matkaBon}
+								</div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<div class="itemFullName">{label chovatel/}: </div> {input chovatel}<br /><br />
+								<div class="itemFullName">{label datumkryti/}: </div> {input datumkryti}
+								&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {label datumnarozeni/}: &nbsp; &nbsp; &nbsp; {input datumnarozeni}<br /><br />
+
+								<div class="pro3"><b>{=LITTER_APPLICATION_DETAIL_PUPPIES_INFO}:</b></div>
+
+								<div class="prihlaska_border">
+									<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+										<tr>
+											<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_COUNT}</td>
+											<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_COUNT}</td>
+											<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_FORCE_DEATH_COUNT}</td>
+											<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_APPLICATION_FOR}</td>
+											<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_TO_NURSE}</td>
+											<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_BEFORE_APPLICATION}</td>
+										</tr>
+										<tr>
+											<td>{label porozenoPsu/} {input porozenoPsu}</td>
+											<td>{label porozenoFen/} {input porozenoFen}</td>
+											<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {input porozenoNez}</td>
+											<td>{label mrtvychPsu/} {input mrtvychPsu}</td>
+											<td>{label mrtvychFen/} {input mrtvychFen}</td>
+											<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {input mrtvychNez}</td>
+											<td>{label usmrcenoPsu/} {input usmrcenoPsu}</td>
+											<td>{label usmrcenoFen/} {input usmrcenoFen}</td>
+											<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {input usmrcenoNez}</td>
+											<td>{label kzapisuPsu/} {input kzapisuPsu}</td>
+											<td>{label kzapisuFen/} {input kzapisuFen}</td>
+											<td>{label kojnePsu/} {input kojnePsu}</td>
+											<td>{label kojneFen/} {input kojneFen}</td>
+											<td>{label zahynuloPsu/} {input zahynuloPsu}</td>
+											<td>{label zahynuloFen/} {input zahynuloFen}</td>
+										</tr>
+									</table>
+									<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+										<tr>
+											<td align="center" class="rbold" style="width:2.3cm; vertical-align: top"><div class="FlyToL">1)</div>{=LITTER_APPLICATION_DETAIL_TEXT_1|noescape}</td>
+											<td align="center" class="rbold" style="width:4.4cm; vertical-align: top"><div class="FlyToL">2)</div>{=LITTER_APPLICATION_DETAIL_TEXT_2|noescape}</td>
+											<td align="center" style="width:4.7cm; vertical-align: top"><div class="FlyToL">3)</div>{=LITTER_APPLICATION_DETAIL_TEXT_3|noescape}</td>
+											<td align="center" style="width:3cm; vertical-align: top"><div class="FlyToL">4)</div>{=LITTER_APPLICATION_DETAIL_TEXT_4|noescape}</td>
+											<td align="center" style="width:4.6cm; vertical-align: top"><div class="FlyToL">5)</div>{=LITTER_APPLICATION_DETAIL_TEXT_5|noescape}</td>
+										</tr>
+
+										{for $i = 1; $i <= $puppiesLines; $i++}
+											<tr id="tr{$i}">
+												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold">{input "mikrocip" . $i}</td>
+												<td align="center">{input "jmeno" . $i}</td>
+												<td align="center">{input "pohlavi" . $i}</td>
+												<td align="center">{input "srst" . $i}, {input "barva" . $i}</td>
+											</tr>
+										{/for}
+
+									</table><!--tp-->
+								</div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<div class="pro3">{label kontrolaVrhu/}<br />
+									{input kontrolaVrhu}
+								</div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<p class="pro3">{=LITTER_APPLICATION_DETAIL_INC}:
+									{input kryci_list} {label kryci_list/} &bull;
+									{input pp_psa} {label pp_psa/} &bull; {input pp_feny} {label pp_feny/} &bull; {input poplatky} {label poplatky/} &bull; {input fotokopiechs} {label fotokopiechs/} &bull; {input fotokopietitulu} {label fotokopietitulu/}
+									{=LITTER_APPLICATION_DETAIL_TEXT_6|noescape}
+								</p>
+								<div class="prihlaska_left">
+									{label misto/} {input misto}
+								</div>
+								<div class="prihlaska_right tright">
+									{=LITTER_APPLICATION_DETAIL_TEXT_7|noescape}
+								</div>
+
+								<!-- smazat --><br>&nbsp;<hr>&nbsp;<br>
+
+								<p class="bcenter pagebreak morept">{=LITTER_APPLICATION_DETAIL_TEXT_8|noescape}</a></p>
+
+								<table class="prihlaska_table plusb" cellspacing="0" border="1" align="center">
+									<tr>
+										<td style="width:3.9cm;height:1.7cm" align="center">{=LITTER_APPLICATION_DETAIL_NO}</td>
+										<td style="width:7.4cm" align="center">{=LITTER_APPLICATION_DETAIL_CHIP_BLISTER}</td>
+									</tr>
+									<tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr>
+								</table>
+								<br />&nbsp;<br />
+
+								<!--<div class="prihlaska_left morept">
+									Další sadu samolepek <b>volně přiložte</b> k přihlášce <br />	pro nalepení do průkazů původu <b>plemennou knihou ČMKU</b>!
+								</div>-->
+
+								<div class="pro3 fright tright morept">{=LITTER_APPLICATION_DETAIL_TEXT_9|noescape}</div>
+								<div class="clear"></div>
+							</div>
+
+							<div class="form-group row alignRight">
+								<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+									{input generate}
+									{input back}
+								</div>
+							</div>
+						{/form}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$("#frm-litterApplicationDetailForm-otecDN").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationDetailForm-matkaDN").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationDetailForm-datumkryti").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationDetailForm-datumnarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+	</script>
+{/block}

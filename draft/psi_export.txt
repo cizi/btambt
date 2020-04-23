@@ -1,0 +1,10 @@
+SELECT ap.*, ei.item as Pohlavi, ei2.item as Plemeno, ei3.item as Barva, ei4.item as Srst, ei5.item as Varlata, ei6.item as Skus, ei7.item as Chovnost FROM 
+`appdata_pes` as ap 
+left join enum_item as ei on Pohlavi = ei.`order` and ei.lang = 'cs' 
+left join enum_item as ei2 on Plemeno = ei2.`order` and ei2.lang='cs'
+left join enum_item as ei3 on Barva = ei3.`order` and ei3.lang='cs'
+left join enum_item as ei4 on Srst = ei4.`order` and ei4.lang='cs'    
+left join enum_item as ei5 on Varlata = ei5.`order` and ei5.lang='cs'
+left join enum_item as ei6 on Skus = ei6.`order` and ei6.lang='cs'
+left join enum_item as ei7 on Chovnost = ei7.`order` and ei7.lang='cs'
+where (DatNarozeni between '2010-01-01' and '2015-12-31') and Plemeno = 19 

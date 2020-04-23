@@ -1,0 +1,250 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>{$title}{if isset($currentLink)} - {$currentLink->getTitle()}{/if}</title>
+	<meta name="description" content={$title}>
+	{if $webKeywords != ""}<meta name="keywords" content={$webKeywords}>{/if}
+	<meta name="robots" content="index,follow">
+	<meta name="googlebot" content="snippet,archive">
+	<meta name="author" content="Jan Cimler">
+	{if $favicon != ""}
+		<link rel='shortcut icon' type='image/x-icon' href="{$favicon|noescape}" />
+	{/if}
+	<link rel="apple-touch-icon" sizes="180x180" href="{$basePath|noescape}/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="{$basePath|noescape}/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="{$basePath|noescape}/images/favicon-16x16.png">
+	<link rel="manifest" href="{$basePath|noescape}/images/manifest.json">
+	<link rel="mask-icon" href="{$basePath|noescape}/images/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="theme-color" content="#ffffff">
+
+	<link rel="stylesheet" href="{$basePath|noescape}/css/style.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/boostrap/css/bootstrap.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/css/jquery.bxslider.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/css/navbar-multilevel.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/css/chosen.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/css/chosen_form_control.css">
+	<link rel="stylesheet" href="{$basePath|noescape}/css/ekko-lightbox.css">
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+
+	{* if isset($currentLink)}	{* probably any page absolutelly not root }
+		{foreach $availableLinks as $li}
+			{if ($li->getOrder() == $currentLink->getOrder())}
+				<link rel="alternate" href="{$baseUrl}/{$li->getLang()}/{$li->getLink()}" hreflang="{$li->getLang()}" />
+			{/if}
+		{/foreach}
+	{else}						{* root because link is not specified }
+		{foreach $webAvailebleLangs as $landShortcut}
+			<link rel="alternate" href="{$baseUrl}/{$landShortcut}" hreflang="{$landShortcut}" />
+		{/foreach}
+		<link rel="alternate" href={$baseUrl} hreflang="x-default" />
+	{/if *}
+	{block head}{/block}
+
+	{* menu links color *}
+	{if $showMenu && $menuLinkColor != ""}
+		<style type="text/css">
+			.navbar-default .navbar-nav li a {
+				color: {$menuLinkColor|noescape}!important;
+			}
+			.navbar-brand{
+				color: {$menuLinkColor|noescape}!important;
+			}
+			{if $menuColor != ""} {* if bg color for menu changed need to change submenu bgcolor *}
+				ul.dropdown-menu {
+					background-color: {$menuColor|noescape}!important;
+				}
+				.divider {
+					background-color: {$menuColor|noescape}!important;
+				}
+			{/if}
+		</style>
+	{/if}
+</head>
+
+<body {if $bodyBackgroundColor != ""}style="background-color: {$bodyBackgroundColor|noescape}"{/if}>
+	<h1 class="hidden">{$title}{if isset($currentLink)} - {$currentLink->getTitle()}{/if}</h1>
+
+	{* language strap *}
+	{if ($languageStrapShow)}
+		<div class="langStrap" style="width: {$languageStrapWidth|noescape}; background-color: {$languageStrapBgColor|noescape}; color: {$languageStrapFontColor|noescape}">
+			{foreach $languageStrapLanguages as $langShort => $langDetail}
+				<a href="{link toLanguage, $langShort}"><img src=" {$baseUrl}{$langDetail[$langFlagKey]}" class="flagStrap" title="{$langShort}" /></a>
+			{/foreach}
+		</div>
+	{/if}
+	{* language strap end *}
+
+	{* static header *}
+	{if ($showHeader)}
+		<div class="pageStaticHeader" style="width: {$headerWidth|noescape}; background-color: {$headerBg|noescape}; color: {$headerColor|noescape}; height: {$headerHeight|noescape}px;">
+			{$headerContent|noescape}
+		</div>
+	{/if}
+	{* static header end *}
+
+	<div class="webMenu" style="{if $bodyWidth != ""}width: {$bodyWidth|noescape};{/if} margin: 0 auto;">
+
+		{* slider *}
+		{if sliderEnabled}
+			<ul class="bxslider" style="opacity: 0;">
+				{foreach $sliderPics as $pic}
+					<li><img src="{$pic->getPath()}" /></li>
+				{/foreach}
+			</ul>
+		{/if}
+		{*slider end  *}
+
+		{* menu *}
+		<nav class="navbar navbar-default" style="
+			{if $showMenu == false} display: none;{/if}
+			{if $menuColor != ""}background-color: {$menuColor|noescape}; border: 2px solid {$menuColor|noescape};{/if}
+		">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed menuToggleItem" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+					{*if $showHomeButtonInMenu}
+						<a class="navbar-brand" href="{$baseUrl}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+					{/if*}
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					{if $showHomeButtonInMenu}
+						<ul class="nav navbar-nav">
+							<li><a href="{$baseUrl|noescape}" class="menuLink"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+						</ul>
+					{/if}
+					<ul class="nav navbar-nav">
+						{$menuHtml|noescape}
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+		{* menu end *}
+
+		{block scripts}
+			<script src="{$basePath|noescape}/js/jquery-2.2.3.min.js"></script>
+			<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
+			<script src="{$basePath|noescape}/js/main.js"></script>
+			<script src="{$basePath|noescape}/boostrap/js/bootstrap.js"></script>
+
+			<script src="{$basePath|noescape}/js/jquery.easing.1.3.js"></script>
+			<script src="{$basePath|noescape}/js/jquery.fitvids.js"></script>
+			<script src="{$basePath|noescape}/js/jquery.bxslider.min.js"></script>
+			<script src="{$basePath|noescape}/js/bootstrap-datetimepicker.js"></script>
+			<script src="{$basePath|noescape}/js/datetimepicker-locales/bootstrap-datetimepicker.cs.js"></script>
+			<script src="{$basePath|noescape}/js/chosen.jquery.min.js"></script>
+			<script src="{$basePath|noescape}/js/ekko-lightbox.js"></script>
+		{/block}
+
+		{if $googleAnalytics != ""}
+			{$googleAnalytics|noescape}
+		{/if}
+	</div>
+
+	<div style="{if $bodyWidth != ""}width: {$bodyWidth};{/if} background-color: white; margin: -20px auto; position: relative">
+		<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+	</div>
+
+	<div class="container content" style="{if $bodyWidth != ""}width: {$bodyWidth|noescape}{/if};">
+		{if isset($currentLink)}
+			{include content, pageKeywords => $currentLink->getTitle()}
+		{else}
+			{include content,  pageKeywords => ""}
+		{/if}
+	</div>
+
+	{if $showFooter}
+		<div class="container" style="
+		{if $footerBg != ""} background-color: {$footerBg|noescape}; {/if}
+		{if $footerColor != ""} color: {$footerColor|noescape}; {/if}
+		{if $footerWidth != ""} width: {$footerWidth|noescape}; {/if}
+				">
+			{if $isContactFormInFooter}
+				{include 'contactForm.latte'}
+			{/if}
+			{$footerContent}
+		</div>
+	{/if}
+
+	{* modální start *}
+	<div class="modal fade" id="tinym_info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=MODAL_WINDOWS_WARNING_TITLE}
+				</div>
+				<div class="modal-body" id="tinym_info_modal_message"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">{=MODAL_BUTTON_OK}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// modal for errors
+		function requiredFields() {
+			submitForm = true;
+			$($(".tinym_required_field").get().reverse()).each(function() {
+				console.log($(this).val());
+				if (($(this).val() == "") || (($(this).is(':checkbox')) && ($(this).is(':checked') == false))) {
+					$(this).addClass("form-control-danger");
+					$("#tinym_info_modal_message").text($(this).attr("validation"));
+					$("#tinym_info_modal").modal();
+					$(this).focus();
+					submitForm = false;
+				} else {
+					$(this).removeClass("form-control-danger");
+					$(this).addClass("form-control-success");
+				}
+			});
+
+			return submitForm;
+		}
+
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+			event.preventDefault();
+			$(this).ekkoLightbox();
+		});
+	</script>
+	{* modal end *}
+
+	{* init JS slider *}
+	{if $sliderEnabled}
+		<script>
+			var widthForSlider = ($('body').width() * {substr($sliderWidth,0, -1)}) / 100;
+			$(function(){
+				var bxslider = $('.bxslider');
+				bxslider.bxSlider({
+					slideWidth: parseInt(widthForSlider),
+					auto: {$slideShow},
+					pause: {$sliderSpeed},
+					randomStart: true,
+					pager: false,
+					controls: {$sliderControls}
+				});
+				bxslider.css("opacity", "1.0");
+			});
+		</script>
+	{/if}
+
+	{if isset($currentLink)}	{* keywords in seo*}
+		<strong	class="hidden">{$currentLink->getTitle()|noescape}</strong>
+	{/if}
+</body>
+</html>
