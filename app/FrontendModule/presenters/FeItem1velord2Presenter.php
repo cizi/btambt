@@ -215,7 +215,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				if ($dogHealthEntity != null) {
 					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->setDefaults($dogHealthEntity->extract());
 					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->addHidden('ID', $dogHealthEntity->getID());
-					if ($dogHealthEntity->getDatum() != null) {
+                    if ($dogHealthEntity->getDatum() != null) {
 						$this['dogForm']['dogHealth'][$enumEntity->getOrder()]['Datum']->setDefaultValue($dogHealthEntity->getDatum()->format(DogHealthEntity::MASKA_DATA));
 					}
 				}
