@@ -12,17 +12,24 @@ class MenuRepository extends BaseRepository {
 	/**
 	 * @param string $lang
 	 * @param int $level
+     * @param bool $onlyVisible
 	 * @return MenuEntity[]
 	 */
-	public function findItems($lang, $level = 1) {
-		$items = [];
-		$query = ["select * from menu_item as mi
-			where level = %i
-			and lang = %s
-			order by `order`",
+	public function findItems($lang, $level = 1, $onlyVisible = true) {
+        $items = [];      
+        $query = [
+            "select * from menu_item as mi where level = %i and lang = %s order by `order`",
 			$level,
-			$lang
-		];
+            $lang,
+        ];
+
+        if ($onlyVisible) {
+                $query = [
+                    "select * from menu_item as mi where level = %i and lang = %s and visible = 1 order by `order`",
+                    $level,
+                    $lang,
+                ];
+        }
 
 		$result = $this->connection->query($query)->fetchAll();
 		foreach ($result as $item) {
@@ -102,9 +109,10 @@ class MenuRepository extends BaseRepository {
 	 * @param int $menuId
 	 * @param string $lang
 	 * @param int $level
+     * @param bool $onlyVisible
 	 * @return bool
 	 */
-	public function findSubItems($menuId, $lang, $level) {
+	public function findSubItems($menuId, $lang, $level, $onlyVisible = true) {
 		$menuItem = $this->getMenuEntityById($menuId);
 		$itemsByOrder = $this->findItemsByOrder($menuItem->getOrder());
 		$menuIds = [];
@@ -113,15 +121,20 @@ class MenuRepository extends BaseRepository {
 		}
 
 		$items = [];
-		$query = ["select * from menu_item as mi
-			where submenu in %in
-			and `level` = %i
-			and lang = %s
-			order by `order`",
+		$query = [
+            "select * from menu_item as mi where submenu in %in and `level` = %i and lang = %s order by `order`",
 			$menuIds,
 			$level,
 			$lang
-		];
+        ];
+        if ($onlyVisible) {
+            $query = [
+                "select * from menu_item as mi where submenu in %in and `level` = %i and lang = %s and visible = 1 order by `order`",
+                $menuIds,
+                $level,
+                $lang
+            ];
+        }
 
 		$result = $this->connection->query($query)->fetchAll();
 		foreach ($result as $item) {
@@ -157,7 +170,6 @@ class MenuRepository extends BaseRepository {
 			$lang
 		];
 
-		//return (!empty($this->connection->query($query)->fetchAll()));
 		return (count($this->connection->query($query)->fetchAll()) != 0);
 	}
 
@@ -402,5 +414,25 @@ class MenuRepository extends BaseRepository {
 		];
 
 		$this->connection->query($query);
+    }
+    
+    /**
+	 * @param int $id
+	 * @return \Dibi\Result|int
+	 */
+	public function setMenuActive($id) {
+        $menuEntity = $this->getMenuEntityById($id);
+        $query = ["update menu_item set visible = 1 where `order` = %i", $menuEntity->getOrder()];
+		return $this->connection->query($query);
+	}
+
+	/**
+	 * @param int $id
+	 * @return \Dibi\Result|int
+	 */
+	public function setMenuInactive($id) {
+        $menuEntity = $this->getMenuEntityById($id);
+		$query = ["update menu_item set visible = 0 where `order` = %i", $menuEntity->getOrder()];
+		return $this->connection->query($query);
 	}
 }

@@ -229,6 +229,7 @@ define("MENU_SETTINGS_ITEM_MOVE_DOWN", 'Menu item has benn successfully moved do
 define("MENU_SETTINGS_ITEM_MOVE_FAILED", 'Error during menu item edition, please try it again later.');
 define("MENU_SETTINGS_ITEM_TITLE", 'Menu item configuration');
 define("MENU_SETTINGS_ITEM_INFO", 'Please fill the parameters for menu item. SEO title should have been apt for the given link. ');
+define("MENU_SETTINGS_ITEM_VISIBILITY", 'Visible');
 
 // constact form
 define("CONTACT_FORM_SETTING_TITLE", 'Contact form setting');

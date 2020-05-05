@@ -5,7 +5,7 @@
 				{include "../contactForm.latte"}
 			</div>
 		{else}
-			<div class="contentRow" style="background-color: {$block->getBackgroundColor()}; outline: 15px solid {$block->getBackgroundColor()}; color: {$block->getColor()}; width: {$widthEnum->getValueByKey($block->getWidth())}">
+			<div class="contentRow" style="background-color: {$block->getBackgroundColor()}; color: {$block->getColor()}; width: {$widthEnum->getValueByKey($block->getWidth())}">
 				{var text = str_replace("../../.", "",$block->getBlockContent()->getContentText(true))}
 				{$text|noescape}
 			</div>

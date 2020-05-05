@@ -39,7 +39,7 @@ class MenuPresenter extends SignPresenter {
 
 	public function actionDefault() {
 		$lang = $this->langRepository->getCurrentLang($this->session);
-		$this->template->topMenuEntities = $this->menuRepository->findItems($lang);
+		$this->template->topMenuEntities = $this->menuRepository->findItems($lang, 1, false);
 		$this->template->menuController = $this->menuController;
 		$this->template->presenter = $this->presenter;
 	}
@@ -129,5 +129,22 @@ class MenuPresenter extends SignPresenter {
 			$this['menuForm']['level']->setValue($level);
 			$this['menuForm']['submenu']->setValue($id);
 		}
+    }
+    
+    /**
+	 *
+	 */
+	public function handleActiveSwitch() {
+		$data = $this->request->getParameters();
+		$userId = $data['idMenu'];
+		$switchTo = (!empty($data['to']) && $data['to'] == "false" ? false : true);
+
+		if ($switchTo) {
+			$this->menuRepository->setMenuActive($userId);
+		} else {
+			$this->menuRepository->setMenuInactive($userId);
+		}
+
+		$this->terminate();
 	}
 }

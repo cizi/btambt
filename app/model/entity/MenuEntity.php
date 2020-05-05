@@ -31,7 +31,10 @@ class MenuEntity {
 	private $submenu;
 
 	/** @var bool */
-	private $hasSubItems;
+    private $hasSubItems;
+    
+    /** @var bool */
+    private $visible;
 
 	/**
 	 * @return int
@@ -157,6 +160,20 @@ class MenuEntity {
 	 */
 	public function setHasSubItems($hasSubItems) {
 		$this->hasSubItems = $hasSubItems;
+    }
+    
+    /**
+	 * @return boolean
+	 */
+	public function isVisible() {
+		return ($this->visible == 1);
+	}
+
+	/**
+	 * @param boolean $hasSubItems
+	 */
+	public function setVisible($visible) {
+		$this->visible = $visible;
 	}
 
 	/**
@@ -171,7 +188,8 @@ class MenuEntity {
 		$this->level = (isset($data['level']) ? $data['level'] : null);
 		$this->order = (isset($data['order']) ? $data['order'] : null);
 		$this->submenu = (isset($data['submenu']) ? $data['submenu'] : null);
-		$this->hasSubItems = (isset($data['hasSubItems']) ? $data['hasSubItems'] : null);
+        $this->hasSubItems = (isset($data['hasSubItems']) ? $data['hasSubItems'] : null);
+        $this->visible = (isset($data['visible']) ? $data['visible'] : null);
 	}
 
 	/**
@@ -187,7 +205,8 @@ class MenuEntity {
 			'level' => $this->level,
 			'order' => $this->order,
 			'submenu' => $this->submenu,
-			'hasSubItems' => $this->hasSubItems
+            'hasSubItems' => $this->hasSubItems,
+            'visible' => $this->visible
 		];
 	}
 }

@@ -244,7 +244,8 @@ define("MENU_SETTINGS_ITEM_MOVE_DOWN", 'Položka menu byla v pořádku posunuta 
 define("MENU_SETTINGS_ITEM_MOVE_FAILED", 'Při úpravě položky menu došlo k chybě.');
 define("MENU_SETTINGS_ITEM_TITLE", 'Konfigurace položky menu');
 define("MENU_SETTINGS_ITEM_INFO", 'Zde uveďte požadované parametry položky menu. SEO titulek zvolte takový, který nejlépe vystihuje obsah stránky,
-								který bude asociován s obsahem. ');
+                                který bude asociován s obsahem. ');
+define("MENU_SETTINGS_ITEM_VISIBILITY", 'Zapnuto');
 
 // constact form
 define("CONTACT_FORM_SETTING_TITLE", 'Nastavení kontakního formuláře');

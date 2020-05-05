@@ -26,6 +26,7 @@
 										<th>{=MENU_SETTINGS_IN_MENU_TITLE}</th>
 										<th>{=MENU_SETTINGS_LINK}</th>
 										<th>{=MENU_SETTINGS_ALT}</th>
+                                        <th>{=MENU_SETTINGS_ITEM_VISIBILITY}</th>
 										<th class="alignRight">
 											<button type="button" class="btn btn-success" onclick="window.location.assign({link Menu:Edit});">
 												<span class="glyphicon glyphicon-plus"></span>	{=MENU_SETTINGS_ADD}
@@ -34,7 +35,7 @@
 									</tr>
 									</thead>
 									<tbody>
-										{$menuController->renderMenuItemWithSubItems($presenter, $topMenuEntities)|noescape}
+										{$menuController->renderMenuItemWithSubItems($presenter, $topMenuEntities, false)|noescape}
 									</tbody>
 								</table>
 							</div>
@@ -88,6 +89,26 @@
 
 			return submitForm;
 		}
+
+        $(function() {
+			$('.activeToggleEvent').change(function() {
+				var menuId = $(this).attr("user-data");
+				var changeTo = (($(this).prop("checked") !== typeof undefined) && ($(this).prop("checked") !== false));
+				$.ajax({
+					url: {link activeSwitch!},
+					data: {
+						idMenu: menuId,
+						to: changeTo
+					},
+					success: function() {
+
+					},
+					error: function() {
+						alert({=USER_ERROR_ACTIVE_SWITCH});
+					}
+				});
+			})
+		})
 	</script>
 
 {/block}

@@ -71,7 +71,7 @@ class MenuController {
 	 * @param MenuEntity[] $menuEntities
 	 * @return string
 	 */
-	public function renderMenuItemWithSubItems(Presenter $presenter, $menuEntities) {
+	public function renderMenuItemWithSubItems(Presenter $presenter, $menuEntities, $onlyVisible) {
 		$tableData = "";
 		/** @var MenuEntity $menuEntity */
 		$counter = 0;
@@ -92,8 +92,16 @@ class MenuController {
 					<td>{$prefix}{$menuEntity->getOrder()}</td>
 					<td>{$menuEntity->getTitle()}</td>
 					<td>{$menuEntity->getLink()}</td>
-					<td>{$menuEntity->getAlt()}</td>
-					<td class='alignRight'>";
+                    <td>{$menuEntity->getAlt()}</td>";
+                    
+                    if ($menuEntity->isVisible()) {
+                        $tableData .= "<td><label class='checkbox-inline'><input class='activeToggleEvent' user-data={$menuEntity->getId()} type='checkbox' checked data-toggle='toggle' data-height='25' data-width='50'></label></td>";
+                    } else {
+                        $tableData .= "<td><label class='checkbox-inline'><input class='activeToggleEvent' user-data={$menuEntity->getId()} type='checkbox' data-toggle='toggle' data-height='25' data-width='50'></label></td>";
+                    }
+
+
+            $tableData .= "<td class='alignRight'>";
 					if ($counter != 0) {
 						$tableData .= "<a href='{$moveOrderUpLink}' title='" . MENU_SETTINGS_MOVE_ITEM_UP . "'><span class='glyphicon glyphicon-chevron-up colorGrey'></span></a> &nbsp;&nbsp;";
 					}
@@ -111,8 +119,8 @@ class MenuController {
 				";
 
 			if ($menuEntity->hasSubItems()) {
-				$anotherEntities = $this->menuRepository->findItems($menuEntity->getLang(), $menuEntity->getLevel() + 1);
-				$tableData .= $this->renderMenuItemWithSubItems($presenter, $anotherEntities);
+				$anotherEntities = $this->menuRepository->findItems($menuEntity->getLang(), $menuEntity->getLevel() + 1, $onlyVisible);
+				$tableData .= $this->renderMenuItemWithSubItems($presenter, $anotherEntities, $onlyVisible);
 			}
 			$counter++;
 		}
