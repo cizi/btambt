@@ -9,6 +9,7 @@ use App\Model\UserRepository;
 use App\Model\VetRepository;
 use Nette\Application\UI\Form;
 use Nette\Utils\Html;
+use Nette\Utils\Strings;
 
 class DogForm {
 
@@ -64,6 +65,10 @@ class DogForm {
 			->setAttribute("validation", USER_EDIT_SURNAME_LABEL_VALIDATION)
 			->setAttribute("placeholder", DOG_FORM_NAME);
 
+        $zeme = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::ZEME);
+        $form->addSelect("Zeme", Strings::firstUpper(DOG_TABLE_HEADER_LAND), $zeme)
+            ->setAttribute("class", "form-control");    
+            
 		/* $form->addText("TitulyZaJmenem", DOG_FORM_NAME_SUFFIX)
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_NAME_SUFFIX); */
@@ -167,7 +172,6 @@ class DogForm {
 		/** @var EnumerationItemEntity $enumEntity */
 		foreach ($zdravi as $enumEntity) {
             $container = $dogHealthContainer->addContainer($enumEntity->getOrder());
-            dump($enumEntity->getItem());
 			$container->addText("caption", null)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setDefaultValue($enumEntity->getItem());
 			$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
 			$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
@@ -201,18 +205,26 @@ class DogForm {
 		$form->addTextArea("Posudek", DOG_FORM_BON_TEXT, null, 7)
 			->setAttribute("class", "form-control");
 
-		/* $form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT, null, 7)		// oceněšní z DB bude zobrazeno jinak
-			->setAttribute("class", "form-control"); */
+		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT, null, 7)
+			->setAttribute("class", "form-control");
 
 		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
 			->setAttribute("class", "form-control");
+
+        $form->addTextArea("ZkouskySlozene", DOG_FORM_SHOWS_EXAMS_NEXT, null, 7)
+            ->setAttribute("class", "form-control");    
 
 		$form->addTextArea("Zavody", DOG_FORM_SHOWS_RACES, null, 7)
 			->setAttribute("class", "form-control");
 
 		$form->addTextArea("Komentar",DOG_FORM_SHOWS_NOTE, null, 7)
-			->setAttribute("class", "form-control");
+            ->setAttribute("class", "form-control");
+            
+        $form->addCheckbox("SkrytPotomky", " " . DOG_FORM_HIDE_DESCENDANTS);
 
+        $form->addCheckbox("SkrytSourozence", " " . DOG_FORM_HIDE_SIBLINGS);
+
+        $form->addCheckbox("SkrytCelouKartu", " " . DOG_FORM_HIDE_DOG_CARD);
 
 		$form->addMultiUpload("pics", DOG_FORM_PIC_UPLOAD)
 			->setAttribute("class", "form-control");

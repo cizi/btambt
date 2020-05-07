@@ -17,7 +17,8 @@ class EnumerationRepository extends BaseRepository {
 	SRST = 11,
 	VARLATA = 12,
 	SKUS = 10,
-	CHOVNOST = 5;
+    CHOVNOST = 5,
+    ZEME = 25;
 
 	/**
 	 * @param int $id

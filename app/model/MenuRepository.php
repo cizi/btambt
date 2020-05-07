@@ -382,7 +382,7 @@ class MenuRepository extends BaseRepository {
 			}
 			$query = [
 				"
-				insert into menu_item values (null,%s, %s, %s, %s, %i, %i, %i)",
+				insert into menu_item (id, lang, link, title, alt, level, `order`, submenu) values (null, %s, %s, %s, %s, %i, %i, %i)",
 				$menuItem->getLang(),
 				$menuItem->getLink(),
 				$menuItem->getTitle(),

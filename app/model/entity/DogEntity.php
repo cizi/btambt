@@ -83,7 +83,10 @@ class DogEntity {
 	public $Posudek;
 
 	/** @var string */
-	public $Zkousky;
+    public $Zkousky;
+    
+    /** @var string */
+    public $ZkouskySlozene;
 
 	/** @var string */
 	public $TitulyKomentar;
@@ -118,17 +121,29 @@ class DogEntity {
 	/** @var  string */
 	public $ImpFrom;
 
-	/** @var  int */
+	/** @var int */
 	public $ImpID;
 
-	/** @var  int */
+	/** @var int */
 	public $oIDupdate;
 
-	/** @var  int */
+	/** @var int */
 	public $mIDupdate;
 
 	/** @var string */
-	public $KontrolaVrhu;
+    public $KontrolaVrhu;
+    
+    /** @var int */
+    public $Zeme;
+
+    /** @var int */
+    public $SkrytPotomky;
+
+    /** @var int */
+    public $SkrytSourozence;
+
+    /** @var int */
+    public $SkrytCelouKartu;
 
 	/** @var  int */
 	private $stav = DogStateEnum::ACTIVE;
@@ -208,6 +223,20 @@ class DogEntity {
 	 */
 	public function getDatNarozeni() {
 		return $this->DatNarozeni;
+    }
+    
+    /**
+	 * @return string
+	 */
+	public function getZeme() {
+		return $this->Zeme;
+	}
+
+	/**
+	 * @param string $Zeme
+	 */
+	public function setZeme($Zeme) {
+		$this->Zeme = $Zeme;
 	}
 
 	/**
@@ -502,6 +531,20 @@ class DogEntity {
 	 */
 	public function setZkousky($Zkousky) {
 		$this->Zkousky = $Zkousky;
+    }
+    
+    /**
+	 * @return string
+	 */
+	public function getZkouskySlozene() {
+		return $this->ZkouskySlozene;
+	}
+
+	/**
+	 * @param string $ZkouskySlozene
+	 */
+	public function setZkouskySlozene($ZkouskySlozene) {
+		$this->ZkouskySlozene = $ZkouskySlozene;
 	}
 
 	/**
@@ -712,13 +755,56 @@ class DogEntity {
 	 */
 	public function setMIDupdate($mIDupdate) {
 		$this->mIDupdate = $mIDupdate;
-	}
+    }
+    
+    /**
+     * @var int $skrytPotomky
+     */
+    public function setSkrytPotomky($skrytPotomky) {
+        $this->SkrytPotomky = $skrytPotomky;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSkrytPotomky() {
+        return ($this->SkrytPotomky == 1);
+    }
+
+    /**
+     * @var int $skrytSourozence
+     */
+    public function setSkrytSourozence($skrytSourozence) {
+        $this->SkrytSourozence = $skrytSourozence;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSkrytSourozence() {
+        return ($this->SkrytSourozence == 1);
+    }
+
+    /**
+     * @var int $skrytCelouKartu
+     */
+    public function setSkrytCelouKartu($skrytCelouKartu) {
+        $this->SkrytCelouKartu = $skrytCelouKartu;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSkrytCelouKartu() {
+        return ($this->SkrytCelouKartu == 1);
+    }
 
 	public function hydrate(array $data) {
 		$this->setID(isset($data['ID']) ? $data['ID'] : null);
 		$this->setTitulyPredJmenem(isset($data['TitulyPredJmenem']) ? $data['TitulyPredJmenem'] : null);
 		$this->setTitulyZaJmenem(isset($data['TitulyZaJmenem']) ? $data['TitulyZaJmenem'] : null);
-		$this->setJmeno(isset($data['Jmeno']) ? $data['Jmeno'] : null);
+        $this->setJmeno(isset($data['Jmeno']) ? $data['Jmeno'] : null);
+        $this->setZeme(isset($data['Zeme']) ? $data['Zeme'] : null);
 		$this->setUmrtiKomentar(isset($data['UmrtiKomentar']) ? $data['UmrtiKomentar'] : null);
 		$this->setPohlavi((isset($data['Pohlavi']) && ($data['Pohlavi'] != 0)) ? $data['Pohlavi'] : null);
 		$this->setPlemeno((isset($data['Plemeno']) && ($data['Plemeno'] != 0)) ? $data['Plemeno'] : null);
@@ -737,7 +823,8 @@ class DogEntity {
 		$this->setChovnost((isset($data['Chovnost']) && ($data['Chovnost'] != 0)) ? $data['Chovnost'] : null);
 		$this->setChovnyKomentar(isset($data['ChovnyKomentar']) ? $data['ChovnyKomentar'] : null);
 		$this->setPosudek(isset($data['Posudek']) ? $data['Posudek'] : null);
-		$this->setZkousky(isset($data['Zkousky']) ? $data['Zkousky'] : null);
+        $this->setZkousky(isset($data['Zkousky']) ? $data['Zkousky'] : null);
+        $this->setZkouskySlozene(isset($data['ZkouskySlozene']) ? $data['ZkouskySlozene'] : null);
 		$this->setTitulyKomentar(isset($data['TitulyKomentar']) ? $data['TitulyKomentar'] : null);
 		$this->setOceneni(isset($data['Oceneni']) ? $data['Oceneni'] : null);
 		$this->setZavody(isset($data['Zavody']) ? $data['Zavody'] : null);
@@ -753,7 +840,10 @@ class DogEntity {
 		$this->setoIDupdate(isset($data['oIDupdate']) ? $data['oIDupdate'] : null);
 		$this->setmIDupdate(isset($data['mIDupdate']) ? $data['mIDupdate'] : null);
 		$this->setKontrolaVrhu(isset($data['KontrolaVrhu']) ? $data['KontrolaVrhu'] : null);
-		$this->setStav(isset($data['Stav']) ? $data['Stav'] : DogStateEnum::ACTIVE);
+        $this->setStav(isset($data['Stav']) ? $data['Stav'] : DogStateEnum::ACTIVE);
+        $this->setSkrytPotomky(!empty($data['SkrytPotomky']) ? 1 : 0);
+        $this->setSkrytSourozence(!empty($data['SkrytSourozence']) ? 1 : 0);
+        $this->setSkrytCelouKartu(!empty($data['SkrytCelouKartu']) ? 1 : 0);
 
 		if (isset($data['DatNarozeni']) && ($data['DatNarozeni'] != NULL)) {
 			if (($data['DatNarozeni'] instanceof DateTime) == false) {
@@ -774,7 +864,8 @@ class DogEntity {
 			'ID' => $this->getID(),
 			'TitulyPredJmenem' => $this->getTitulyPredJmenem(),
 			'TitulyZaJmenem' => $this->getTitulyZaJmenem(),
-			'Jmeno' => $this->getJmeno(),
+            'Jmeno' => $this->getJmeno(),
+            'Zeme' => $this->getZeme(),
 			'DatNarozeni' => $this->getDatNarozeni(),
 			'DatUmrti' => $this->getDatUmrti(),
 			'UmrtiKomentar' => $this->getUmrtiKomentar(),
@@ -795,7 +886,8 @@ class DogEntity {
 			'Chovnost' => $this->getChovnost(),
 			'ChovnyKomentar' => $this->getChovnyKomentar(),
 			'Posudek' => $this->getPosudek(),
-			'Zkousky' => $this->getZkousky(),
+            'Zkousky' => $this->getZkousky(),
+            'ZkouskySlozene' => $this->getZkouskySlozene(),
 			'TitulyKomentar' => $this->getTitulyKomentar(),
 			'Oceneni' => $this->getOceneni(),
 			'Zavody' => $this->getZavody(),
@@ -811,7 +903,10 @@ class DogEntity {
 			'oIDupdate' => $this->getoIDupdate(),
 			'mIDupdate' => $this->getmIDupdate(),
 			'KontrolaVrhu' => $this->getKontrolaVrhu(),
-			'Stav' => $this->getStav()
+            'Stav' => $this->getStav(),
+            'SkrytPotomky' => $this->SkrytPotomky,
+            'SkrytSourozence' => $this->SkrytSourozence,
+            'SkrytCelouKartu' => $this->SkrytCelouKartu
 		];
 	}
 }

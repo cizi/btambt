@@ -103,17 +103,17 @@ class MenuController {
 
             $tableData .= "<td class='alignRight'>";
 					if ($counter != 0) {
-						$tableData .= "<a href='{$moveOrderUpLink}' title='" . MENU_SETTINGS_MOVE_ITEM_UP . "'><span class='glyphicon glyphicon-chevron-up colorGrey'></span></a> &nbsp;&nbsp;";
+						// $tableData .= "<a href='{$moveOrderUpLink}' title='" . MENU_SETTINGS_MOVE_ITEM_UP . "'><span class='glyphicon glyphicon-chevron-up colorGrey'></span></a> &nbsp;&nbsp;";
 					}
 					if (($counter + 1) == count($menuEntities)) {
-						$tableData .= "<div class='menuMoverPlaceholder'></div>";
+						// $tableData .= "<div class='menuMoverPlaceholder'></div>";
 					} else {
-						$tableData .= "<a href='{$moveOrderDownLink}' title='" . MENU_SETTINGS_MOVE_ITEM_DOWN . "'><span class='glyphicon glyphicon-chevron-down colorGrey'></span></a> &nbsp;&nbsp;";
+						// $tableData .= "<a href='{$moveOrderDownLink}' title='" . MENU_SETTINGS_MOVE_ITEM_DOWN . "'><span class='glyphicon glyphicon-chevron-down colorGrey'></span></a> &nbsp;&nbsp;";
 					}
 
-			$tableData .= "<a href='{$linkAddSubmenu}' title='" . MENU_SETTINGS_ADD_SUBITEM . "'><span class='glyphicon glyphicon-plus colorGreen'></span></a> &nbsp;&nbsp;
-						<a href='{$linkEdit}' title='" . MENU_SETTINGS_EDIT_ITEM . "'}><span class='glyphicon glyphicon-pencil'></span></a> &nbsp;&nbsp;
-						<a href='#' data-href='{$linkDelete}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title='" . MENU_SETTINGS_MENU_TOP_DELETE . "'><span class='glyphicon glyphicon-remove'></span></a>
+                    // "<a href='{$linkAddSubmenu}' title='" . MENU_SETTINGS_ADD_SUBITEM . "'><span class='glyphicon glyphicon-plus colorGreen'></span></a> &nbsp;&nbsp;
+                    // <a href='#' data-href='{$linkDelete}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title='" . MENU_SETTINGS_MENU_TOP_DELETE . "'><span class='glyphicon glyphicon-remove'></span></a>
+            $tableData .= "<a href='{$linkEdit}' title='" . MENU_SETTINGS_EDIT_ITEM . "'}><span class='glyphicon glyphicon-pencil'></span></a> &nbsp;&nbsp;
 					</td>
 				</tr>
 				";
@@ -173,7 +173,9 @@ class MenuController {
 		foreach ($itemsInLevel as $item) {
 			if (
 				($this->user->isLoggedIn() && (($item->getLevel() == 1) && ($item->getOrder() == 14))) // pokud je přihlášený tak mu nebudeme zobrazovat odkaz přihlásit
-				|| (($this->user->isLoggedIn() == false) && ($item->getLevel() == 1) && ($item->getOrder() == 8))	// pokud není přihlášený nebudeme mu zobrazovat odkaz uživatelského menu
+                || (($this->user->isLoggedIn() == false) && ($item->getLevel() == 1) && ($item->getOrder() == 8))	// pokud není přihlášený nebudeme mu zobrazovat odkaz krycího listu
+                || (($this->user->isLoggedIn() == false) && ($item->getLevel() == 1) && ($item->getOrder() == 9))	// pokud není přihlášený nebudeme mu zobrazovat odkaz přihlášky vrhu
+                || (($this->user->isLoggedIn() == false) && ($item->getLevel() == 1) && ($item->getOrder() == 10))	// pokud není přihlášený nebudeme mu zobrazovat odkaz uživatelského menu
 				|| ($this->user->isLoggedIn() && ($item->getLevel() == 1) && ($item->getOrder() == 15)) // nebo je prihlášený tak nechci vidět možnost registrace
 				|| ($this->user->isLoggedIn() && ($item->getLevel() == 2) && ($item->getOrder() == 12) // pokud je admin nebo editor tak může do red. systému
 						&& ($this->user->isInRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR) == false) && ($this->user->isInRole(UserRoleEnum::USER_EDITOR) == false)

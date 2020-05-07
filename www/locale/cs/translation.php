@@ -214,9 +214,7 @@ define("SLIDER_SETTINGS_SAVE_OK", "Změny byly úspěšně uloženy.");
 
 // menu
 define("MENU_SETTINGS_TITLE", 'Konfigurace menu');
-define("MENU_SETTINGS_INFO", 'V této sekci je možno nakonfigurovat menu a jeho položky. Položky menu je možné neomezeně vnořovat, alr z hlediska
-							přehlednosti se nedoporučuje vnořovat více jak do dvou úrovní. Pokud je vnořeno do více úrovní problém nastává během
-							zobrazení na mobilním zařízení kdy položky menu zabírají příliš mnoho místa.');
+define("MENU_SETTINGS_INFO", '');
 define("MENU_SETTINGS_ITEM_NAME", 'Název položky v menu');
 define("MENU_SETTINGS_ITEM_NAME_REQ", 'Název položky v menu je povinné pole!');
 define("MENU_SETTINGS_ITEM_LINK", 'Odkaz v URL');
@@ -526,7 +524,7 @@ define("DOG_FORM_NO_OF_REC", 'Číslo zápisu');
 define("DOG_FORM_NO_OF_REC2", 'Další číslo zápisu');
 define("DOG_FORM_NO_OF_TATTOO", 'Tetování');
 define("DOG_FORM_NO_OF_CHIP", 'Čip');
-define("DOG_FORM_BON", 'Bonitace');
+define("DOG_FORM_BON", 'Svod');
 define("DOG_FORM_BON_DATE", 'Datum bonitace');
 define("DOG_FORM_BREEDING", 'Chovnost');
 define("DOG_FORM_BREEDING_COM", 'Chovnost komentář');
@@ -563,7 +561,11 @@ define("DOG_FORM_BON_TEXT", 'Bonitační posudek');
 define("DOG_FORM_SHOWS_TEXT", 'Výstavní ocenění');
 define("DOG_FORM_SHOWS_NEXT_TEXT", 'Další výstavní ocenění');
 define("DOG_FORM_SHOWS_EXAMS", 'Zkoušky');
+define("DOG_FORM_SHOWS_EXAMS_NEXT", 'Zkoušky složené');
 define("DOG_FORM_SHOWS_RACES", 'Závody');
+define("DOG_FORM_HIDE_DESCENDANTS", 'Skrýt potomky');
+define("DOG_FORM_HIDE_SIBLINGS", 'Skrýt sourozence');
+define("DOG_FORM_HIDE_DOG_CARD", 'Skrýt celou kartu');
 define("DOG_FORM_SHOWS_NOTE", 'Poznámka');
 define("DOG_FORM_BREEDER", 'Chovatel');
 define("DOG_FORM_MALE", 'Otec');

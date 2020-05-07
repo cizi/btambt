@@ -200,8 +200,7 @@ define("SLIDER_SETTINGS_SAVE_OK", "Changes have been successfully saved.");
 
 // menu
 define("MENU_SETTINGS_TITLE", 'Menu configuration');
-define("MENU_SETTINGS_INFO", 'Here you are able to configure menu and its items and subitems. It is not recommended to do more then one level of nesting. The reason is mobile devices such a phone
-							and table where more then one nesting is uncomfortable to browse. ');
+define("MENU_SETTINGS_INFO", '');
 define("MENU_SETTINGS_ITEM_NAME", 'Item title');
 define("MENU_SETTINGS_ITEM_NAME_REQ", 'Item title is mandatory!');
 define("MENU_SETTINGS_ITEM_LINK", 'URL link');
@@ -506,7 +505,7 @@ define("DOG_FORM_NO_OF_REC", 'Number of registration');
 define("DOG_FORM_NO_OF_REC2", 'Other number of registration');
 define("DOG_FORM_NO_OF_TATTOO", 'Tattoo');
 define("DOG_FORM_NO_OF_CHIP", 'Chip');
-define("DOG_FORM_BON", 'Bonitate');
+define("DOG_FORM_BON", 'Lead');
 define("DOG_FORM_BON_DATE", 'Date of bonitative');
 define("DOG_FORM_BREEDING", 'Breeding');
 define("DOG_FORM_BREEDING_COM", 'Breeding comment');
@@ -543,7 +542,11 @@ define("DOG_FORM_BON_TEXT", 'Breeding report');
 define("DOG_FORM_SHOWS_TEXT", 'Show result');
 define("DOG_FORM_SHOWS_NEXT_TEXT", 'Other show result');
 define("DOG_FORM_SHOWS_EXAMS", 'Exams');
+define("DOG_FORM_SHOWS_EXAMS_NEXT", 'Passed tests');
 define("DOG_FORM_SHOWS_RACES", 'Races');
+define("DOG_FORM_HIDE_DESCENDANTS", 'Hide descendats');
+define("DOG_FORM_HIDE_SIBLINGS", 'Hide siblings');
+define("DOG_FORM_HIDE_DOG_CARD", 'Hide whole card');
 define("DOG_FORM_SHOWS_NOTE", 'Note');
 define("DOG_FORM_BREEDER", 'Breeder');
 define("DOG_FORM_MALE", 'Father');

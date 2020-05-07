@@ -14,7 +14,7 @@ use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Utils\ArrayHash;
 
-class FeItem2velord16Presenter extends FrontendPresenter {
+class FeItem1velord8Presenter extends FrontendPresenter {
 
 	/** @var  MatingListForm */
 	private $matingListForm;

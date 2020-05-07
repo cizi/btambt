@@ -19,7 +19,7 @@ use Dibi\DateTime;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 
-class FeItem2velord17Presenter extends FrontendPresenter {
+class FeItem1velord9Presenter extends FrontendPresenter {
 
 	/** @var  LitterApplicationForm */
 	private $litterApplicationForm;

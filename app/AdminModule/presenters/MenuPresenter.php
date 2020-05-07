@@ -83,7 +83,7 @@ class MenuPresenter extends SignPresenter {
 			$this->redirect("default");
 		} else {
 			$this->flashMessage(MENU_SETTINGS_ITEM_LINK_FAILED, "alert-danger");
-			$this->redirect("edit", null, $values);
+			$this->redirect("edit", null, (array)$values);
 		}
 
 	}

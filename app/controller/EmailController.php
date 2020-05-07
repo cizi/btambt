@@ -22,7 +22,8 @@ class EmailController {
 		$email->FromName = $emailFrom;
 		$email->isHTML(true);
 		$email->Subject = $subject;
-		$email->Body = $body;
+        $email->Body = $body;
+        $email->isSMTP();
 
 		if (strpos($emailTo, ";") !== false) {	// více příjemců
 			$addresses = explode(";", $emailTo);
