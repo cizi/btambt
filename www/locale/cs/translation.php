@@ -14,6 +14,7 @@ define("ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL", 'Email nebyl nalezen v databázi
 define("ADMIN_LOGIN_RESET_SUCCESS", 'Heslo bylo úspěšně změněno a odesláno na email.');
 define("ADMIN_LOGIN_RESET_FAILED", 'Obnova hesla se nezdařila, opakujte později.');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT", 'Změna hesla v systému %s');
+define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT_PLAIN", 'Změna hesla v systému');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY", "Dobrý den, <br />Vaše heslo do systému %s bylo úspěšně změněno. <br /><br /> Nové heslo je '%s'. <br /><br />");
 define("ADMIN_LOGIN_LOGIN", 'Přihlásit');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
@@ -127,8 +128,7 @@ define("USER_ROLE_CONTENT_CHANGER", "Uživatel může měnit obsah");
 define("USER_ROLE_GUEST", "Host");
 define("USER_REGISTERED", "Registrovaný");
 define("USER_OWNER", "Majitel");
-define("USER_BREEDER", "Chovatel");
-define("USER_EDITOR", "Editor");
+define("USER_EDITOR", "Poradce chovu");
 define("USER_ROLE_ADMINISTRATOR", "Administrátor");
 
 // webconfig

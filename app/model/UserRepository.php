@@ -198,7 +198,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	 */
 	public function findBreedersForSelect() {
 		$breeders[0] = self::NOT_SELECTED;
-		$query = ["select `id`,`title_before`,`name`,`surname`,`title_after` from user"]; // where role in %in", [UserRoleEnum::USER_BREEDER, UserRoleEnum::USER_ROLE_ADMINISTRATOR]];
+		$query = ["select `id`,`title_before`,`name`,`surname`,`title_after` from user"];
 		$result = $this->connection->query($query);
 
 		foreach ($result->fetchAll() as $row) {
@@ -396,7 +396,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$emptyEmail = false;
 			$duplicateEmail = false;
 			try {
-				$role = UserRoleEnum::USER_BREEDER;
+				$role = UserRoleEnum::USER_REGISTERED;
 				if ($user['Editor'] == 1) {
 					$role = UserRoleEnum::USER_EDITOR;
 				} else {

@@ -90,13 +90,13 @@ class DogFilterForm {
 		$form->addSelect("Chovnost", DOG_TABLE_HEADER_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");
 
-		$dkk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 15);
+		/* $dkk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 15);
 		$form->addSelect(self::DOG_FILTER_PROB_DKK, DOG_TABLE_HEADER_PROB_DKK, $dkk)
 			->setAttribute("class", "form-control");
 
 		$dlk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 16);
 		$form->addSelect(self::DOG_FILTER_PROB_DLK, DOG_TABLE_HEADER_PROB_DLK, $dlk)
-			->setAttribute("class", "form-control");
+			->setAttribute("class", "form-control"); */
 
 		$zdravi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 14);
 		$form->addSelect(self::DOG_FILTER_HEALTH, DOG_TABLE_HEADER_HEALTH, $zdravi)

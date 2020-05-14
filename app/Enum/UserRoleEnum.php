@@ -14,9 +14,6 @@ class UserRoleEnum extends Enum {
 	/** @const registered */
 	const USER_REGISTERED = 33;
 
-	/** @const breeder */
-	const USER_BREEDER = 43;
-
 	/** @const editor */
 	const USER_EDITOR = 55;
 

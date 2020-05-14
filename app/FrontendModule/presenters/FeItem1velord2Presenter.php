@@ -296,7 +296,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$this->redirect("default");
 		}
 
-		$this->template->dog = $dog;
+        $this->template->isBt = ($dog->getPlemeno() == EnumerationRepository::PLEMENO_BT);
+        $this->template->dog = $dog;
 		$zdravi = [];
 		$lang = $this->langRepository->getCurrentLang($this->session);
 		$zdraviOptions = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
@@ -304,7 +305,12 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		foreach ($zdraviOptions as $enumEntity) {
 			$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $dog->getID());
 			if ($dogHealthEntity != null) {
-				$zdravi[] = $dogHealthEntity;
+                if (
+                    ($dog->getPlemeno() == EnumerationRepository::PLEMENO_BT && ($dogHealthEntity->getTyp() != EnumerationRepository::ZDRAVI_PLL))
+                    || ($dog->getPlemeno() == EnumerationRepository::PLEMENO_MBT && ($dogHealthEntity->getTyp() != EnumerationRepository::ZDRAVI_DNA))
+                ) {
+                    $zdravi[] = $dogHealthEntity;
+                }
 			}
 		}
 

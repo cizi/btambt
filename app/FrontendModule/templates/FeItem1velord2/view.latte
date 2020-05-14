@@ -43,15 +43,15 @@
 						<th>{* =DOG_FORM_DEAD_COM}: *}</th>
 						<td>{* $dog->getUmrtiKomentar()} *}</td>
 					</tr>
-					{if !empty($dog->getVyska())}
-						<tr>
-							<th>{=DOG_FORM_HEIGHT}:</th>
-							<td>{$dog->getVyska()} cm</td>
+                    {if ($isBt == false) && !empty($dog->getVyska())}
+                        <tr>
+                            <th>{=DOG_FORM_HEIGHT}:</th>
+                            <td>{$dog->getVyska()} cm</td>
 
-							<th>{* =DOG_FORM_WEIGHT}: *}</th>
-							<td>{* $dog->getVaha()} kg *}</td>
-						</tr>
-					{/if}
+                            <th>{* =DOG_FORM_WEIGHT}: *}</th>
+                            <td>{* $dog->getVaha()} kg *}</td>
+                        </tr>
+                    {/if}
 					<tr>
 						<th>{=DOG_FORM_NO_OF_REC}:</th>
 						<td>{$dog->getCisloZapisu()}</td>
@@ -80,16 +80,16 @@
 						<th>{=DOG_FORM_HEALTH}:</th>
 						<td>
 							{foreach $zdravi as $polozka}
-								{if $polozka->getVysledek() != ""}
-									<strong>{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}:</strong> {$polozka->getVysledek()}
-									{if trim($polozka->getKomentar()) != ""}- {$polozka->getKomentar()}{/if}
-									{if $polozka->getDatum() != null} - {$polozka->getDatum()->format('d.m.Y')}{/if}
-									{if $polozka->getVeterinar() != null}
-										{var vet = $vetRepo->getVet($polozka->getVeterinar())}
-										- {$vet->getFullName()}
-									{/if}
-									<br />
-								{/if}
+                                {if $polozka->getVysledek() != ""}
+                                    <strong>{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}:</strong> {$polozka->getVysledek()}
+                                    {if trim($polozka->getKomentar()) != ""}- {$polozka->getKomentar()}{/if}
+                                    {if $polozka->getDatum() != null} - {$polozka->getDatum()->format('d.m.Y')}{/if}
+                                    {if $polozka->getVeterinar() != null}
+                                        {var vet = $vetRepo->getVet($polozka->getVeterinar())}
+                                        - {$vet->getFullName()}
+                                    {/if}
+                                    <br />
+                                {/if}
 							{/foreach}
 							{$dog->getZdravotniKomentar()}
 						</td>

@@ -14,6 +14,7 @@ define("ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL", 'Email does not exist in databas
 define("ADMIN_LOGIN_RESET_SUCCESS", 'Password has benn successfully changed and send to your email.');
 define("ADMIN_LOGIN_RESET_FAILED", 'Password reset failed. Try again later.');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT", 'Password changed in %s');
+define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT_PLAIN", 'Password changed');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY", "Hello, <br /> your password has been changed in %s. <br /><br /> New password is '%s'.<br /><br />");
 define("ADMIN_LOGIN_LOGIN", 'Login');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
@@ -119,8 +120,7 @@ define("USER_ROLE_CONTENT_CHANGER", "User can change content");
 define("USER_ROLE_GUEST", "Host");
 define("USER_REGISTERED", "Registered");
 define("USER_OWNER", "Owner");
-define("USER_BREEDER", "Breeder");
-define("USER_EDITOR", "Editor");
+define("USER_EDITOR", "Poradce chovu");
 define("USER_ROLE_ADMINISTRATOR", "Administrator");
 
 // webconfig

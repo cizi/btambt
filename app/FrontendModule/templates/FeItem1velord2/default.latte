@@ -24,8 +24,8 @@
 									<th>{=DOG_TABLE_HEADER_SEX}</th>
 									<th>{=DOG_TABLE_HEADER_BIRT}</th>
 									<th>{=DOG_TABLE_HEADER_BREEDING}</th>
-									<th>{=DOG_TABLE_HEADER_PROB_DKK}</th>
-									<th>{=DOG_TABLE_HEADER_PROB_DLK}</th>
+									{* <th>{=DOG_TABLE_HEADER_PROB_DKK}</th>
+									<th>{=DOG_TABLE_HEADER_PROB_DLK}</th> *}
 									<th>{=DOG_TABLE_HEADER_HEALTH}</th>
 									<th>
 										{=DOG_TABLE_HEADER_FATHER}
@@ -68,7 +68,7 @@
 										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPohlavi())}</td>
 										<td nowrap>{if $dog->getDatNarozeni() != NULL}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
 										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getChovnost())}</td>
-										<td nowrap>
+										{* <td nowrap>
 											{var dkk = $dogRepository->getDkkByDogId($dog->getID())}
 											{if $dkk}
 												{$dkk->getVysledek()}
@@ -79,12 +79,15 @@
 											{if $dlk}
 												{$dlk->getVysledek()}
 											{/if}
-										</td>
+										</td> *}
 										<td>
 											{var healths = $dogRepository->findHealthsByDogId($dog->getID())}
 											{if count($healths) > 0}
 												{foreach $healths as $health}
-													{if ($health->getTyp() != App\Model\DogRepository::DKK_ORDER) && ($health->getTyp() != App\Model\DogRepository::DLK_ORDER)}
+													{if 
+                                                        (($dog->getPlemeno() ==  App\Model\EnumerationRepository::PLEMENO_BT) && ($health->getTyp() != App\Model\EnumerationRepository::ZDRAVI_PLL))
+                                                        || (($dog->getPlemeno() == App\Model\EnumerationRepository::PLEMENO_MBT) && ($health->getTyp() != App\Model\EnumerationRepository::ZDRAVI_DNA))
+                                                    }
 														<span style="white-space: nowrap;">
 															{$enumRepository->findEnumItemByOrder($currentLang, $health->getTyp())}: {$health->getVysledek()}<br />
 														</span>

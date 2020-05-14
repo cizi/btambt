@@ -159,7 +159,7 @@
 		{/if}
 	</div>
 
-	<div style="{if $bodyWidth != ""}width: {$bodyWidth};{/if} background-color: white; margin: -20px auto; position: relative">
+	<div style="{if $bodyWidth != ""}width: {$bodyWidth|noescape};{/if} background-color: white; margin: -20px auto; position: relative">
 		<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
 	</div>
 

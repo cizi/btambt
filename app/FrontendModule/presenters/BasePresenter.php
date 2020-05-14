@@ -239,7 +239,8 @@ abstract class BasePresenter extends Presenter {
 				try {
 					$newPass = $this->userRepository->resetUserPassword($user);
 					$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
-					$subject = sprintf(ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT, $this->getHttpRequest()->getUrl()->getBaseUrl());
+                    $webTitle =  $this->webconfigRepository->getByKey(WebconfigRepository::KEY_WEB_TITLE, $this->langRepository->getCurrentLang($this->session));
+                    $subject = $webTitle . " - " . ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT_PLAIN; // . " - " . sprintf(ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT, $this->getHttpRequest()->getUrl()->getBaseUrl());
 					$body = sprintf(ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY, $this->getHttpRequest()->getUrl()->getBaseUrl(), $newPass);
 					EmailController::SendPlainEmail($emailFrom, $user->getEmail(), $subject, $body);
 
