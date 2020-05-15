@@ -34,8 +34,6 @@ class DogRepository extends BaseRepository {
 	const MALE_ORDER = 29;
 
 	/** @const pořadí pro jednotlivá zdraví  */
-	const DKK_ORDER = 65;
-	const DLK_ORDER = 66;
 	const DOV_ORDER = 69;
 	const MDR_ORDER = 62;
 
@@ -165,18 +163,26 @@ class DogRepository extends BaseRepository {
 	 * @param array $filter
 	 * @param null $owner
 	 * @param null $breeder
+     * @param bool $restrictVisibilityByUser
 	 * @return DogEntity[]
 	 * @throws \Dibi\Exception
 	 */
-	public function findDogs(Paginator $paginator, array $filter, $owner = null, $breeder = null) {
+	public function findDogs(Paginator $paginator, array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
 		if (empty($filter) && ($owner == null) && ($breeder == null)) {
-			$query = ["select * from appdata_pes where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+            if ($restrictVisibilityByUser) {
+                $query = ["select * from appdata_pes where Stav = %i and SkrytCelouKartu = 0 order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+            } else {
+                $query = ["select * from appdata_pes where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+            }
 		} else {
 			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner, $breeder) as $join) {
 				$query[] = $join;
 			}
-			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
+            $query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
+            if ($restrictVisibilityByUser) {
+                $query[] = " and SkrytCelouKartu = 0";
+            }
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner, $breeder);
 			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
 				$query[] = " order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
@@ -202,12 +208,15 @@ class DogRepository extends BaseRepository {
 	 * @param array $filter
 	 * @param null $owner
 	 * @param null $breeder
+     * @param false $restrictVisibilityByUser
 	 * @return int|mixed
 	 * @throws \Dibi\Exception
 	 */
-	public function getDogsCount(array $filter, $owner = null, $breeder = null) {
-		if (empty($filter) && ($owner == null) || ($breeder == null)) {
-			$query = "select count(ID) as pocet from appdata_pes where Stav = " . DogStateEnum::ACTIVE;
+	public function getDogsCount(array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
+        $query = [];
+        if (empty($filter) && ($owner == null) || ($breeder == null)) {
+            $query[] = "select count(ID) as pocet from appdata_pes as ap ";
+            $query[] = "where Stav = " . DogStateEnum::ACTIVE;
 		} else {
 			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner, $breeder) as $join) {
@@ -215,7 +224,10 @@ class DogRepository extends BaseRepository {
 			}
 			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner, $breeder);
-		}
+        }
+        if ($restrictVisibilityByUser) {
+            $query[] = " and ap.SkrytCelouKartu = 0";
+        }
 		$row = $this->connection->query($query);
 
 		return ($row ? $row->fetch()['pocet'] : 0);
@@ -1044,19 +1056,24 @@ class DogRepository extends BaseRepository {
 										WHERE pes.ID = %i
 										LIMIT 1", $lang, $lang, $ID];
 			$row = $this->connection->query($query)->fetch()->toArray();
-			
-			$query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
-				ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i ORDER BY Datum DESC", $row['ID']];
+			if (EnumerationRepository::PLEMENO_BT == $row["Plemeno"]) {
+                unset($row["Vyska"]);
+                $query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
+                    ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i and zdravi.Typ <> %i ORDER BY Datum DESC", $row['ID'], EnumerationRepository::ZDRAVI_PLL];
+            } else {
+                $query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
+                    ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i and zdravi.Typ <> %i ORDER BY Datum DESC", $row['ID'], EnumerationRepository::ZDRAVI_DNA];
+            }
 			$zdravi = $this->connection->query($query)->fetchPairs("Nazev","Vysledek");
-			$zdravi = $zdravi === null ? '' : $zdravi;
+            $zdravi = $zdravi === null ? '' : $zdravi;
 
-			$query = ["SELECT Vysledek AS DKK FROM appdata_zdravi WHERE pID = %i && Typ=65 ORDER BY Datum DESC LIMIT 1", $row['ID']];
+			/* $query = ["SELECT Vysledek AS DKK FROM appdata_zdravi WHERE pID = %i && Typ=65 ORDER BY Datum DESC LIMIT 1", $row['ID']];
 			$DKK = $this->connection->query($query)->fetch();
 			$DKK = $DKK === false ? '' : $DKK->toArray()['DKK'];
 
 			$query = ["SELECT Vysledek AS DLK FROM appdata_zdravi WHERE pID = %i && Typ=66 ORDER BY Datum DESC LIMIT 1", $row['ID']];
 			$DLK = $this->connection->query($query)->fetch();
-			$DLK = $DLK === false ? '' : $DLK->toArray()['DLK'];
+			$DLK = $DLK === false ? '' : $DLK->toArray()['DLK']; */
 
 			$pedigree[] = array(
 				'Uroven' => $level,
@@ -1066,8 +1083,8 @@ class DogRepository extends BaseRepository {
 				'Varieta' => $this->arGet($row,'Varieta'),
 				'TitulyPredJmenem' => $this->arGet($row,'TitulyPredJmenem'),
 				'TitulyZaJmenem' => $this->arGet($row,'TitulyZaJmenem'),
-				'DKK' => $DKK,
-				'DLK' => $DLK,
+				// 'DKK' => $DKK,
+				// 'DLK' => $DLK,
 				'Vyska' => $this->arGet($row,'Vyska'),
 				'zdravi' => $zdravi
 			);

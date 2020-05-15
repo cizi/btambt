@@ -195,124 +195,110 @@
 				{$pedigreeTable|noescape}	{* RODKOKMEN *}
 
 				<br />
-				<table class="table table-striped dogSiblings">
-					{if count($siblings) > 0}
-						<tr class="viewHeaderNew">
-							<th colspan="4">{=DOG_FORM_SIBLINGS}</th>
-							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
-							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
-							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
-							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
-						</tr>
-					{/if}
-					{foreach $siblings as $sibling}
-						<tr>
-							<td>
-								<a href={link view, $sibling->getID()}>{$sibling->getTitulyPredJmenem()|noescape} {$sibling->getJmeno()|noescape} {$sibling->getTitulyZaJmenem()|noescape}</a>
-							</td>
-							<td>
-								{$enumRepo->findEnumItemByOrder($lang, $sibling->getPohlavi())}
-							</td>
-							<td>
-								{$enumRepo->findEnumItemByOrder($lang, $sibling->getPlemeno())}
-							</td>
-							<td>
-								{$enumRepo->findEnumItemByOrder($lang, $sibling->getBarva())}
-								{* , {$enumRepo->findEnumItemByOrder($lang, $sibling->getSrst())} *}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($sibling->getID(), App\Model\DogRepository::DKK_ORDER)}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($sibling->getID(), App\Model\DogRepository::DLK_ORDER)}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($sibling->getID(), App\Model\DogRepository::DOV_ORDER)}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($sibling->getID(), App\Model\DogRepository::MDR_ORDER)}
-							</td>
-						</tr>
-					{/foreach}
-				</table>
 
-				<table class="table table-striped dogSiblings">
-					<tr class="viewHeaderNew">
-						<th colspan="4">{=DOG_FORM_DESCENDANTS}</th>
-						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
-						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
-						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
-						<th><strong>{=DOG_FORM_LITTER_CHECK|upper}</strong></th>
-					</tr>
+                {if ($hideContentByDogSetting == false) || ($hideContentByDogSetting && ($dog->isSkrytSourozence() == false))}
+                    <table class="table table-striped dogSiblings">
+                        {if count($siblings) > 0}
+                            <tr class="viewHeaderNew">
+                                <th colspan="4">{=DOG_FORM_SIBLINGS}</th>
+                                <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+                                <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+                            </tr>
+                        {/if}
+                        {foreach $siblings as $sibling}
+                            <tr>
+                                <td>
+                                    <a href={link view, $sibling->getID()}>{$sibling->getTitulyPredJmenem()|noescape} {$sibling->getJmeno()|noescape} {$sibling->getTitulyZaJmenem()|noescape}</a>
+                                </td>
+                                <td>
+                                    {$enumRepo->findEnumItemByOrder($lang, $sibling->getPohlavi())}
+                                </td>
+                                <td>
+                                    {$enumRepo->findEnumItemByOrder($lang, $sibling->getPlemeno())}
+                                </td>
+                                <td>
+                                    {$enumRepo->findEnumItemByOrder($lang, $sibling->getBarva())}
+                                    {* , {$enumRepo->findEnumItemByOrder($lang, $sibling->getSrst())} *}
+                                </td>
+                                <td>
+                                    {$dogRepository->getHealthByTypeAsStringWithDesc($sibling->getID(), App\Model\DogRepository::DOV_ORDER)}
+                                </td>
+                                <td>
+                                    {$dogRepository->getHealthByTypeAsStringWithDesc($sibling->getID(), App\Model\DogRepository::MDR_ORDER)}
+                                </td>
+                            </tr>
+                        {/foreach}
+                    </table>
+                {/if}
 
-					{var lastParent = ""}
-					{var lastBirthDate = ""}
-					{foreach $descendants as $descennt}
-						{if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
-							{if ($lastParent != $descennt->getMID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
-								<tr>
-									<td colspan="4" class="parentMarker">
-										{if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
-										{=DOG_FORM_FEMALE}:
-										<a href={link view, $descennt->getMID()}>{$dogRepository->getName($descennt->getMID())|noescape}</a>
-									</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DKK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DLK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DOV_ORDER)}</td>
-									<td>{nl2br($dog->getKontrolaVrhu())|noescape}</td>
-									{* <td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::MDR_ORDER)}</td> *}
-								</tr>
-							{/if}
-						{else}
-							{if ($lastParent != $descennt->getOID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
-								<tr>
-									<td colspan="4" class="parentMarker">
-										{if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
-										{=DOG_FORM_MALE}:
-										<a href={link view, $descennt->getOID()}>{$dogRepository->getName($descennt->getOID())}</a>
-									</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DKK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DLK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DOV_ORDER)}</td>
-									<td>{nl2br($dog->getKontrolaVrhu())|noescape}</td>
-								</tr>
-							{/if}
-						{/if}
-						<tr>
-							<td>
-								<a href={link view, $descennt->getID()}>{$descennt->getTitulyPredJmenem()|noescape} {$descennt->getJmeno()|noescape} {$descennt->getTitulyZaJmenem()|noescape}</a>
-							</td>
-							<td>
-								{$enumRepo->findEnumItemByOrder($lang, $descennt->getPohlavi())}
-							</td>
-							<td>
-								{$enumRepo->findEnumItemByOrder($lang, $descennt->getPlemeno())}
-							</td>
-							<td>
-								{$enumRepo->findEnumItemByOrder($lang, $descennt->getBarva())}
-								{* , {$enumRepo->findEnumItemByOrder($lang, $descennt->getSrst())} *}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DKK_ORDER)}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DLK_ORDER)}
-							</td>
-							<td>
-								{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DOV_ORDER)}
-							</td>
-							<td>
-								{nl2br($descennt->getKontrolaVrhu())|noescape}
-							</td>
-						</tr>
-						{if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
-							{var lastParent = $descennt->getMID()}
-						{else}
-							{var lastParent = $descennt->getOID()}
-						{/if}
-						{var lastBirthDate = $descennt->getDatNarozeni()}
-					{/foreach}
-				</table>
+                {* POTOMCI *}
+                {if ($hideContentByDogSetting == false) || ($hideContentByDogSetting && ($dog->isSkrytPotomky() == 0))}
+                    <table class="table table-striped dogSiblings">
+                        <tr class="viewHeaderNew">
+                            <th colspan="4">{=DOG_FORM_DESCENDANTS}</th>
+                            <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+                            <th><strong>{=DOG_FORM_LITTER_CHECK|upper}</strong></th>
+                        </tr>
+
+                        {var lastParent = ""}
+                        {var lastBirthDate = ""}
+                        {foreach $descendants as $descennt}
+                            {if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
+                                {if ($lastParent != $descennt->getMID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
+                                    <tr>
+                                        <td colspan="4" class="parentMarker">
+                                            {if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
+                                            {=DOG_FORM_FEMALE}:
+                                            <a href={link view, $descennt->getMID()}>{$dogRepository->getName($descennt->getMID())|noescape}</a>
+                                        </td>
+                                        <td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DOV_ORDER)}</td>
+                                        <td>{nl2br($dog->getKontrolaVrhu())|noescape}</td>
+                                        {* <td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::MDR_ORDER)}</td> *}
+                                    </tr>
+                                {/if}
+                            {else}
+                                {if ($lastParent != $descennt->getOID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
+                                    <tr>
+                                        <td colspan="4" class="parentMarker">
+                                            {if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
+                                            {=DOG_FORM_MALE}:
+                                            <a href={link view, $descennt->getOID()}>{$dogRepository->getName($descennt->getOID())}</a>
+                                        </td>
+                                        <td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DOV_ORDER)}</td>
+                                        <td>{nl2br($dog->getKontrolaVrhu())|noescape}</td>
+                                    </tr>
+                                {/if}
+                            {/if}
+                            <tr>
+                                <td>
+                                    <a href={link view, $descennt->getID()}>{$descennt->getTitulyPredJmenem()|noescape} {$descennt->getJmeno()|noescape} {$descennt->getTitulyZaJmenem()|noescape}</a>
+                                </td>
+                                <td>
+                                    {$enumRepo->findEnumItemByOrder($lang, $descennt->getPohlavi())}
+                                </td>
+                                <td>
+                                    {$enumRepo->findEnumItemByOrder($lang, $descennt->getPlemeno())}
+                                </td>
+                                <td>
+                                    {$enumRepo->findEnumItemByOrder($lang, $descennt->getBarva())}
+                                    {* , {$enumRepo->findEnumItemByOrder($lang, $descennt->getSrst())} *}
+                                </td>
+                                <td>
+                                    {$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DOV_ORDER)}
+                                </td>
+                                <td>
+                                    {nl2br($descennt->getKontrolaVrhu())|noescape}
+                                </td>
+                            </tr>
+                            {if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
+                                {var lastParent = $descennt->getMID()}
+                            {else}
+                                {var lastParent = $descennt->getOID()}
+                            {/if}
+                            {var lastBirthDate = $descennt->getDatNarozeni()}
+                        {/foreach}
+                    </table>
+                {/if}
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_TEXT}</div>
 				<table class="table table-striped dogSiblings">
@@ -331,8 +317,8 @@
 								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getPoradi())}</td>
 								<td>
 									{var titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
-									{foreach $titles as $title}
-										{$enumRepo->findEnumItemByOrder($lang, $title->getTitul())}
+									{foreach $titles as $titleDet}
+										{$enumRepo->findEnumItemByOrder($lang, $titleDet->getTitul())}
 										{if $iterator->last == false}, {/if}
 									{/foreach}
 								</td>

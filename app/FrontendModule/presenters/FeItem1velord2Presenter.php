@@ -52,7 +52,10 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	private $showDogRepository;
 
 	/** @var VetRepository */
-	private $vetRepository;
+    private $vetRepository;
+    
+    /** @var bool */
+    private $hideContentByDogSetting = false;
 
 	/**
 	 * FeItem1velord2Presenter constructor.
@@ -84,8 +87,11 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 	public function startup() {
 		$this->template->amIAdmin = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
-		$this->template->canDirectEdit = ($this->getUser()->isLoggedIn() && ($this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR) || ($this->getUser()->getRoles()[0] == UserRoleEnum::USER_EDITOR));
-		parent::startup();
+		$this->template->canDirectEdit = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
+        
+        $this->hideContentByDogSetting = (($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] <= UserRoleEnum::USER_REGISTERED) || ($this->getUser()->isLoggedIn() == false));
+        $this->template->hideContentByDogSetting = $this->hideContentByDogSetting;
+        parent::startup();
 	}
 
 	/**
@@ -95,7 +101,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$filter = $this->decodeFilterFromQuery();
 		$this['dogFilterForm']->setDefaults($filter);
 
-		$recordCount = $this->dogRepository->getDogsCount($filter);
+		$recordCount = $this->dogRepository->getDogsCount($filter, null, null, $this->hideContentByDogSetting);
 		$page = (empty($id) ? 1 : $id);
 		$paginator = new Paginator();
 		$paginator->setItemCount($recordCount); // celkový počet položek
@@ -103,7 +109,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
 
 		$this->template->paginator = $paginator;
-		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter);
+		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter, null, null, $this->hideContentByDogSetting);
 		$this->template->dogRepository = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
@@ -294,6 +300,10 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		if ($dog == NULL) {
 			$this->flashMessage(DOG_FORM_REQUEST_NOT_EXISTS, "alert-danger");
 			$this->redirect("default");
+        }
+        if ($this->hideContentByDogSetting && $dog->isSkrytCelouKartu()) {	// pokud nemám dostatečná práva a násilně lezu na keru psa 
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");  // která je zamknutá, tak přesměruji
+			$this->redirect("default");
 		}
 
         $this->template->isBt = ($dog->getPlemeno() == EnumerationRepository::PLEMENO_BT);
@@ -314,6 +324,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			}
 		}
 
+        $this->template->hideContentByDogSetting = $this->hideContentByDogSetting;
 		$this->template->vetRepo = $this->vetRepository;
 		$this->template->dogRepository = $this->dogRepository;
 		$this->template->userRepository = $this->userRepository;

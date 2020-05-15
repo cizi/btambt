@@ -9,8 +9,6 @@
 			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
@@ -35,12 +33,6 @@
 							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
 						</td>
 						<td>
-							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
-						</td>
-						<td>
-							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
-						</td>
-						<td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
 						</td>
 						<td>
@@ -56,8 +48,6 @@
 			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
@@ -82,12 +72,6 @@
 							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
 						</td>
 						<td>
-							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
-						</td>
-						<td>
-							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
-						</td>
-						<td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
 						</td>
 						<td>
@@ -103,8 +87,6 @@
 			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
@@ -127,12 +109,6 @@
 						<td>
 							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
 							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
-						</td>
-						<td>
-							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
-						</td>
-						<td>
-							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
 						</td>
 						<td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
