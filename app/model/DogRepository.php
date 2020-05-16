@@ -168,7 +168,8 @@ class DogRepository extends BaseRepository {
 	 * @throws \Dibi\Exception
 	 */
 	public function findDogs(Paginator $paginator, array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
-		if (empty($filter) && ($owner == null) && ($breeder == null)) {
+        unset($filter["_do"], $filter["_form"], $filter["_token"]);  // remove this because of Nette adding this hidden inputs in the form
+        if (empty($filter) && ($owner == null) && ($breeder == null)) {
             if ($restrictVisibilityByUser) {
                 $query = ["select * from appdata_pes where Stav = %i and SkrytCelouKartu = 0 order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
             } else {
@@ -213,8 +214,9 @@ class DogRepository extends BaseRepository {
 	 * @throws \Dibi\Exception
 	 */
 	public function getDogsCount(array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
+        unset($filter["_do"], $filter["_form"], $filter["_token"]);  // remove this because of Nette adding this hidden inputs in the form
         $query = [];
-        if (empty($filter) && ($owner == null) || ($breeder == null)) {
+        if (empty($filter) && ($owner == null) && ($breeder == null)) {
             $query[] = "select count(ID) as pocet from appdata_pes as ap ";
             $query[] = "where Stav = " . DogStateEnum::ACTIVE;
 		} else {
@@ -1013,10 +1015,11 @@ class DogRepository extends BaseRepository {
 	 * @param int $max
 	 * @param string $lang
 	 * @param Presenter $presenter
+     * @param bool $restrictVisibilityByUser
 	 * @param bool $isUserAdmin
 	 * @return string
 	 */
-	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserAdmin, $deepMark = false) {
+	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserAdmin, $restrictVisibilityByUser, $deepMark = false) {
 		$this->clearPedigreeSession();
 		global $pedigree;
 		$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
@@ -1026,7 +1029,7 @@ class DogRepository extends BaseRepository {
 		$this->genealogDPTrace($row['oID'],1,$max, $lang);
 		$this->genealogDPTrace($row['mID'],1,$max, $lang);
 
-		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin, $deepMark);
+		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin, $restrictVisibilityByUser, $deepMark);
 	}
 
 	/**
@@ -1042,7 +1045,8 @@ class DogRepository extends BaseRepository {
 		};
 		if ($ID != NULL) { // predek existuje
 			$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID, pes.Vyska AS Vyska, pes.Pohlavi As Pohlavi,
-										pes.Plemeno As Plemeno,
+										pes.SkrytCelouKartu AS SkrytCelouKartu,
+                                        pes.Plemeno As Plemeno,
 										pes.Barva As BarvaOrder,
 										plemeno.item as Varieta,
 										pes.TitulyPredJmenem AS TitulyPredJmenem,
@@ -1082,7 +1086,8 @@ class DogRepository extends BaseRepository {
 				'Barva' => $this->arGet($row,'Barva'),
 				'Varieta' => $this->arGet($row,'Varieta'),
 				'TitulyPredJmenem' => $this->arGet($row,'TitulyPredJmenem'),
-				'TitulyZaJmenem' => $this->arGet($row,'TitulyZaJmenem'),
+                'TitulyZaJmenem' => $this->arGet($row,'TitulyZaJmenem'),
+                'SkrytCelouKartu' => $row['SkrytCelouKartu'],
 				// 'DKK' => $DKK,
 				// 'DLK' => $DLK,
 				'Vyska' => $this->arGet($row,'Vyska'),
@@ -1121,10 +1126,11 @@ class DogRepository extends BaseRepository {
 	 * @param Presenter $presenter
 	 * @param int $ID
 	 * @param bool $isUserAdmin
+     * @param bool restrictVisibilityByUser
 	 * @param bool $deepMark
 	 * @return string
 	 */
-	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin, $deepMark) {
+	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin, $restrictVisibilityByUser, $deepMark) {
 		global $pedigree;
 		global $deepMarkArray;
 		$maxLevel = $max;
@@ -1166,13 +1172,16 @@ class DogRepository extends BaseRepository {
 
 			if ($pedigree[$i]['ID'] != NULL) {
 				//$link = ($isUserAdmin ? $presenter->link('FeItem1velord2:edit', $pedigree[$i]['ID']) : $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']));
-				$link = $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']);
+                $link = $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']);
+                $restrictDogLink = ($restrictVisibilityByUser && ($pedigree[$i]['SkrytCelouKartu'] == 1));
 				if ($deepMark && in_array($pedigree[$i]['ID'], $deepMarkArray)) {
-					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#FFFFCC">'
-					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#FFFFCC"><b>';
+                    $htmlOutput .= ($restrictDogLink ? $pedigree[$i]['Jmeno'] : '<a href="' . $link . '">' . $pedigree[$i]['Jmeno'] . '</a>');
+                    $htmlOutput .= '</b>'.$adds . '</td>';
 				} else {
-					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
-					<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'"><b>';
+                    $htmlOutput .= ($restrictDogLink ? $pedigree[$i]['Jmeno'] : '<a href="' . $link . '">' . $pedigree[$i]['Jmeno'] . '</a>');
+                    $htmlOutput .= '</b>'.$adds.'</td>';
 				}
 				if (($pedigree[$i]['Uroven'] > 0) && ($pedigree[$i]['Uroven'] != $maxLevel)) {
 					$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i]['ID']);

@@ -13,7 +13,10 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 	private $kinshipVerificationForm;
 
 	/** @var  DogRepository */
-	private $dogRepository;
+    private $dogRepository;
+    
+    /** @var bool */
+    private $hideContentByDogSetting = false;
 
 	public function __construct(
 		KinshipVerificationForm $kinshipVerificationForm,
@@ -21,7 +24,12 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 	) {
 		$this->kinshipVerificationForm = $kinshipVerificationForm;
 		$this->dogRepository = $dogRepository;
-	}
+    }
+    
+    public function startup() {
+        $this->hideContentByDogSetting = (($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] <= UserRoleEnum::USER_REGISTERED) || ($this->getUser()->isLoggedIn() == false));
+        parent::startup();
+    }
 
 	public function actionDefault() {
 
@@ -58,8 +66,8 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 		$this->template->female = $this->dogRepository->getDog($fID);
 		$deepMark = true;
 		$this->template->coef = $this->dogRepository->genealogRelationship($pID, $fID);
-		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigree($pID, 5, $lang, $this->presenter, $amIAdmin, $deepMark);
-		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigree($fID, 5, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigree($pID, 5, $lang, $this->presenter, $amIAdmin, $this->hideContentByDogSetting, $deepMark);
+		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigree($fID, 5, $lang, $this->presenter, $amIAdmin, $this->hideContentByDogSetting, $deepMark);
 	}
 
 }

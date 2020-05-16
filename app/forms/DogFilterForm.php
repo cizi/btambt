@@ -128,7 +128,7 @@ class DogFilterForm {
 
 		$form->addGroup();
 		$form->addSubmit("filter", DOG_TABLE_BTN_FILTER)
-			->setAttribute("class","btn btn-primary margin10");
+			->setAttribute("class","btn btn-info margin10");
 
 		return $form;
 	}
