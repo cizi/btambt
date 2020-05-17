@@ -41,25 +41,30 @@ class LitterApplicationForm {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
+        $clubs = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 24);
+		$form->addSelect("cID", LITTER_APPLICATION, $clubs)
+			->setAttribute("class", "form-control")
+			->setAttribute("tabindex", $counter++);
+
+        $females = $this->dogRepository->findFemaleDogsForSelect(true);
+		$form->addSelect("fID", MATING_FORM_MID, $females)
+			->setAttribute("class", "form-control")
+            ->setAttribute("tabindex", $counter++);
+            
 		$males = $this->dogRepository->findMaleDogsForSelect(true);
 		$form->addSelect("pID", MATING_FORM_FID, $males)
 			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter + 1);
-
-		$females = $this->dogRepository->findFemaleDogsForSelect(true);
-		$form->addSelect("fID", MATING_FORM_MID, $females)
-			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter + 2);
-
-		$clubs = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 24);
-		$form->addSelect("cID", LITTER_APPLICATION, $clubs)
-			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter + 3);
+			->setAttribute("tabindex", $counter++);
 
 		$form->addSubmit("save", MATING_FORM_SAVE)
 			->setAttribute("class", "btn btn-primary margin10")
-			->setAttribute("tabindex", $counter + 4);
+            ->setAttribute("tabindex", $counter++);
 
+                        
+        $form->addSubmit("save2", MATING_FORM_SAVE2)
+            ->setAttribute("class", "btn btn-primary margin10")
+            ->setAttribute("tabindex", $counter++);
+           
 		return $form;
 	}
 }

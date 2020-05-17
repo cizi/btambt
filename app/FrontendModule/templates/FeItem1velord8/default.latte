@@ -16,7 +16,17 @@
 
 	<script>
 		$(document).ready(function() {
-			$("#frm-matingListForm-pID").chosen({
+			$("#frm-matingListForm-pID1").chosen({
+				placeholder_text: {=MATING_FORM_PICK_MALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+            $("#frm-matingListForm-pID2").chosen({
+				placeholder_text: {=MATING_FORM_PICK_MALE},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+            $("#frm-matingListForm-pID3").chosen({
 				placeholder_text: {=MATING_FORM_PICK_MALE},
 				no_results_text: {=MATING_FORM_NO_MATCH}
 			});
@@ -27,7 +37,7 @@
 			});
 
 			$("#frm-matingListForm").submit(function( event ) {
-				if (($("#frm-matingListForm-pID").val() == "0") || ($("#frm-matingListForm-fID").val() == "0")) {
+				if ($("#frm-matingListForm-fID").val() == "0") {
 					event.preventDefault();
 				}
 			});

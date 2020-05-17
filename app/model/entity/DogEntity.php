@@ -7,7 +7,7 @@ use Dibi\DateTime;
 
 class DogEntity {
 
-	/** @const form�t data */
+	/** @const format data */
 	const MASKA_DATA = 'Y-m-d';
 
 	/** @var int */
@@ -832,7 +832,7 @@ class DogEntity {
 		$this->setmID((isset($data['mID']) && ($data['mID'] != 0)) ? $data['mID'] : null);
 		$this->setKomentar(isset($data['Komentar']) ? $data['Komentar'] : null);
 		$this->setPosledniZmena(isset($data['PosledniZmena']) ? $data['PosledniZmena'] : null);
-		$this->setVyska(isset($data['Vyska']) ? $data['Vyska'] : null);
+		$this->setVyska(!empty($data['Vyska']) ? $data['Vyska'] : null);
 		$this->setVaha(isset($data['Vaha']) ? $data['Vaha'] : null);
 		$this->setBonitace(isset($data['Bonitace']) ? $data['Bonitace'] : null);
 		$this->setImpFrom(isset($data['ImpFrom']) ? $data['ImpFrom'] : null);
@@ -908,5 +908,39 @@ class DogEntity {
             'SkrytSourozence' => $this->SkrytSourozence,
             'SkrytCelouKartu' => $this->SkrytCelouKartu
 		];
-	}
+    }
+    
+    /**
+     * Erase object properties for sibling creation
+     */
+    public function eraseForSibling() {
+        $this->setID(null);
+        $this->setTitulyPredJmenem("");
+        $this->setTitulyZaJmenem("");
+        $this->setJmeno("");
+        $this->setOceneni("");
+        $this->setPCisloZapisu("");
+        $this->setSkus("");
+        $this->setUmrtiKomentar("");
+        $this->setVaha(0);
+        $this->setVyska(0);
+        $this->setZdravotniKomentar("");
+        $this->setZkousky("");
+        $this->setZkouskySlozene("");
+        $this->setZuby("");
+        $this->setZubyKomentar("");
+        $this->setBarva(0);
+        $this->setBarvaKomentar("");
+        $this->setBonitace("");
+        $this->setChovnost(0);
+        $this->setChovnyKomentar("");
+        $this->setCip("");
+        $this->setCisloZapisu("");
+        $this->setDatUmrti(null);
+        $this->setImpFrom("");
+        $this->setImpID(0);
+        $this->setPosudek("");
+        $this->setTitulyKomentar("");
+        $this->setTetovani("");
+    }
 }

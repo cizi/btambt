@@ -196,8 +196,8 @@ class DogForm {
 		$form->addSelect("mID", DOG_FORM_FEMALE, $females)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("KontrolaVrhu", DOG_FORM_LITTER_CHECK)
-			->setAttribute("class", "form-control");
+		/* $form->addTextArea("KontrolaVrhu", DOG_FORM_LITTER_CHECK)
+			->setAttribute("class", "form-control"); */
 
 		$form->addTextArea("TitulyKomentar", DOG_FORM_TITLES, null, 7)
 			->setAttribute("class", "form-control");

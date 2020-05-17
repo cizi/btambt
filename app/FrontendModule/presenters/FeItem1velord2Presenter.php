@@ -157,7 +157,11 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 */
 	public function createComponentDogForm() {
 		$form = $this->dogForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
-		$form->onSubmit[] = [$this, 'saveDog'];
+        $form->onSubmit[] = [$this, 'saveDog'];
+        
+        if ($this->template->amIAdmin == false) {
+            unset($form['SkrytPotomky'], $form['SkrytSourozence'], $form['SkrytCelouKartu']);   
+        }
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
@@ -167,7 +171,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$renderer->wrappers['label']['container'] = 'div class="col-md-4 control-label"';
 		$renderer->wrappers['control']['description'] = 'span class=help-block';
 		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
-		$form->getElementPrototype()->class('form-horizontal');
+        $form->getElementPrototype()->class('form-horizontal');        
 
 		return $form;
 	}
@@ -175,7 +179,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/**
 	 * @param int $id
 	 */
-	public function actionEdit($id) {
+	public function actionEdit($id, $addSibling = false) {
 		if ($this->template->canDirectEdit == false) {	// pokud nejsem admin nemůžu editovat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("default");
@@ -188,7 +192,19 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$this->template->mIDFound = true;
 			$this->template->oIDFound = true;
 		} else {
-			$dog = $this->dogRepository->getDog($id);
+            $dog = $this->dogRepository->getDog($id);
+            
+            $breeder = $this->userRepository->getBreederByDog($id);
+			if ($breeder) {
+				$this['dogForm']['breeder']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
+				$this['dogForm']['breeder']['uID']->setValue($breeder->getUID());
+			}
+            
+            if ($addSibling) {          // pokud přidávám sourozence podle kopie psa, tak zakládám psa nového, tedy mažu ID
+                $id = null;
+                $dog->eraseForSibling();
+            }
+
 			$this->template->mIDFound = ($dog->getMID() == NULL || isset($this['dogForm']['mID']->getItems()[$dog->getMID()]));
 			if ($this->template->mIDFound == false) {	// pokud mID psa není v selectu vyjmu ho
 				$dog->setMID(0);
@@ -211,9 +227,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			if ($dog->getDatUmrti() != null) {
 				$this['dogForm']['DatUmrti']->setDefaultValue($dog->getDatUmrti()->format(DogEntity::MASKA_DATA));
 			}
-			if ($dog) {
+			if ($dog && $addSibling = false) {  // ID psa přidávám jen tehdy pokud opravdu edituji
 				$this['dogForm']->addHidden('ID', $dog->getID());
-			}
+            }
 			$zdravi = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
 			/** @var EnumerationItemEntity $enumEntity */
 			foreach ($zdravi as $enumEntity) { 
@@ -226,18 +242,13 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 					}
 				}
 			}
-			$breeder = $this->userRepository->getBreederByDog($id);
-			if ($breeder) {
-				$this['dogForm']['breeder']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
-				$this['dogForm']['breeder']['uID']->setValue($breeder->getUID());
-			}
 
-			$owners = $this->userRepository->findDogOwners($id);
-			$this['dogForm']['owners']['uID']->setDefaultValue($owners);
+            $owners = $this->userRepository->findDogOwners($id);
+            $this['dogForm']['owners']['uID']->setDefaultValue($owners);
 		}
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
-	}
+    }
 
 	/**
 	 * Aktualizuje vychozí obrázek u psa

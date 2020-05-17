@@ -3,7 +3,6 @@
 namespace App\FrontendModule\Presenters;
 
 use App\Forms\CoverageMatingListDetailForm;
-use App\Forms\MatingListDetailForm;
 use App\Forms\MatingListForm;
 use App\Model\DogRepository;
 use App\Model\Entity\DogEntity;
@@ -22,9 +21,6 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 	/** @var  DogRepository */
 	private $dogRepository;
 
-	/** @var  MatingListDetailForm */
-	private $matingListDetailForm;
-
 	/** @var  EnumerationRepository */
 	private $enumerationRepository;
 
@@ -37,14 +33,12 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 	public function __construct(
 		MatingListForm $matingListForm,
 		DogRepository $dogRepository,
-		MatingListDetailForm $matingListDetailForm,
 		EnumerationRepository $enumerationRepository,
 		UserRepository $userRepository,
 		CoverageMatingListDetailForm $coverageMatingListDetailForm
 	) {
 		$this->matingListForm = $matingListForm;
 		$this->dogRepository = $dogRepository;
-		$this->matingListDetailForm = $matingListDetailForm;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
 		$this->coverageMatingListDetailForm = $coverageMatingListDetailForm;
@@ -59,11 +53,6 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 
 	public function createComponentMatingListForm() {
 		$form = $this->matingListForm->create($this->langRepository->getCurrentLang($this->session));
-
-		$form["save"]->caption = MATING_FORM_SAVE1;
-		$form->addSubmit("save2", MATING_FORM_SAVE2)
-			->setAttribute("class", "btn btn-primary margin10");
-
 		$form->onSubmit[] = [$this, 'submitMatingList'];
 
 		$renderer = $form->getRenderer();
@@ -79,25 +68,15 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 		return $form;
 	}
 
-	public function createComponentMatingListDetailForm() {
-		$form = $this->matingListDetailForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
-		$form->onSubmit[] = [$this, 'submitMatingListDetail'];
-
-		return $form;
-	}
-
 	/**
 	 * Potvrzení formuláře krycího listu rozhodne co se bude dít
 	 * @param Form $form
 	 */
 	public function submitMatingList(Form $form) {
 		$values = $form->getHttpData();
-		if (!empty($values['cID']) && !empty($values['pID']) && !empty($values['fID'])) {
-			if (isset($values['save'])) {	// I. hlášení o krytí
-				$this->redirect("coverage", [$values['cID'], $values['pID'], $values['fID']]);
-			}
-			if (isset($values['save2'])) { // II. hlášení o vrhu
-				$this->redirect("mating", [$values['cID'], $values['pID'], $values['fID']]);
+		if (!empty($values['cID']) && !empty($values['fID'])) {
+			if (isset($values['save'])) {	// Generovat krycí list
+				$this->redirect("coverage", [$values['cID'], $values['fID'], $values['pID1'], $values['pID2'], $values['pID3']]);
 			}
 		}
 		$this->redirect(':Frontend:Homepage:default');
@@ -164,15 +143,19 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 
 	/**
 	 * @param int $cID
-	 * @param int $pID
 	 * @param int $fID
+	 * @param int $pID1
+	 * @param int $pID2
+	 * @param int $pID3
 	 */
-	public function actionCoverage($cID, $pID, $fID) {
+	public function actionCoverage($cID, $fID, $pID1, $pID2, $pID3) {
 		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
 		}
-		$pes = $this->dogRepository->getDog($pID);
+		$pes1 = $this->dogRepository->getDog($pID1);
+		$pes2 = $this->dogRepository->getDog($pID2);
+		$pes3 = $this->dogRepository->getDog($pID3);
 		$this['coverageMatingListDetailForm']['cID']->setDefaultValue($cID);
 		$this['coverageMatingListDetailForm']['pID']->setDefaults($pes->extract());
 		$this['coverageMatingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
@@ -258,50 +241,5 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 			// dump($e); die;
 		}
 	}
-
-	/**
-	 * @param int $cID
-	 * @param int $pID
-	 * @param int $fID
-	 */
-	public function actionMating($cID, $pID, $fID) {
-		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
-			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
-			$this->redirect("Homepage:Default");
-		}
-		$pes = $this->dogRepository->getDog($pID);
-		$this['matingListDetailForm']['cID']->setDefaultValue($cID);
-		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
-		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
-		if ($pes->getDatNarozeni() != null) {
-			$this['matingListDetailForm']['pID']['DatNarozeni']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
-		}
-
-		$maleOwnersToInput = "";
-		$maleOwners = $this->userRepository->findDogOwnersAsUser($pes->getID());
-		for($i=0; $i<count($maleOwners); $i++) {
-			$maleOwnersToInput .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
-		}
-		$this['matingListDetailForm']['MajitelPsa']->setDefaultValue($maleOwnersToInput);
-
-		$fena = $this->dogRepository->getDog($fID);
-		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
-		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue(trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem()));
-		if ($fena->getDatNarozeni() != null) {
-			$this['matingListDetailForm']['fID']['DatNarozeni']->setDefaultValue($fena->getDatNarozeni()->format(DogEntity::MASKA_DATA));
-		}
-
-		$femaleOwnersToInput = "";
-		$femaleOwnersTelToInput = "";
-		$femaleOwners = $this->userRepository->findDogOwnersAsUser($fena->getID());
-		for($i=0; $i<count($femaleOwners); $i++) {
-			$femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . (($i+1) != count($femaleOwners) ? ", " : "");
-			$femaleOwnersTelToInput .= $femaleOwners[$i]->getPhone() . (($i+1) != count($femaleOwners) ? ", " : "");
-		}
-		$this['matingListDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnersToInput);
-		$this['matingListDetailForm']['MajitelFenyTel']->setDefaultValue($femaleOwnersTelToInput);
-
-		$this->template->title = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
-		$this->template->cID = $cID;
-	}
+	
 }

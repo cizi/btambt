@@ -134,6 +134,10 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$form = $this->dogForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
 		$form->onSubmit[] = [$this, 'saveDog'];
 
+        if ($this->getUser()->getRoles()[0] != UserRoleEnum::USER_ROLE_ADMINISTRATOR) {
+            unset($form['SkrytPotomky'], $form['SkrytSourozence'], $form['SkrytCelouKartu']);   
+        }
+
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
 		$renderer->wrappers['pair']['container'] = 'div class=form-group';

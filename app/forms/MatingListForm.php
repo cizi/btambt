@@ -45,21 +45,29 @@ class MatingListForm {
 		$clubs = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 18);
 		$form->addSelect("cID", MATING_FORM_CLUB, $clubs)
 			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter + 1);
+			->setAttribute("tabindex", $counter++);
+
+        $females = $this->dogRepository->findFemaleDogsForSelect(true);
+        $form->addSelect("fID", MATING_FORM_MID, $females)
+            ->setAttribute("class", "form-control")
+            ->setAttribute("tabindex", $counter++);
 
 		$males = $this->dogRepository->findMaleDogsForSelect(true);
-		$form->addSelect("pID", MATING_FORM_FID, $males)
+		$form->addSelect("pID1", MATING_FORM_FID, $males)
 			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter + 2);
+			->setAttribute("tabindex", $counter++);
 
-		$females = $this->dogRepository->findFemaleDogsForSelect(true);
-		$form->addSelect("fID", MATING_FORM_MID, $females)
+        $form->addSelect("pID2", MATING_FORM_FID, $males)
 			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter + 3);
-
-		$form->addSubmit("save", MATING_FORM_SAVE)
+            ->setAttribute("tabindex", $counter++);
+            
+        $form->addSelect("pID3", MATING_FORM_FID, $males)
+			->setAttribute("class", "form-control")
+			->setAttribute("tabindex", $counter++);
+            
+		$form->addSubmit("save", MATING_FORM_SAVE1)
 			->setAttribute("class", "btn btn-primary margin10")
-			->setAttribute("tabindex", $counter + 4);
+            ->setAttribute("tabindex", $counter++);
 
 		return $form;
 	}

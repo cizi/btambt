@@ -1030,7 +1030,7 @@ class DogRepository extends BaseRepository {
 		$this->genealogDPTrace($row['mID'],1,$max, $lang);
 
 		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin, $restrictVisibilityByUser, $deepMark);
-	}
+    }
 
 	/**
 	 * @param int $ID

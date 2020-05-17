@@ -8,6 +8,10 @@
 					<tr>
 						<td colspan="4" class="text-center dogViewName noBorder">
 							{$dog->getTitulyPredJmenem()|noescape} {$dog->getJmeno()|noescape} {$dog->getTitulyZaJmenem()|noescape}
+                            {if $canDirectEdit}
+                                <a class="btn btn-info" style="float: right; margin: 0 0 0 5px;" href={link edit, $dog->getID()}>{=DOG_TABLE_DOG_EDIT}</a>
+                                <a class="btn btn-info" style="float: right" href={link edit, $dog->getID(), true}>{=DOG_TABLE_DOG_ADD_SIBLING}</a>
+                            {/if}
 						</td>
 					</tr>
 					<tr>
@@ -237,7 +241,7 @@
                         <tr class="viewHeaderNew">
                             <th colspan="4">{=DOG_FORM_DESCENDANTS}</th>
                             <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
-                            <th><strong>{=DOG_FORM_LITTER_CHECK|upper}</strong></th>
+                            {* <th><strong>{=DOG_FORM_LITTER_CHECK|upper}</strong></th> *}
                         </tr>
 
                         {var lastParent = ""}
@@ -265,7 +269,7 @@
                                             <a href={link view, $descennt->getOID()}>{$dogRepository->getName($descennt->getOID())}</a>
                                         </td>
                                         <td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DOV_ORDER)}</td>
-                                        <td>{nl2br($dog->getKontrolaVrhu())|noescape}</td>
+                                        {* <td>{nl2br($dog->getKontrolaVrhu())|noescape}</td> *}
                                     </tr>
                                 {/if}
                             {/if}

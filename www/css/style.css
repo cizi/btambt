@@ -247,7 +247,8 @@ div.colorExample {
 }
 .content {
 	margin-top: -20px;
-	margin-bottom: 16px;
+    margin-bottom: 16px;
+    background-color: #FFF;
 }
 .contentRow{
 	padding: 15px;
