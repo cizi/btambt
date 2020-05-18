@@ -193,14 +193,13 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$this->template->oIDFound = true;
 		} else {
             $dog = $this->dogRepository->getDog($id);
-            
             $breeder = $this->userRepository->getBreederByDog($id);
 			if ($breeder) {
 				$this['dogForm']['breeder']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
 				$this['dogForm']['breeder']['uID']->setValue($breeder->getUID());
 			}
-            
-            if ($addSibling) {          // pokud přidávám sourozence podle kopie psa, tak zakládám psa nového, tedy mažu ID
+
+            if ($addSibling == true) {          // pokud přidávám sourozence podle kopie psa, tak zakládám psa nového, tedy mažu ID
                 $id = null;
                 $dog->eraseForSibling();
             }
@@ -227,7 +226,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			if ($dog->getDatUmrti() != null) {
 				$this['dogForm']['DatUmrti']->setDefaultValue($dog->getDatUmrti()->format(DogEntity::MASKA_DATA));
 			}
-			if ($dog && $addSibling = false) {  // ID psa přidávám jen tehdy pokud opravdu edituji
+            if ($dog && $addSibling == false) {  // ID psa přidávám jen tehdy pokud opravdu edituji
 				$this['dogForm']->addHidden('ID', $dog->getID());
             }
 			$zdravi = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
@@ -476,7 +475,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 					$files[] = $dogFile;
 				}
 			}
-			$dogEntity->hydrate($formData);
+            $dogEntity->hydrate($formData);
 
 			$mIdOrOidForNewDog = (isset($formData['mIdOrOidForNewDog']) ? $formData['mIdOrOidForNewDog'] : null);
 			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog);

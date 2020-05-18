@@ -1,0 +1,382 @@
+{block content}
+    <style>
+        body {
+            font-size: 10px;
+            background-color: white;
+            color: black;
+            margin-left: 30px;
+        }
+        .btmbt-base  {
+            width: 100%;
+            margin: -20px 0 8px -2px;
+            padding: 0;
+        }
+        .btmbt-base tr td {
+            border: 2px solid black;
+            margin: 0 0 0 0;
+            padding: 0 0 0 2px;
+        }
+
+        .btmbt-base-dog  {
+            width: 100%;
+            border: 2px solid black;
+            margin-bottom: 8px;
+            text-align: center;
+            margin: 0 0 8px 0;
+            padding: 0;
+            ver
+        }
+        .btmbt-writing {
+            font-size: 12px;
+            line-height: 30px;
+            margin-top: -30px;
+        }
+    </style>
+
+    <div>
+        <table style="margin-left: -30px;">
+            <tr>
+                <td><h1 style="margin-left: -30px; margin-top: 30px;">A</h1>
+                <td style="padding-left: 12px;">
+                    <div>
+                        <table style="font-size: 16px; font-weight: bold;">
+                            <tr>
+                                <td><i>klub</i></td>
+                                <td style="padding-bottom: 18px;">___________________________</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+        <table style="width: 100%; margin-top: -20px;">
+            <tr>
+                <td style="width: 60%; text-align: left;"><h2> ANGLICKÉHO BULL TERRIERA</h2></td>
+                <td style="text-align: left;"><h2>{$title|upper}</h2></td>
+            </tr>
+        </table><br /><br />
+
+        <table class="btmbt-base">
+            <tr>
+                <td>
+                    <h4>
+                        <strong>DOPORUČENÍ KE KRYTÍ - máte zájem o uvedení krytí na webu ANO / NE 
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                             číslo 17/{$rok}</strong>
+                    </h4>
+                </td>
+            </tr>
+        </table>
+
+        <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno feny </strong><br />
+                        {$fena->getCeleJmeno()}
+
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsána </strong><br />
+                        {$fena->getCisloZapisu()}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozena </strong></strong><br />
+                        {$fenaNar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva </strong><br />
+                        {$fenaBarva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel: {$fenaMajitele}</strong><br />
+                        <strong>Název chov. stanice: {$fenaStanice}</strong>
+                    </td>
+                </tr>
+            </table>                       
+
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno psa</strong> <br />
+                        {$pes1CeleJmeno}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsán</strong> <br />
+                        {$pes1Cz}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozen</strong> <br />
+                        {$pes1Nar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva</strong> <br />
+                        {$pes1Barva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel:</strong> {$pes1Majitele}
+                    </td>
+                </tr>
+            </table>
+        
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno psa</strong> <br />
+                        {$pes2CeleJmeno}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsán</strong> <br />
+                        {$pes2Cz}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozen</strong> <br />
+                        {$pes2Nar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva</strong> <br />
+                        {$pes2Barva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel:</strong> {$pes2Majitele}
+                    </td>
+                </tr>
+            </table>
+
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno psa</strong> <br />
+                        {$pes3CeleJmeno}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsán</strong> <br />
+                        {$pes3Cz}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozen</strong> <br />
+                        {$pes3Nar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva</strong> <br />
+                        {$pes3Barva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel:</strong> {$pes3Majitele}
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+            <table class="btmbt-base">
+                <tr>
+                    <td>Dne 3. 3. 2020 <strong> Vystavil poradce chovu: </strong> Jitka Zezulová, Na Budínku 39, 664 51 Kobylnice, Tel: 605169517</td>
+                </tr>
+            </table>
+
+            <table style="margin-left: -30px;">
+                <tr>
+                    <td><h1 style="margin-left: -30px; margin-top: 15px;">B</h1>
+                    <td style="padding-left: 15px;">
+                        <div class="btmbt-writing"><br />
+                            FENA BYLA KRYTA PSEM ........................................................ dne .......................... <br /><br />
+                            Podpis majitele psa ...................................................................<br /><br />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <hr style="border-top: 2px dashed black; margin-top: 15px;" />
+
+            <table style="margin-left: -30px;">
+                <tr>
+                    <td><h1 style="margin-left: -30px; margin-top: 20px;">C</h1>
+                    <td style="padding-left: 12px;">
+                    <div>
+                        <table style="font-size: 16px; font-weight: bold;">
+                            <tr>
+                                <td><i>klub</i></td>
+                                <td style="padding-bottom: 18px;">___________________________</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                </tr>
+            </table>
+            
+            <table style="width: 100%; margin-top: -15px;">
+                <tr>
+                    <td style="width: 60%; text-align: left;"><h2> ANGLICKÉHO BULL TERRIERA</h2></td>
+                    <td style="text-align: left;"><h2>{$title|upper}</h2></td>
+                </tr>
+            </table><br /><br />
+
+            <table class="btmbt-base">
+                <tr>
+                    <td>
+                        <h4>
+                            <strong>
+                                DOPORUČENÍ KE KRYTÍ                                             
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                číslo 17/{$rok}
+                            </strong>
+                        </h4>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno feny </strong><br />
+                        {$fena->getCeleJmeno()}
+
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsána </strong><br />
+                        {$fena->getCisloZapisu()}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozena </strong></strong><br />
+                        {$fenaNar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva </strong><br />
+                        {$fenaBarva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel: {$fenaMajitele}</strong><br />
+                        <strong>Název chov. stanice: {$fenaStanice}</strong>
+                    </td>
+                </tr>
+            </table>                       
+
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno psa</strong> <br />
+                        {$pes1CeleJmeno}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsán</strong> <br />
+                        {$pes1Cz}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozen</strong> <br />
+                        {$pes1Nar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva</strong> <br />
+                        {$pes1Barva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel:</strong> {$pes1Majitele}
+                    </td>
+                </tr>
+            </table>
+        
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno psa</strong> <br />
+                        {$pes2CeleJmeno}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsán</strong> <br />
+                        {$pes2Cz}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozen</strong> <br />
+                        {$pes2Nar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva</strong> <br />
+                        {$pes2Barva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel:</strong> {$pes2Majitele}
+                    </td>
+                </tr>
+            </table>
+
+            <table class="btmbt-base-dog">
+                <tr style="border-bottom: 1px solid black;">
+                    <td style="text-align: left; border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Jméno psa</strong> <br />
+                        {$pes3CeleJmeno}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Zapsán</strong> <br />
+                        {$pes3Cz}
+                    </td>
+                    <td valign="top" style="border-right: 1px solid black; border-bottom: 1px solid black;">
+                        <strong>Narozen</strong> <br />
+                        {$pes3Nar}
+                    </td>
+                    <td valign="top" style="border-bottom: 1px solid black;">
+                        <strong>Barva</strong> <br />
+                        {$pes3Barva}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: left;">
+                        <strong>Majitel:</strong> {$pes3Majitele}
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+            <table class="btmbt-base">
+                <tr>
+                    <td>{$dnes} <strong> Vystavil poradce chovu: </strong> Jitka Zezulová, Na Budínku 39, 664 51 Kobylnice, Tel: 605169517</td>
+                </tr>
+            </table>
+            Krycí list je platný jeden rok od data vystavení.<br />
+            <u>Majitel psa: </u> na formuláři vyplní část B a D; od majitele feny obdrří vyplněnou část E jako doklad o krytí.<br />
+            <u>Majitel feny: </u> na fomuláři vyplní část E, kterou odstřihne a předá majiteli psa. Do 10 dnů od krytí zašle část A a 
+            B Doporučení na krytí na adresu poradkyně chovu. Část C a D zašle po narození štěňat spolu s Přihláškou k zápisu vrhu štěňat
+            na adresu Plemenné knihy: ČMKJ - Ireba Šestáková, Lešanská 1176/2a, 141 00 Praha 4 - Chodov. Pokud fena nezabřezn, zasílá 
+            se část C a D zpět poradci chovu.
+
+            <table style="margin-left: -30px; padding-top: 0; margin-top: 0;">
+                <tr>
+                    <td><h1 style="margin-left: -30px; margin-top: 10px;">D</h1>
+                    <td style="padding-left: 15px;">
+                        <div class="btmbt-writing">
+                            <br /><br /><br />
+                            <h3>POTVRENÍ O KRYTÍ FENY:</h3><br />
+                            Potvrzuji, že pes ............................................................. 
+                            zapsán ................................. 
+                            kryl dne .............................<br /><br />
+                            fenu ................................................................................
+                            podpis majitele psa ..........................................................
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            
+            
+    </div>
+{/block}
