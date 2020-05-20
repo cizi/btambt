@@ -105,7 +105,11 @@ class WebconfigRepository extends BaseRepository{
 	const KEY_WEB_KEYWORDS = "WEB_KEYWORDS";
 
 	/** @const for web language */
-	const KEY_WEB_MUTATION = "WEB_MUTATION";
+    const KEY_WEB_MUTATION = "WEB_MUTATION";
+    
+    /** @const for counters section */
+    const KEY_COUNTER_COVERAGE_BT = "COUNTER_COVERAGE_BT";
+    const KEY_COUNTER_COVERAGE_MBT = "COUNTER_COVERAGE_MBT";
 
 	/** @var array cache for values => less queris to DB */
 	private $cache = [];
@@ -124,7 +128,26 @@ class WebconfigRepository extends BaseRepository{
 		}
 
 		return $ret;
-	}
+    }
+    
+    /**
+	 * @return array
+	 */
+    public function loadCounters($lang) {
+        $ret = [];
+        $query = ["select id, value from web_config where lang = %s and id in %in", $lang, [WebconfigRepository::KEY_COUNTER_COVERAGE_BT, WebconfigRepository::KEY_COUNTER_COVERAGE_MBT]];
+        $ret = $this->connection->query($query)->fetchPairs("id", "value");
+        
+        return $ret;
+    }
+
+    /**
+	 * @return array
+	 */
+    public function incrementCounter($counterKey, $lang) {
+        $query = ["update web_config set value = value + 1 where lang = %s and id = %s", $lang, $counterKey];
+        return $this->connection->query($query);
+    }
 
 	/**
 	 * @param string $key

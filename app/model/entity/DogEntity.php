@@ -11,7 +11,7 @@ class DogEntity {
     const MASKA_DATA = 'Y-m-d';
     
     /** @const format data pro zobrazeni */
-    const MASKA_DATA_ZOBRAZENI = "d.n.Y";
+    const MASKA_DATA_ZOBRAZENI = "j.n.Y";
 
 	/** @var int */
 	public $ID;

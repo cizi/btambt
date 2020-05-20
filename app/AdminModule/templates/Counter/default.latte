@@ -1,0 +1,61 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'counter'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			{form counterForm}
+				<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=COUNTER_TITLE}</h1>
+							<span>{=COUNTER_TITLE_INFO}</span>
+							<br /><br />
+
+							<form>
+								<div class="form-group row">
+									<fieldset>
+										<legend>{=COUNTER_COVERAGE_COUNTER}</legend>
+
+										<div class="col-sm-10">
+											{label COUNTER_COVERAGE_BT/}
+											{input COUNTER_COVERAGE_BT}
+										</div>
+										<div class="col-sm-10 field_info">
+											{* =WEBCONFIG_WEB_WIDTH_INFO|noescape *}
+										</div>
+
+										<div class="col-sm-10">
+											{label COUNTER_COVERAGE_MBT/}
+											{input COUNTER_COVERAGE_MBT}
+										</div>
+										<div class="col-sm-10 field_info">
+											{* =WEBCONFIG_WEB_FAVICON_INFO|noescape *}
+										</div>
+									</fieldset>
+
+									<div class="form-group row alignRight">
+										<div class="col-sm-offset-2 col-sm-8 col-md-8 col-lg-8">
+											{input confirm}
+										</div>
+									</div>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			{/form}
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+{/block}
+

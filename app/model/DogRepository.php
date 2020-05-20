@@ -104,8 +104,19 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @return array
 	 */
-	public function findFemaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`, `Jmeno` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE, self::FEMALE_ORDER];
+	public function findFemaleDogsForSelect($withNotSelectedOption = true, $justBreeding = false, $alive = false) {
+        $query = [];
+        $query[] = "select `ID`, `Jmeno` from appdata_pes where Stav = %i and Pohlavi = %i";
+        $query[] = DogStateEnum::ACTIVE;
+        $query[] = self::FEMALE_ORDER;
+
+        if ($justBreeding) {
+            $query[] = " and Chovnost = "  . EnumerationRepository::CHOVNOST_CHOVNY;
+        }
+        if ($alive) {
+            $query[] = " and ((DatUmrti >= " . date(DogEntity::MASKA_DATA) . ") OR (DatUmrti is null))";
+        }
+        
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -203,7 +214,7 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $dogs;
-	}
+    }
 
 	/**
 	 * @param array $filter
@@ -1063,12 +1074,12 @@ class DogRepository extends BaseRepository {
 			if (EnumerationRepository::PLEMENO_BT == $row["Plemeno"]) {
                 unset($row["Vyska"]);
                 $query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
-                    ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i and zdravi.Typ <> %i ORDER BY Datum DESC", $row['ID'], EnumerationRepository::ZDRAVI_PLL];
+                    ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i and zdravi.Typ <> %i and ciselnik.lang = %s ORDER BY Datum DESC", $row['ID'], EnumerationRepository::ZDRAVI_PLL, $lang];
             } else {
                 $query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
-                    ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i and zdravi.Typ <> %i ORDER BY Datum DESC", $row['ID'], EnumerationRepository::ZDRAVI_DNA];
+                    ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i and zdravi.Typ <> %i and ciselnik.lang = %s ORDER BY Datum DESC", $row['ID'], EnumerationRepository::ZDRAVI_DNA, $lang];
             }
-			$zdravi = $this->connection->query($query)->fetchPairs("Nazev","Vysledek");
+            $zdravi = $this->connection->query($query)->fetchPairs("Nazev","Vysledek");
             $zdravi = $zdravi === null ? '' : $zdravi;
 
 			/* $query = ["SELECT Vysledek AS DKK FROM appdata_zdravi WHERE pID = %i && Typ=65 ORDER BY Datum DESC LIMIT 1", $row['ID']];

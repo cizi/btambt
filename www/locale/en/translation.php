@@ -37,6 +37,7 @@ define("MENU_FOOTER", 'Page footer');
 define("MENU_USERS", 'Users');
 define("MENU_SETTINGS", 'Page setting');
 define("MENU_ENUMERATION", 'Enumerations');
+define("MENU_COUNTER", 'System counters');
 define("MENU_VETS", 'Vets / Labs');
 define("MENU_LANG", 'Language setting');
 define("MENU_LOGOUT", 'Logout');
@@ -160,6 +161,13 @@ define("WEBCONFIG_SETTINGS_SHOW_BLOCK", 'Block of the hamopage');
 define("WEBCONFIG_SETTINGS_SHOW_BLOCK_INFO", 'Choose the content block which will be showed on the homepage.');
 define("WEBCONFIG_SETTINGS_LANG_DEPENDS", 'Settings depend on the language');
 define("WEBCONFIG_SETTINGS_LANG_COMMON", 'General settings');
+
+// counters
+define("COUNTER_TITLE", 'System counters');
+define("COUNTER_TITLE_INFO", 'Configuration of used counters in the system');
+define("COUNTER_COVERAGE_COUNTER", 'System counters of coverage lists');
+define("COUNTER_COVERAGE_BT_COUNTER", 'Next number of the coverage list for bull terriers');
+define("COUNTER_COVERAGE_MBT_COUNTER", 'Next number of the coverage list for mini bull terriers');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');
@@ -538,9 +546,9 @@ define("DOG_FORM_HEIGHT_NUMBER", 'Height of the dog must be a valid number with 
 define("DOG_FORM_WEIGHT_NUMBER", 'Weight of the dog must be a valid number with two decimals (in kg), separotor is point (.)!');
 define("DOG_FORM_LITTER_CHECK", 'Litter check');
 
-define("DOG_FORM_TITLES", 'Titles');
+define("DOG_FORM_TITLES", 'Exhibition awards');    // Titles
 define("DOG_FORM_BON_TEXT", 'Breeding report');
-define("DOG_FORM_SHOWS_TEXT", 'Show result');
+define("DOG_FORM_SHOWS_TEXT", 'Exhibition results');    // Show result
 define("DOG_FORM_SHOWS_NEXT_TEXT", 'Other show result');
 define("DOG_FORM_SHOWS_EXAMS", 'Exams');
 define("DOG_FORM_SHOWS_EXAMS_NEXT", 'Passed tests');
@@ -586,11 +594,12 @@ define("MATING_FORM_BON_CODE", 'Bonitation code');
 define("MATING_FORM_PLACE_DETAIL", 'Covering was carried out in (place)');
 define("MATING_FORM_PLACE_DETAIL_DAY", 'date');
 define("MATING_FORM_PLACE_DETAIL_DAY_REPEAT", 'repeat on day');
-define("MATING_FORM_ESTIMATE_DATE", 'Expected date of litter');
-define("MATING_FORM_RULES", 'Arranged costs and conditions');
+define("MATING_FORM_ESTIMATE_DATE", 'Date of litter');
+define("MATING_FORM_RULES", 'Do you want to add the mating on the web?');
 define("MATING_FORM_NOTE", 'Note (insemination, cover for cover, etc.)');
 define("MATING_FORM_NOTE_2", "The owner of the cover dog is obliged to send within 7 days after coverage the completed cover sheet - a report on the coverage of the herd book manager. In case of foreign cover, the owner sends the bitch.");
-define("MATING_FORM_OWNER", "Shepherd book manager: Jitka Kubištová, Zálezlice 114, 277 45 Zálezlice e-mail: zednikovaj@volny.cz, tel: 603 249 185");
+define("MATING_FORM_OWNER", "");
+define("MATING_FORM_INFO_BREEDER", "Breeder will write for folders for puppies to Mrs. Hradecká to email VendulaHradeck@email.cz");
 
 define("MATING_FORM_DATE_SHORT", 'Date');
 define("MATING_FORM_DATE", 'Mating date');
@@ -788,21 +797,21 @@ define("LITTER_APPLICATION_REWRITE_PUPPIES_FUR", "Fur");
 define("LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST", "The litter number does not exist");
 define("LITTER_APPLICATION_CREATE_SUBJECT", "New litter application has been created");
 define("LITTER_APPLICATION_CREATE_BODY", "New liiter application has been created. See details in included form <br /><br /> %s");
-define("LITTER_APPLICATION_FOR", "COVER LIST - litter report");
+define("LITTER_APPLICATION_FOR", "litter report");
 define("LITTER_APPLICATION_FOR_WHO", "- for the owner of the bitch");
-define("LITTER_APPLICATION_BREEDING", "Kennel, litter");
+define("LITTER_APPLICATION_BREEDING", "Kennel");
 define("LITTER_APPLICATION_MALE_NAME", "Cover dog name");
 define("LITTER_APPLICATION_RECORD_NUM_FORM", "registration number: CMKU/");
 define("LITTER_APPLICATION_RECORD_NUM", "registration number");
-define("LITTER_APPLICATION_PLACE", "Covering was carried out in (place)");
+define("LITTER_APPLICATION_PLACE", "Covering was carried out");
 define("LITTER_APPLICATION_BIRTH", "Date of birth");
 define("LITTER_APPLICATION_DOG_LIVE", "Number of live puppies");
 define("LITTER_APPLICATION_DOG_LIVE_MALE", "of which dogs");
 define("LITTER_APPLICATION_DOG_LIVE_FEMALE", "females");
 define("LITTER_APPLICATION_DOG_DEATH", "Number of dead births, up to 7 days after birth. dead or killed puppies");
-define("LITTER_APPLICATION_PUPPIES_DETAILS", "Colors of puppies, truncated tails at WCP, other notes");
+define("LITTER_APPLICATION_PUPPIES_DETAILS", "Colors of puppies, other notes");
 define("LITTER_APPLICATION_OWNWER_MALE", "Name and address of cover dog owner");
-define("LITTER_APPLICATION_REVIEW", "The owner of the bitch is obliged to send the completed cover sheet - a litter report to the herd book manager within 7 days after the litter or within 75 days after the cover, if the bitch did not snap.");
+define("LITTER_APPLICATION_REVIEW", "The owner of the bitch is obliged to send the completed litter report to the herd book manager within 10 days after the litter via email poradcechovu@seznam.cz");
 define("LITTER_APPLICATION_EDIT", "Litter application edit");
 define("LITTER_APPLICATION_MID_OID_FAILED_TITLE", 'Integrity error. Dog with ID %d does not match for male/female!');
 define("MATING_LITTER_DOG_DATE", "dat. of bir.");

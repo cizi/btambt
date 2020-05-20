@@ -113,13 +113,13 @@
 								<div class="heading1">{$title|upper}</div>
 								<div class="heading2">
 									<strong>{=LITTER_APPLICATION_FOR}</strong><br />
-									<small>{=LITTER_APPLICATION_FOR_WHO}</small>
+									{* <small>{=LITTER_APPLICATION_FOR_WHO}</small> *}
 								</div>
 
 								<table style="width: 70%;">
 									<tr>
 										<td style="width: 33%"></td>
-										<td style="width: 33%; font-size: 14px;"><div>{=MATING_FORM_TYPE}</div></td>
+										{* <td style="width: 33%; font-size: 14px;"><div>{=MATING_FORM_TYPE}</div></td> *}
 										<td><div class="heading2" style="margin-top: 0">{label Plemeno/}: {input Plemeno}</div></td>
 									</tr>
 								</table>
@@ -135,7 +135,7 @@
 										</tr>
 										<tr>
 											<td class="tdleft"><div class="heading2 tdleft">{label CisloZapisu/} {input CisloZapisu}</div></td>
-											<td class="tdleft"><div class="heading2 tdleft">{label Bonitace/}: {input Bonitace}</div></td>
+											<td class="tdleft"><div class="heading2 tdleft">{* label Bonitace/}: {input Bonitace *}</div></td>
 										</tr>
 										<tr><td colspan="2"><hr></td></tr>
 									{/formContainer}
@@ -147,7 +147,7 @@
 										</tr>
 										<tr>
 											<td class="tdleft"><div class="heading2 tdleft">{label CisloZapisu/}: {input CisloZapisu}</div></td>
-											<td class="tdleft"><div class="heading2 tdleft">{label Bonitace/}: {input Bonitace}</div></td>
+											<td class="tdleft"><div class="heading2 tdleft">{* label Bonitace/}: {input Bonitace *}</div></td>
 										</tr>
 										<tr><td colspan="2"><hr></td></tr>
 									{/formContainer}
@@ -168,7 +168,7 @@
 											<div class="heading2 tdleft">{label PredpokladDatum/}: {input PredpokladDatum}</div><br />
 										</td>
 										<td class="tdleft">
-											<div class="heading2 tdleft">{label DatumPorodu/}: {input DatumPorodu}</div><br />
+											<div class="heading2 tdleft">{* label DatumPorodu/}: {input DatumPorodu *}</div><br />
 										</td>
 									</tr>
 
@@ -196,12 +196,6 @@
 										</td>
 									</tr>
 
-									<tr>
-										<td colspan="2" class="tdleft">
-											<div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong>: {input Dohoda}</div>
-										</td>
-									</tr>
-
 									<tr><td colspan="2"><hr></td></tr>
 
 									<tr>
@@ -212,8 +206,8 @@
 										</td>
 
 										<td class="tdleft">
-											<div class="heading2 tdleft"><b>{label MajitelPsa/}:</b></div> {input MajitelPsa}<br />&nbsp;<br />&nbsp;
-											<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br />
+											{* <div class="heading2 tdleft"><b>{label MajitelPsa/}:</b></div> {input MajitelPsa}<br />&nbsp;<br />&nbsp;
+											<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br /> *}
 										</td>
 									</tr>
 
@@ -225,6 +219,18 @@
 										</td>
 									</tr>
 
+                                    <tr>
+										<td colspan="2" class="tdleft">
+											<div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong> {input UvedeniNaWebu}</div>
+										</td>
+									</tr>
+
+                                    <tr>
+                                        <td colspan="2" class="tdleft">
+                                            <div class="heading2 tdleft"><strong>{=MATING_FORM_INFO_BREEDER}</strong></div>
+                                        </td>
+                                    </tr>
+
 									<tr><td colspan="2"><hr></td></tr>
 
 									<tr>
@@ -235,11 +241,11 @@
 
 									<tr><td colspan="2"></td></tr>
 
-									<tr>
+									{* <tr>
 										<td colspan="3" class="tdleft">
 											<br /><div class="heading2 tdcenter">{=MATING_FORM_OWNER}</div>
 										</td>
-									</tr>
+									</tr> *}
 								</table>
 							</div><br /><br />
 							<div class="form-group row alignRight">
@@ -256,7 +262,7 @@
 	</div>
 
 	<script>
-		$("#frm-matingListDetailForm-fID-DatumNarozeni").datetimepicker({
+		$("#frm-matingListDetailForm-fID-DatNarozeni").datetimepicker({
 			format: 'yyyy-mm-dd',
 			language: {$currentLang},
 			autoclose: 1,
@@ -266,7 +272,7 @@
 			forceParse: 0
 		});
 
-		$("#frm-matingListDetailForm-pID-DatumNarozeni").datetimepicker({
+		$("#frm-matingListDetailForm-pID-DatNarozeni").datetimepicker({
 			format: 'yyyy-mm-dd',
 			language: {$currentLang},
 			autoclose: 1,

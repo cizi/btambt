@@ -56,9 +56,9 @@ class DogForm {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
-		$form->addText("TitulyPredJmenem", DOG_FORM_NAME_PREFIX)
+		/* $form->addText("TitulyPredJmenem", DOG_FORM_NAME_PREFIX)
 			->setAttribute("class", "form-control")
-			->setAttribute("placeholder", DOG_FORM_NAME_PREFIX);
+			->setAttribute("placeholder", DOG_FORM_NAME_PREFIX); */
 
 		$form->addText("Jmeno", DOG_FORM_NAME)
 			->setAttribute("class", "form-control tinym_required_field")
@@ -161,9 +161,9 @@ class DogForm {
 		$form->addSelect("Skus", DOG_FORM_CHEW, $skus)
 			->setAttribute("class", "form-control"); */
 
-		$form->addText("ZubyKomentar", DOG_FORM_TEETH_COM)
+		/* $form->addText("ZubyKomentar", DOG_FORM_TEETH_COM)
 			->setAttribute("class", "form-control")
-			->setAttribute("placeholder", DOG_FORM_TEETH_COM);
+			->setAttribute("placeholder", DOG_FORM_TEETH_COM); */
 
 		$vets = $this->vetRepository->findVetsForSelect();
 		$zdravi = $this->enumerationRepository->findEnumItems($langCurrent, 14);
@@ -208,11 +208,11 @@ class DogForm {
 		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT, null, 7)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
+		/* $form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
 			->setAttribute("class", "form-control");
 
         $form->addTextArea("ZkouskySlozene", DOG_FORM_SHOWS_EXAMS_NEXT, null, 7)
-            ->setAttribute("class", "form-control");    
+            ->setAttribute("class", "form-control"); */ 
 
 		$form->addTextArea("Zavody", DOG_FORM_SHOWS_RACES, null, 7)
 			->setAttribute("class", "form-control");

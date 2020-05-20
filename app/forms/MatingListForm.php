@@ -47,7 +47,7 @@ class MatingListForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $counter++);
 
-        $females = $this->dogRepository->findFemaleDogsForSelect(true);
+        $females = $this->dogRepository->findFemaleDogsForSelect(true, true, true);
         $form->addSelect("fID", MATING_FORM_MID, $females)
             ->setAttribute("class", "form-control")
             ->setAttribute("tabindex", $counter++);

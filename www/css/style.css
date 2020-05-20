@@ -389,7 +389,6 @@ div.colorExample {
 	width: 25%;
 }
 .dogSiblings {
-	font-size: 12px!important;
 	margin-top: -9px;
 }
 .pedigreeCoef {
@@ -405,7 +404,7 @@ div.colorExample {
 	padding: 5px;
 }
 .parentMarker{
-	font-weight: bold;
+    font-weight: bold;
 }
 .dogViewName {
 	font-size: 30px;

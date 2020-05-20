@@ -129,13 +129,13 @@ class FeItem1velord9Presenter extends FrontendPresenter {
         $values = $form->getHttpData();
         
 		if (!empty($values['pID']) && !empty($values['fID']) && !empty($values['cID'])) {
-            if (isset($values['save'])) {   // Hlášení vrhu
-                $idForEdit = (isset($values['ID']) ? $values['ID'] : null);
-                $this->redirect("details", [$values['cID'], $values['pID'], $values['fID'], $idForEdit]);
+            if (isset($values['save'])) {   // II. Přihláška k zápisu vrhu
+                $this->redirect("mating", [$values['cID'], $values['pID'], $values['fID']]);
             }
             
-            if (isset($values['save2'])) { // II. Přihláška k zápisu vrhu
-                $this->redirect("mating", [$values['cID'], $values['pID'], $values['fID']]);
+            if (isset($values['save2'])) { // Hlášení vrhu
+                $idForEdit = (isset($values['ID']) ? $values['ID'] : null);
+                $this->redirect("details", [$values['cID'], $values['pID'], $values['fID'], $idForEdit]);
             }
         }      
         $this->redirect(':Frontend:Homepage:default');
@@ -292,6 +292,54 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 		$form->onSubmit[] = [$this, 'submitMatingListDetail'];
 
 		return $form;
+    }
+    
+    /**
+	 * @param Form $form
+	 */
+	public function submitMatingListDetail(Form $form) {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
+			$this->redirect("Homepage:Default");
+		}
+		try {
+			$currentLang = $this->langRepository->getCurrentLang($this->session);
+			$latte = new \Latte\Engine();
+			$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
+
+			$latteParams = [];
+			foreach ($form->getValues() as $inputName => $value) {
+				if ($value instanceof ArrayHash) {
+					foreach ($value as $dogInputName => $dogValue) {
+						if ($dogInputName == 'Barva') {
+							$latteParams[$inputName . $dogInputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang,
+								$dogValue);
+						} else {
+							$latteParams[$inputName . $dogInputName] = $dogValue;
+						}
+					}
+				} else {
+					if ($inputName == 'Plemeno') {
+						$latteParams[$inputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $value);
+					} else {
+						$latteParams[$inputName] = $value;
+					}
+				}
+            }
+            $latteParams["dateFormat"] = DogEntity::MASKA_DATA_ZOBRAZENI;
+			$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->getBaseUrl();
+			$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $form->getValues()['cID']);
+
+			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord9/matingPdf.latte', $latteParams);
+
+			$pdf = new \Joseki\Application\Responses\PdfResponse($template);
+			$pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
+			$this->sendResponse($pdf);
+		} catch (AbortException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			// dump($e); die; 
+		}
 	}
 
 	/**
@@ -322,15 +370,16 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
 		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
 		if ($pes->getDatNarozeni() != null) {
-			$this['matingListDetailForm']['pID']['DatNarozeni']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
+            $this['matingListDetailForm']['pID']['DatNarozeni']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
 		}
+        $this['matingListDetailForm']['Plemeno']->setDefaultValue(($cID == 157 ? 17 : 18));
 
 		$maleOwnersToInput = "";
 		$maleOwners = $this->userRepository->findDogOwnersAsUser($pes->getID());
 		for($i=0; $i<count($maleOwners); $i++) {
 			$maleOwnersToInput .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
 		}
-		$this['matingListDetailForm']['MajitelPsa']->setDefaultValue($maleOwnersToInput);
+		// $this['matingListDetailForm']['MajitelPsa']->setDefaultValue($maleOwnersToInput);
 
 		$fena = $this->dogRepository->getDog($fID);
 		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());

@@ -114,10 +114,10 @@
 										<div class="heading1">{$title|upper}</div>
 										<div class="heading2">
 											<strong>{=LITTER_APPLICATION_FOR}</strong><br />
-											<small>{=LITTER_APPLICATION_FOR_WHO}</small><br /><br />
-											<div style="font-size: 14px;">{=MATING_FORM_TYPE}
+											{* <small>{=LITTER_APPLICATION_FOR_WHO}</small>*}<br /><br />
+											<div style="font-size: 14px;">{* =MATING_FORM_TYPE}
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *}
 												{=DOG_FORM_BREED|lower}: {$Plemeno|lower}</div>
 											<div style="margin-left: -60px!important;">{=LITTER_APPLICATION_BREEDING}: {$ChovStaniceVrh}</div>
 										</div>
@@ -127,34 +127,61 @@
 
 							<table border="0" width="100%">
 								<tr>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NAME_FEMALE}</strong>: {$fIDJmeno}</div></td>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_LITTER_DOG_DATE}</strong>: {$fIDDatNarozeni}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NAME_FEMALE}</strong>: {$fID->Jmeno}</div></td>
+									<td class="tdleft">
+                                        <div class="heading2 tdleft">   
+                                            <strong>{=MATING_LITTER_DOG_DATE}</strong>: 
+                                            {if !empty($fID->DatNarozeni)}
+                                                {var $dt = new DateTime($fID->DatNarozeni)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div>
+                                    </td>
 								</tr>
 								<tr>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_RECORD_NUM}</strong>: CMKU/{$fIDCisloZapisu }</div></td>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_FORM_BON_CODE}</strong>: {$fIDBonitace}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_RECORD_NUM}</strong>: CMKU/{$fID->CisloZapisu}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft">{* <strong>{=MATING_FORM_BON_CODE}</strong>: {$fIDBonitace *}</div></td>
 								</tr>
 
 								<tr><td colspan="2"><br /><br /></td></tr>
 
 								<tr>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NAME_MALE}</strong>: {$pIDJmeno}</div></td>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_LITTER_DOG_DATE}</strong>: {$pIDDatNarozeni}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NAME_MALE}</strong>: {$pID->Jmeno}</div></td>
+									<td class="tdleft">
+                                        <div class="heading2 tdleft">
+                                            <strong>{=MATING_LITTER_DOG_DATE}</strong>: 
+                                            {if !empty($pID->DatNarozeni)}
+                                                {var $dt = new DateTime($pID->DatNarozeni)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div>
+                                    </td>
 								</tr>
 								<tr>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NO_OF_REC}</strong>: {$pIDCisloZapisu}</div></td>
-									<td class="tdleft"><div class="heading2 tdleft"><strong>{=MATING_FORM_BON_CODE}</strong>: {$pIDBonitace}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft"><strong>{=DOG_FORM_NO_OF_REC}</strong>: {$pID->CisloZapisu}</div></td>
+									<td class="tdleft"><div class="heading2 tdleft">{* <strong>{=MATING_FORM_BON_CODE}</strong>: {$pIDBonitace *}</div></td>
 								</tr>
 
 								<tr><td colspan="2"><br /><br /></td></tr>
-
 
 
 								<tr style="vertical-align: top;">
 									<td class="tdleft" style="vertical-align: top;"><div class="heading2 tdleft"><strong>{=MATING_FORM_PLACE_DETAIL}</strong>: <br />{$MistoKryti}</div></td>
 									<td class="tdleft" style="vertical-align: top;">
-										<div class="heading2 tdleft" style="padding-left: 74px;"><strong>{=MATING_FORM_PLACE_DETAIL_DAY}</strong>: {$DatumKryti}</div><br />
-										<div class="heading2 tdleft" style="margin-top: 0;"><strong>{=MATING_FORM_PLACE_DETAIL_DAY_REPEAT}</strong>: {$DatumKrytiOpakovane}</div>
+										<div class="heading2 tdleft" style="padding-left: 74px;">
+                                            <strong>{=MATING_FORM_PLACE_DETAIL_DAY}</strong>: 
+                                            {if !empty($DatumKryti)}
+                                                {var $dt = new DateTime($DatumKryti)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div><br />
+										<div class="heading2 tdleft" style="margin-top: 0;">
+                                            <strong>{=MATING_FORM_PLACE_DETAIL_DAY_REPEAT}</strong>: 
+                                            {if !empty($DatumKrytiOpakovane)}
+                                                {var $dt = new DateTime($DatumKrytiOpakovane)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div>
 									</td>
 								</tr>
 
@@ -162,10 +189,16 @@
 
 								<tr>
 									<td class="tdleft">
-										<div class="heading2 tdleft"><strong>{=MATING_FORM_ESTIMATE_DATE}</strong>: {$PredpokladDatum}</div>
+										<div class="heading2 tdleft">
+                                            <strong>{=MATING_FORM_ESTIMATE_DATE}</strong>: 
+                                            {if !empty($PredpokladDatum)}
+                                                {var $dt = new DateTime($PredpokladDatum)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div>
 									</td>
 									<td class="tdleft">
-										<div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_BIRTH}</strong>: {$DatumPorodu}</div>
+										<div class="heading2 tdleft"><strong>{* =LITTER_APPLICATION_BIRTH}</strong>: {$DatumPorodu *}</div>
 									</td>
 								</tr>
 
@@ -195,10 +228,6 @@
 
 								<tr><td colspan="2"><br /><br /></td></tr>
 
-								<tr>
-									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong>: {if $Dohoda}{=SHOW_DONE}{else}{=SHOW_UNDONE}{/if}</div></td>
-								</tr>
-
 								<tr><td colspan="2"><br /><br /></td></tr>
 
 								<tr>
@@ -209,8 +238,8 @@
 									</td>
 
 									<td class="tdleft" style="vertical-align: top;">
-										<div class="heading2 tdleft" style="height: 360px!important;"><b>{=LITTER_APPLICATION_OWNWER_MALE}:</b> <br />{nl2br($MajitelPsa)|noescape}</div><br />&nbsp;<br />&nbsp;
-										<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br />
+										{* <div class="heading2 tdleft" style="height: 360px!important;"><b>{=LITTER_APPLICATION_OWNWER_MALE}:</b> <br />{nl2br($MajitelPsa)|noescape}</div><br />&nbsp;<br />&nbsp;
+										<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br /> *}
 									</td>
 								</tr>
 
@@ -218,8 +247,22 @@
 
 								<tr>
 									<td colspan="2" class="tdleft">
-										<div class="heading2 tdleft"><strong>{=MATING_FORM_DATE_SHORT}</strong>: {$Datum}</div><br />
+										<div class="heading2 tdleft">
+                                            <strong>{=MATING_FORM_DATE_SHORT}</strong>: 
+                                            {if !empty($Datum)}
+                                                {var $dt = new DateTime($Datum)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div><br />
 									</td>
+								</tr>
+
+                                <tr>
+									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong>: {if $UvedeniNaWebu}{=SHOW_DONE}{else}{=SHOW_UNDONE}{/if}</div></td>
+								</tr>
+
+                                <tr>
+									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=MATING_FORM_INFO_BREEDER}</strong></div></td>
 								</tr>
 
 								<tr><td colspan="2"><br /><br /></td></tr>
@@ -233,11 +276,11 @@
 
 								<tr><td colspan="2"><br /><br /></td></tr>
 
-								<tr>
+								{* <tr>
 									<td colspan="3" class="tdleft"  style="text-align: center;">
 										<br /><div class="heading2 tdcenter">{=MATING_FORM_OWNER}</div>
 									</td>
-								</tr>
+								</tr> *}
 							</table>
 						</div>
 					</div>

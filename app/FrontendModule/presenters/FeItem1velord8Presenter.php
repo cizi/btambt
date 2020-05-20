@@ -4,6 +4,7 @@ namespace App\FrontendModule\Presenters;
 
 use App\Forms\MatingListForm;
 use App\Model\DogRepository;
+use App\Model\WebconfigRepository;
 use App\Model\Entity\DogEntity;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
@@ -24,18 +25,23 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 	private $enumerationRepository;
 
 	/** @var UserRepository */
-	private $userRepository;
+    private $userRepository;
+    
+    /** @var WebconfigRepository */
+    protected $webconfigRepository;
 
 	public function __construct(
 		MatingListForm $matingListForm,
 		DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
-		UserRepository $userRepository
+        UserRepository $userRepository,
+        WebconfigRepository $webconfigRepository
 	) {
 		$this->matingListForm = $matingListForm;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
-		$this->userRepository = $userRepository;
+        $this->userRepository = $userRepository;
+        $this->webconfigRepository = $webconfigRepository;
 	} 
 
 	public function actionDefault() {
@@ -73,54 +79,6 @@ class FeItem1velord8Presenter extends FrontendPresenter {
         }
 		$this->redirect(':Frontend:Homepage:default');
 	}
-
-	/**
-	 * @param Form $form
-	 */
-	/*public function submitMatingListDetail(Form $form) {
-		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
-			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
-			$this->redirect("Homepage:Default");
-		}
-		try {
-			$currentLang = $this->langRepository->getCurrentLang($this->session);
-			$latte = new \Latte\Engine();
-			$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
-
-			$latteParams = [];
-			foreach ($form->getValues() as $inputName => $value) {
-				if ($value instanceof ArrayHash) {
-					foreach ($value as $dogInputName => $dogValue) {
-						if ($dogInputName == 'Barva') {
-							$latteParams[$inputName . $dogInputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang,
-								$dogValue);
-						} else {
-							$latteParams[$inputName . $dogInputName] = $dogValue;
-						}
-					}
-				} else {
-					if ($inputName == 'Plemeno') {
-						$latteParams[$inputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $value);
-					} else {
-						$latteParams[$inputName] = $value;
-					}
-				}
-			}
-			$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->getBaseUrl();
-			$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang,
-				$form->getValues()['cID']);
-
-			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord16/matingPdf.latte', $latteParams);
-
-			$pdf = new \Joseki\Application\Responses\PdfResponse($template);
-			$pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
-			$this->sendResponse($pdf);
-		} catch (AbortException $e) {
-			throw $e;
-		} catch (\Exception $e) {
-			// dump($e); die;
-		}
-	} */
 
 	/**
 	 * Formulař prvního kroku krycíholistu
@@ -223,6 +181,11 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $femaleStation = $femaleOwners[$i]->getStation();
                 // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
             }
+
+            $counterKey = ($cID == 89 ? WebconfigRepository::KEY_COUNTER_COVERAGE_BT : WebconfigRepository::KEY_COUNTER_COVERAGE_MBT);
+            $latteParams["cisloKrycihoListu"] = $this->webconfigRepository->getByKey($counterKey, WebconfigRepository::KEY_LANG_FOR_COMMON);
+            $this->webconfigRepository->incrementCounter($counterKey, WebconfigRepository::KEY_LANG_FOR_COMMON);
+
             $latteParams["fenaMajitele"] = $femaleOwnersToInput;
             $latteParams["fenaStanice"] = $femaleStation;
 

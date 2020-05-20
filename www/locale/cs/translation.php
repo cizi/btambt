@@ -37,6 +37,7 @@ define("MENU_FOOTER", 'Patička');
 define("MENU_USERS", 'Uživatelé');
 define("MENU_SETTINGS", 'Nastavení');
 define("MENU_ENUMERATION", 'Číselníky');
+define("MENU_COUNTER", 'Číselné řady');
 define("MENU_VETS", 'Veterináři / Laboratoře');
 define("MENU_LANG", 'Jazyková nastavení');
 define("MENU_LOGOUT", 'Odhlásit');
@@ -136,7 +137,7 @@ define("WEBCONFIG_WEBMUTATION", "Jazyková mutace");
 define("WEBCONFIG_WEBMUTATION_INFO", "Právě editované nastavení bude použito pro zvolenou jazykovou mutaci. Pokud máte více jazykových mutací
 										je nutné provést toto nastavení pro všechny jazykové mutace.");
 define("WEBCONFIG_TITLE", "Nastavení webu");
-define("WEBCONFIG_TITLE_INFO", "Zde je možné konfigurovat rozložená webu, jeho šířku, případně vložení Google Analitics. ");
+define("WEBCONFIG_TITLE_INFO", "Zde je možné konfigurovat rozložení webu, jeho šířku, případně vložení Google Analitics. ");
 define("WEBCONFIG_WEB_NAME", "Název webu");
 define("WEBCONFIG_WEB_NAME_INFO", "Tento název bude zobrazen v hlavičce prohlížeče. Je taktéž důležitý pro vyhledavače");
 define("WEBCONFIG_WEB_KEYWORDS", "Klíčová slova");
@@ -174,6 +175,13 @@ define("WEBCONFIG_SETTINGS_SHOW_BLOCK", 'Block domovské stránky');
 define("WEBCONFIG_SETTINGS_SHOW_BLOCK_INFO", 'Vyberte block který se má zobrazovat na domovské obrazovce, tedy hlavní stránka webu.');
 define("WEBCONFIG_SETTINGS_LANG_DEPENDS", 'Nastavení závislé na jazyku');
 define("WEBCONFIG_SETTINGS_LANG_COMMON", 'Obecné nástavení');
+
+// system counters
+define("COUNTER_TITLE", 'Číselné řady');
+define("COUNTER_TITLE_INFO", 'Konfigurace číselných řad použitých v systému.');
+define("COUNTER_COVERAGE_COUNTER", 'Číselné řady krycích listů');
+define("COUNTER_COVERAGE_BT_COUNTER", 'Nadcházející číslo krycího listu BT');
+define("COUNTER_COVERAGE_MBT_COUNTER", 'Nadcházející číslo krycího listu MBT');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');
@@ -557,9 +565,9 @@ define("DOG_FORM_HEIGHT_NUMBER", 'Výška psa musí být číslo na dvě desetin
 define("DOG_FORM_WEIGHT_NUMBER", 'Váha psa musí být číslo na dvě desetinná místa (v kg), oddělovačem je tečka (.)!');
 define("DOG_FORM_LITTER_CHECK", 'Kontrola vrhu');
 
-define("DOG_FORM_TITLES", 'Tituly');
+define("DOG_FORM_TITLES", 'Výstavní ocenění');    // Tituly
 define("DOG_FORM_BON_TEXT", 'Bonitační posudek');
-define("DOG_FORM_SHOWS_TEXT", 'Výstavní ocenění');
+define("DOG_FORM_SHOWS_TEXT", 'Výsledky výstav');  // Výstavní ocenění
 define("DOG_FORM_SHOWS_NEXT_TEXT", 'Další výstavní ocenění');
 define("DOG_FORM_SHOWS_EXAMS", 'Zkoušky');
 define("DOG_FORM_SHOWS_EXAMS_NEXT", 'Zkoušky složené');
@@ -605,11 +613,12 @@ define("MATING_FORM_BON_CODE", 'Bonitační kód');
 define("MATING_FORM_PLACE_DETAIL", 'Krytí bylo uskutečněno v (místo)');
 define("MATING_FORM_PLACE_DETAIL_DAY", 'dne');
 define("MATING_FORM_PLACE_DETAIL_DAY_REPEAT", 'opakováno dne');
-define("MATING_FORM_ESTIMATE_DATE", 'Předpokládané datum vrhu');
-define("MATING_FORM_RULES", 'Sjednané náklady krytí a podmínky');
+define("MATING_FORM_ESTIMATE_DATE", 'Datum vrhu');
+define("MATING_FORM_RULES", 'Máte zájem o uvedení vrhu na webu?');
 define("MATING_FORM_NOTE", 'Poznámka (inseminace, náhrada za krytí, apod.)');
 define("MATING_FORM_NOTE_2", "Majitel krycího psa je povinen do 7 dnů po krytí odeslat vyplněný Krycí list – hlášení o krytí správci plemenné knihy. Při zahraničním krytí odesílá majitel feny.");
-define("MATING_FORM_OWNER", "Správce plemenné knihy: Jitka Kubištová, Zálezlice 114, 277 45 Zálezlice e-mail: zednikovaj@volny.cz , tel: 603 249 185");
+define("MATING_FORM_OWNER", "");
+define("MATING_FORM_INFO_BREEDER", "Chovatelé si napíší o složky ke štěňatům paní Hradecké na email VendulaHradeck@email.cz");
 
 define("MATING_FORM_DATE_SHORT", 'Datum');
 define("MATING_FORM_DATE", 'Datum krytí');
@@ -809,21 +818,21 @@ define("LITTER_APPLICATION_REWRITE_PUPPIES_FUR", "Srst");
 define("LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST", "Číslo přihlášky vrhu neexistuje");
 define("LITTER_APPLICATION_CREATE_SUBJECT", "Byla založena nová přihlášk vrhu");
 define("LITTER_APPLICATION_CREATE_BODY", "Byla založena nová přihlášk vrhu. Viz přiložený formulář <br /><br /> %s");
-define("LITTER_APPLICATION_FOR", "KRYCÍ LIST - hlášení o vrhu");
+define("LITTER_APPLICATION_FOR", "hlášení o vrhu");
 define("LITTER_APPLICATION_FOR_WHO", "- pro majitele feny");
-define("LITTER_APPLICATION_BREEDING", "Chovatelská stanice, vrh");
+define("LITTER_APPLICATION_BREEDING", "Chovatelská stanice");
 define("LITTER_APPLICATION_MALE_NAME", "Jméno krycího psa");
 define("LITTER_APPLICATION_RECORD_NUM_FORM", "číslo zápisu: CMKU/");
 define("LITTER_APPLICATION_RECORD_NUM", "číslo zápisu");
-define("LITTER_APPLICATION_PLACE", "Krytí bylo uskutečněno v (místo)");
+define("LITTER_APPLICATION_PLACE", "Krytí bylo uskutečněno");
 define("LITTER_APPLICATION_BIRTH", "Datum porodu");
 define("LITTER_APPLICATION_DOG_LIVE", "Počet živě narozených štěňat");
 define("LITTER_APPLICATION_DOG_LIVE_MALE", "z toho psi");
 define("LITTER_APPLICATION_DOG_LIVE_FEMALE", "feny");
 define("LITTER_APPLICATION_DOG_DEATH", "Počet mrtvě nar., do 7 dnů po nar. uhynulých nebo utracených štěňat");
-define("LITTER_APPLICATION_PUPPIES_DETAILS", "Barvy štěňat, zkrácené ocasy u WCP, další poznámky");
+define("LITTER_APPLICATION_PUPPIES_DETAILS", "Barvy štěňat, další poznámky");
 define("LITTER_APPLICATION_OWNWER_MALE", "Jméno a adresa majitele krycího psa");
-define("LITTER_APPLICATION_REVIEW", "Majitel feny je povinen do 7 dnů po vrhu, nebo do 75 dní po krytí, pokud fena nezabřezla, odeslat vyplněný Krycí list – hlášení o vrhu správci plemenné knihy.");
+define("LITTER_APPLICATION_REVIEW", "Majitel feny je povinen do 10 dnů po vrhu odeslat hlášení o vrhu poradci chovu na email poradcechovu@seznam.cz.");
 define("LITTER_APPLICATION_EDIT", "Editace vrhu");
 define("LITTER_APPLICATION_MID_OID_FAILED_TITLE", 'Referenční chyba genealogie. Pro psa s ID %d neodpovída pohlaví pro otce/matku!');
 define("MATING_LITTER_DOG_DATE", "dat. nar.");
