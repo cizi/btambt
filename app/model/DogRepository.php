@@ -11,6 +11,7 @@ use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
+use App\Model\Entity\VetEntity;
 use App\Model\Entity\LitterApplicationEntity;
 use Dibi\Connection;
 use Dibi\Row;
@@ -1168,14 +1169,38 @@ class DogRepository extends BaseRepository {
                     $dhe->setDatum(null);
                 }
             }
-                        
+                    
+            $vetFound = false;
             $vets = $this->vetRepository->findVets();
             foreach ($vets as $vet) {             
-                $vetJmenoPrijmeni = $vet->getTitulyPrefix() . " " . $vet->getJmeno() . " " . $vet->getPrijmeni();
-                if (strpos($vysledek, $vetJmenoPrijmeni) === true) {  
+                $vetJmenoPrijmeni = $vet->getTitulyPrefix().$vet->getJmeno().$vet->getPrijmeni();
+                if (strpos(trim(preg_replace('/\s+/', '', $vysledek)), $vetJmenoPrijmeni) !== false) {  
                     $dhe->setVeterinar($vet->getID());
                     $vysledek = trim(\str_replace($vetJmenoPrijmeni, "", $vysledek));
+                    $vetFound = true;
                     break;
+                }
+            }
+
+            if (($vetFound == false) && (strpos($vysledek, "MVDr.") !== false)) {
+                $newVet = new VetEntity();
+                $newVet->setTitulyPrefix("MVDr.");
+                $vetDet = \explode("MVDr.", $vysledek);
+                $vetJmen = \explode(" ", trim($vetDet[1]));
+                if (count($vetJmen) > 1) {
+                    $newVet->setJmeno($vetJmen[0]);
+                    $newVet->setPrijmeni($vetJmen[1]);
+                    $this->vetRepository->saveVet($newVet);
+
+                    $vets = $this->vetRepository->findVets();
+                    foreach ($vets as $vet) {             
+                        $vetJmenoPrijmeni = $vet->getTitulyPrefix().$vet->getJmeno().$vet->getPrijmeni();
+                        if (strpos(trim(preg_replace('/\s+/', '', $vysledek)), $vetJmenoPrijmeni) !== false) {  
+                            $dhe->setVeterinar($vet->getID());
+                            $vysledek = trim(\str_replace($vetJmenoPrijmeni, "", $vysledek));
+                            break;
+                        }
+                    }
                 }
             }
             $dhe->setVysledek("");

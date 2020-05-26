@@ -45,7 +45,7 @@ class KinshipVerificationForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $counter + 3);
 
-		$form->addSubmit("save", MATING_FORM_SAVE)
+		$form->addSubmit("save", CONTACT_FORM_BUTTON_CONFIRM)
 			->setAttribute("class", "btn btn-primary margin10")
 			->setAttribute("tabindex", $counter + 4);
 
