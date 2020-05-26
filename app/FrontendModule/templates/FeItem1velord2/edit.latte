@@ -1,6 +1,11 @@
 {block content}
 	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
 
+    <style>
+        .chosen-container { 
+            width: 100%!important;
+        }
+    </style>
 	<div class="myContent">
 		{form dogForm}
 			<!-- Page Content -->
@@ -140,6 +145,51 @@
 				startView: 2,
 				minView: 2,
 				forceParse: 0
+			});
+
+            $("#frm-dogForm-dogHealth-64-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-59-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-65-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-66-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-67-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-68-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-69-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-69-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-175-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-184-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+            $("#frm-dogForm-dogHealth-188-Veterinar").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
 			});
 
 			$("#frm-dogForm-owners-uID").chosen({
