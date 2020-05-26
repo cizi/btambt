@@ -50,25 +50,38 @@ class DogRepository extends BaseRepository {
 	private $langRepository;
 
 	/** @var LitterApplicationRepository */
-	private $litterApplicationRepository;
+    private $litterApplicationRepository;
+    
+    /** @var UserRepository */
+    private $userRepository;    // needed juzst for migration
+
+    /** @var VetRepository */
+    private $vetRepository;
 
 	/**
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param Connection $connection
 	 * @param Session $session
 	 * @param LangRepository $langRepository
+     * @param LitterApplicationRepository;
+     * @param UserRepository $userRepository
+     * @param VetRepository $vetRepository
 	 */
 	public function __construct(
 		EnumerationRepository $enumerationRepository,
 		Connection $connection,
 		Session $session,
 		LangRepository $langRepository,
-		LitterApplicationRepository $litterApplicationRepository
+        LitterApplicationRepository $litterApplicationRepository,
+        UserRepository $userRepository,
+        VetRepository $vetRepository
 	) {
 		$this->enumRepository = $enumerationRepository;
 		$this->session = $session;
 		$this->langRepository = $langRepository;
-		$this->litterApplicationRepository = $litterApplicationRepository;
+        $this->litterApplicationRepository = $litterApplicationRepository;
+        $this->userRepository = $userRepository;
+        $this->vetRepository = $vetRepository;
 
 		parent::__construct($connection);
 	}
@@ -658,9 +671,14 @@ class DogRepository extends BaseRepository {
 				$query = ["insert into appdata_pes ", $dogEntity->extract()];
 				$this->connection->query($query);
 				$dogEntity->setID($this->connection->getInsertId());
-			} else {	// editovaný pes
-				$query = ["update appdata_pes set ", $dogEntity->extract(), "where ID=%i", $dogEntity->getID()];
-				$this->connection->query($query);
+            } else {	// editovaný pes
+                if ($this->getDog($dogEntity->getID()) == null) {   // ale pokud znám ID a není v DB, zkusím ho pod tímto ID založit
+                    $query = ["insert into appdata_pes ", $dogEntity->extract()];
+				    $this->connection->query($query);
+                } else {
+                    $query = ["update appdata_pes set ", $dogEntity->extract(), "where ID=%i", $dogEntity->getID()];
+				    $this->connection->query($query);
+                }
 			}
 			/** @var DogHealthEntity $dogHealthEntity */
 			foreach($dogHealth as $dogHealthEntity) {
@@ -712,7 +730,7 @@ class DogRepository extends BaseRepository {
 
 			$this->connection->commit();
 		} catch (\Exception $e) {
-			$this->connection->rollback();
+            $this->connection->rollback();
 			throw $e;
 		}
 	}
@@ -1042,6 +1060,316 @@ class DogRepository extends BaseRepository {
 
 		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin, $restrictVisibilityByUser, $deepMark);
     }
+
+    // MIGRACE START
+    public function migrateOldStructure() {
+        $migratedDogs = 0;
+        $this->connection->query("SET sql_mode = ''");
+        $this->connection->query("SET FOREIGN_KEY_CHECKS=0");
+
+        $defaultPass = "geneAheslo";
+        $fakeEmailCounter = 0;
+        $tables = ["gene002", "gene003"];
+        $usersCreated = 0;
+        foreach ($tables as $table) {
+            $query = "select * from {$table}";
+            $dogs = $this->connection->query($query);
+            foreach ($dogs->fetchAll() as $dog) {
+                $newDogEntity = new DogEntity();
+                $newDogEntity->setID($dog->ID);
+                $newDogEntity->setOID($dog->oID);
+                $newDogEntity->setMID($dog->mID);
+                $newDogEntity->setJmeno($dog->Jmeno);
+                $newDogEntity->setDatNarozeni($dog->DatNar);
+                $newDogEntity->setDatUmrti($dog->DatUmr);
+                $newDogEntity->setPohlavi($this->getSex($dog->Pohlavi));
+                $newDogEntity->setBarva($this->getFurColor($dog->Barva));
+                $newDogEntity->setSrst(45);
+                $newDogEntity->setCisloZapisu($dog->Czap);
+                $newDogEntity->setChovnost($this->getBreedingState($dog->Chovnost));
+                $newDogEntity->setVyska((empty($dog->Vyska) ? NULL : floatval($dog->Vyska)));
+                $newDogEntity->setPlemeno($this->getNewBreed($table));
+
+                if (!empty($dog->SvodDate) && ($dog->SvodDate != "0000-00-00")) {
+                    $svodDatum = new DateTime($dog->SvodDate);
+                    $newDogEntity->setBonitace($svodDatum->format(DogEntity::MASKA_DATA_ZOBRAZENI));
+                }
+
+                $newDogEntity->setPosudek($dog->SvodVysl);
+                $newDogEntity->setTitulyKomentar($dog->Vystavy);
+                $newDogEntity->setSkrytPotomky($dog->LockPotomci);
+                $newDogEntity->setSkrytCelouKartu($dog->LockKarta);
+                $newDogEntity->setZkousky($dog->Zkousky);
+                $newDogEntity->setZkouskySlozene($dog->Zkousky);
+                $newDogEntity->setKomentar($dog->Poznamka);
+
+                // tetování a čip
+                $tetCip = trim($dog->TetCip);
+                if (!empty($tetCip)) {
+                    if (strpos($tetCip, ",") === true) {
+                        $tc = explode(",", $tetCip);
+                        $tetovani = trim($tc[0]);
+                        $cip = trim($tc[1]);
+                        if ((strlen($tetovani) == 3) || (strlen($tetovani) == 4) || (strlen($tetovani) == 5)) {
+                            $newDogEntity->setTetovani($tetovani);
+                            $newDogEntity->setCip($cip);
+                        } else if (strlen($tetovani) == 15) {
+                            $newDogEntity->setCip($tetovani);
+                            $newDogEntity->setTetovani($cip);
+                        }
+                    } else {
+                        if (strlen($tetCip) == 15) {
+                            $newDogEntity->setCip($tetCip);
+                        } else {
+                            $newDogEntity->setTetovani($tetCip);
+                        }
+                    }
+                }
+            
+                $dogHealth = [];
+                $dbCols = [ 59 => "TestHeart", 64 => "testLS", 65 => "testLU", 67 => "TestPatella", 68 => "TestBAER", 69 => "TestLuxace", ];
+                foreach ($dbCols as $typ => $hodnota) {
+                    if (isset($dog[$hodnota])) {
+                        $dh = $this->getMigrationDogHealth($typ, trim($dog[$hodnota]));
+                        if (!empty($dh)) {
+                            $dogHealth[] = $dh;
+                        }
+                    }
+                }
+                $breeders = $this->getMigrationBreederOwner(trim($dog->Chovatel), true, "", "", "", "", "nejakeSuoerHeslo");
+                $owners = $this->getMigrationBreederOwner(trim($dog->Majitel), false, $dog->mAdresa, $dog->mTelefon, $dog->mMail, $dog->mWww, $dog->Heslo);
+                try {
+                    $this->save($newDogEntity, [], $dogHealth, $breeders, $owners, []);
+                    $migratedDogs++;
+                } catch (Exception $e) {
+                    dump($e);
+                    die;
+                }
+            }
+        }
+        $this->connection->query("SET FOREIGN_KEY_CHECKS=1");
+        echo "Bylo vytvořeno {$migratedDogs} psů";
+    }
+
+    private function getMigrationDogHealth($typ, $vysledek) {
+        $dogHealth = null;
+        if (!empty($vysledek)) {
+            $dhe = new DogHealthEntity();
+            $dhe->setTyp($typ);
+            $datum = explode("-", $vysledek);
+            if (count($datum) > 1) {
+                try {
+                    $date = DateTime::createFromFormat(DogEntity::MASKA_DATA_ZOBRAZENI, trim($datum[0]));
+                    if ($date instanceof DateTime) {
+                        $dhe->setDatum($date->format(DogEntity::MASKA_DATA));
+                        $vysledek = \str_replace(trim($datum[0]), "", $vysledek);
+                    }
+                } catch (Exception $e) {
+                    $dhe->setDatum(null);
+                }
+            }
+                        
+            $vets = $this->vetRepository->findVets();
+            foreach ($vets as $vet) {             
+                $vetJmenoPrijmeni = $vet->getTitulyPrefix() . " " . $vet->getJmeno() . " " . $vet->getPrijmeni();
+                if (strpos($vysledek, $vetJmenoPrijmeni) === true) {  
+                    $dhe->setVeterinar($vet->getID());
+                    $vysledek = trim(\str_replace($vetJmenoPrijmeni, "", $vysledek));
+                    break;
+                }
+            }
+            $dhe->setVysledek("");
+            $dhe->setKomentar($vysledek);
+            $dogHealth = $dhe;
+        }
+
+        return $dogHealth;
+    }
+
+    private function getMigrationBreederOwner($userString, $isBreeder, $mAdresa, $mTelefon, $mMail, $mWww, $heslo) {
+        $usersByType = [];
+        if (!empty($userString)) {
+            $celeJmenoArr = explode(" ", $userString);
+            $jmeno = (!empty($celeJmenoArr[0]) ? trim($celeJmenoArr[0]) : "");
+            $jmeno = \str_replace(",", "", $jmeno);
+            $celeJmenoArr[0] = "";
+
+            $prijmeni = (!empty($celeJmenoArr[1]) ? trim($celeJmenoArr[1]) : "");
+            $prijmeni = implode(" ", $celeJmenoArr); //  \str_replace(",", "", $prijmeni);
+
+            if (!empty($jmeno) && (!empty($prijmeni))) {
+                $userInDb = $this->userRepository->getUserByNameSurname($jmeno, $prijmeni);
+                if (empty($userInDb)) { // musím založit neexistuje
+                    $fakeEmailCounter = 0;
+                    if (empty($mMail)) {
+                        $email = "unknow_email{$fakeEmailCounter}@email.cz";
+                    } else {
+                        $email = $mMail;
+                    }
+                    $userByEmail = $this->userRepository->getUserByEmail($email);
+                    while ($userByEmail != null) {
+                        $fakeEmailCounter++;
+                        $email = "unknow_email{$fakeEmailCounter}@email.cz";
+                        $userByEmail = $this->userRepository->getUserByEmail($email);
+                    }
+                    $newUserId = $this->userRepository->createUser($jmeno, $prijmeni, $mAdresa, $mTelefon, $email, $mWww, $heslo);
+                    if ($isBreeder) {   // chovatel 
+                        $breeder = new BreederEntity();
+                        $breeder->setUID($newUserId);
+                        $usersByType[] = $breeder;
+                    } else {    // majitel
+                        $owner = new DogOwnerEntity();
+                        $owner->setSoucasny(true);
+                        $owner->setUID($newUserId);
+                        $usersByType[] = $owner;
+                    }
+                } else {
+                    if ($isBreeder) {   // chovatel 
+                        $breeder = new BreederEntity();
+                        $breeder->setUID($userInDb->getId());
+                        $usersByType[] = $breeder;
+                    } else {    // majitel
+                        $owner = new DogOwnerEntity();
+                        $owner->setSoucasny(true);
+                        $owner->setUID($userInDb->getId());
+                        $usersByType[] = $owner;
+                    }
+                }
+            }
+        }
+
+        return $usersByType;
+    }
+
+    private function getBreedingState($oldValue) {
+        switch ($oldValue) {
+            case 1:
+                return 27;
+            break;
+
+            case 2:
+                return 28;
+            break;
+
+            default:
+            return 25;
+        break;
+        }
+
+    }
+
+    /**
+	 * Vrátí novou hodnotu číselníku pro Plemeno dle tabulky
+	 * @param $oldBreed
+	 * @return int|null
+	 */
+	private function getNewBreed($tableName) {
+        if ($tableName ==  "gene003") {
+            return 18;
+        } else {
+            return 17;
+        }
+        
+	}
+
+	/**
+	 * Vrátí novou hodnotu číselníku pro Barvu
+	 * @param $oldColor
+	 * @return int|null
+	 */
+	private function getFurColor($oldColor) {
+		switch ($oldColor) {
+			case "černá s žíháním, bílé zn.":
+				return 199;
+				break;
+
+			case "žíhaná, bílé zn.":
+				return 197;
+				break;
+
+			case "bílá":
+				return 194;
+				break;
+
+			case "bílá se zn.":
+				return 195;
+				break;
+
+			case "červená, bílé zn.":
+				return 201;
+				break;
+
+            case "žíhaná":
+                return 196;
+            break;
+
+            case "tricolor, bílé zn.":
+                return 205;
+            break;
+
+            case "písková":
+                return 200;
+            break;
+
+            case "plavá":
+                return 202;
+            break;
+
+            case "černá s žíháním":
+                return 198;
+            break;
+
+            case "písková, bílé zn.":
+                return 201;
+            break;
+
+            case "červená":
+                return 200;
+            break;
+
+            case "plavá, bílé zn.":
+                return 203;
+            break;
+
+            case "tricolor":
+                return 204;
+            break;
+
+            case "tricolor, bílé zn.":
+                return 205;
+            break;
+
+            case "černá s pálením":
+                return 206;
+            break;
+
+			default:
+				return null;
+				break;
+		}
+    }
+    
+	/**
+	 * Vrátí novou hodnutu číselníku pro Pohlaví
+	 * @param $oldSex
+	 * @return int|null
+	 */
+	private function getSex($oldSex) {
+		switch ($oldSex) {
+			case 1:
+				return 29;
+				break;
+
+			case 2:
+				return 30;
+				break;
+
+			default:
+				return null;
+				break;
+		}
+    }
+    // migrace END
 
 	/**
 	 * @param int $ID

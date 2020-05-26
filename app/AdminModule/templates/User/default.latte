@@ -21,6 +21,7 @@
 							<table class="table table-striped">
 								<thead>
 									<tr>
+                                        <th>{=USER_EDIT_NAME_LABEL}</th>
 										<th>{=USER_TABLE_HEADER_LOGIN}</th>
 										<th>{=USER_TABLE_HEADER_ROLE}</th>
 										<th>{=USER_TABLE_HEADER_ACTIVE}</th>
@@ -36,6 +37,7 @@
 								<tbody>
 								{foreach $users as $userForeach}
 									<tr>
+                                        <td>{$userForeach->getFullName()}</td>
 										<td>{$userForeach->getEmail()}</td>
 										<td>
 											{if isset($roles[$userForeach->getRole()])}

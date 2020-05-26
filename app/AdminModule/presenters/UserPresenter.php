@@ -100,10 +100,15 @@ class UserPresenter extends SignPresenter {
 
 		try {
 			if ($isEditation) {	// pokud edituji tak propíšu jen heslo a počet pokusů o přihlášení (to nikde ve formuláři nezobrazuji)
-				$userCurrent = $this->userRepository->getUser($values['id']);	// uživatel kterého měním
-				$userEntity->setPassword($userCurrent->getPassword());
-				$this->userRepository->saveUser($userEntity);
-				$this->flashMessage(USER_EDITED, "alert-success");
+                $userCurrent = $this->userRepository->getUser($values['id']);	// uživatel kterého měním
+                if ($this->userRepository->getUserByEmail($userEntity->getEmail()) != null) {
+                    $this->flashMessage(USER_EMAIL_ALREADY_EXISTS, "alert-danger");
+                    $form->addError(USER_EMAIL_ALREADY_EXISTS);                  
+                } else {
+                    $userEntity->setPassword($userCurrent->getPassword());
+                    $this->userRepository->saveUser($userEntity);
+                    $this->flashMessage(USER_EDITED, "alert-success");
+                }
 			} else {
 				if ((trim($values['passwordConfirm']) == "") || (trim($values['password']) == "")) {
 					$this->flashMessage(USER_EDIT_PASSWORDS_EMPTY, "alert-danger");
@@ -146,7 +151,7 @@ class UserPresenter extends SignPresenter {
 
 		if ($userEntity) {
 			$this['editForm']->addHidden('id', $userEntity->getId());
-			$this['editForm']['email']->setAttribute("readonly", "readonly");
+			// $this['editForm']['email']->setAttribute("readonly", "readonly");
 
 			$this['editForm']['password']->setAttribute("readonly", "readonly");	// pokud edituji tak heslo nem�n�m
 			$this['editForm']['passwordConfirm']->setAttribute("readonly", "readonly"); // pokud edituji tak heslo nem�n�m

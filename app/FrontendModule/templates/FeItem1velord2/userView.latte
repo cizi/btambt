@@ -9,8 +9,8 @@
 			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+					{* <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th> *}
 				</tr>
 				{foreach $dogByCurrentOwner as $recId => $dogCurrent}
 					<tr>
@@ -32,12 +32,12 @@
 							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
 							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
 						</td>
-						<td>
+						{* <td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
 						</td>
 						<td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
-						</td>
+						</td> *}
 					</tr>
 				{/foreach}
 			</table>
@@ -48,8 +48,8 @@
 			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+					{* <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th> *}
 				</tr>
 				{foreach $dogByPreviousOwner as $recId => $dogCurrent}
 					<tr>
@@ -71,12 +71,12 @@
 							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
 							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
 						</td>
-						<td>
+						{* <td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
 						</td>
 						<td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
-						</td>
+						</td> *}
 					</tr>
 				{/foreach}
 			</table>
@@ -87,8 +87,8 @@
 			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
-					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+					{* <th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th> *}
 				</tr>
 				{foreach $dogsByBreeder as $recId => $dogCurrent}
 					<tr>
@@ -110,12 +110,12 @@
 							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}
 							{* , {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())} *}
 						</td>
-						<td>
+						{* <td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
 						</td>
 						<td>
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
-						</td>
+						</td> *}
 					</tr>
 				{/foreach}
 			</table>
