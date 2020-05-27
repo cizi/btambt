@@ -145,11 +145,13 @@ class DogForm {
 		$form->addSelect("Chovnost", DOG_FORM_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");
 
+        // využito jako "CZDR"
 		$form->addText("ChovnyKomentar", DOG_FORM_BREEDING_COM)
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_BREEDING_COM);
 
-		$form->addText("ZdravotniKomentar", DOG_FORM_HEALTH_COM)
+        // využito jako "Poznámka administrátora"
+		$form->addTextArea("ZdravotniKomentar", DOG_FORM_HEALTH_COM, null, 7)
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_HEALTH_COM);
 
@@ -208,10 +210,10 @@ class DogForm {
 		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT, null, 7)
 			->setAttribute("class", "form-control");
 
-		/* $form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
-			->setAttribute("class", "form-control");
+		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
+			->setAttribute("class", "form-control"); 
 
-        $form->addTextArea("ZkouskySlozene", DOG_FORM_SHOWS_EXAMS_NEXT, null, 7)
+        /* $form->addTextArea("ZkouskySlozene", DOG_FORM_SHOWS_EXAMS_NEXT, null, 7)
             ->setAttribute("class", "form-control"); */ 
 
 		$form->addTextArea("Zavody", DOG_FORM_SHOWS_RACES, null, 7)

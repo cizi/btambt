@@ -135,7 +135,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$form->onSubmit[] = [$this, 'saveDog'];
 
         if ($this->getUser()->getRoles()[0] != UserRoleEnum::USER_ROLE_ADMINISTRATOR) {
-            unset($form['SkrytPotomky'], $form['SkrytSourozence'], $form['SkrytCelouKartu']);   
+            unset(
+                $form['SkrytPotomky'], 
+                $form['SkrytSourozence'], 
+                $form['SkrytCelouKartu'],
+                $form['ZdravotniKomentar']
+            );   
         }
 
 		$renderer = $form->getRenderer();

@@ -60,7 +60,7 @@
 										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPlemeno())}</td>
 										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getBarva())}</td>
 										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPohlavi())}</td>
-										<td nowrap>{if $dog->getDatNarozeni() != NULL}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
+										<td nowrap>{if $dog->getDatNarozeni() != NULL}{$dog->getDatNarozeni()->format('j.n.Y')}{/if}</td>
 										<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getChovnost())}</td>
 										{* <td nowrap>
 											{var dkk = $dogRepository->getDkkByDogId($dog->getID())}

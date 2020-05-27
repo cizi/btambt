@@ -38,22 +38,30 @@
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPohlavi())}</td>
 
 						<th>{=DOG_FORM_BIRT}:</th>
-						<td>{if $dog->getDatNarozeni() != null}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
+						<td>{if $dog->getDatNarozeni() != null}{$dog->getDatNarozeni()->format('j.n.Y')}{/if}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_DEAD}:</th>
-						<td>{if $dog->getDatUmrti() != null}{$dog->getDatUmrti()->format('d.m.Y')}{/if}</td>
+						<td>{if $dog->getDatUmrti() != null}{$dog->getDatUmrti()->format('j.n.Y')}{/if}</td>
 
-						<th>{* =DOG_FORM_DEAD_COM}: *}</th>
-						<td>{* $dog->getUmrtiKomentar()} *}</td>
+						{* <th>{=DOG_FORM_DEAD_COM}:}</th>
+						<td>{$dog->getUmrtiKomentar()}</td> *}
+
+                        {if $amIAdmin}
+                            <th>{=DOG_FORM_HEALTH_COM}:</th>
+                            <td>{$dog->getZdravotniKomentar()}</td>
+                        {else}
+                            <th></th>
+                            <td></td>
+                        {/if}
 					</tr>
                     {if ($isBt == false) && !empty($dog->getVyska())}
                         <tr>
                             <th>{=DOG_FORM_HEIGHT}:</th>
                             <td>{$dog->getVyska()} cm</td>
-
+                                                 
                             <th>{* =DOG_FORM_WEIGHT}: *}</th>
-                            <td>{* $dog->getVaha()} kg *}</td>
+                            <td>{* $dog->getVaha()} kg* *}</td> 
                         </tr>
                     {/if}
 					<tr>
@@ -87,7 +95,7 @@
                                 {if $polozka->getVysledek() != ""}
                                     <strong>{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}:</strong> {$polozka->getVysledek()}
                                     {if trim($polozka->getKomentar()) != ""}- {$polozka->getKomentar()}{/if}
-                                    {if $polozka->getDatum() != null} - {$polozka->getDatum()->format('d.m.Y')}{/if}
+                                    {if $polozka->getDatum() != null} - {$polozka->getDatum()->format('j.n.Y')}{/if}
                                     {if $polozka->getVeterinar() != null}
                                         {var vet = $vetRepo->getVet($polozka->getVeterinar())}
                                         - {$vet->getFullName()}
@@ -95,7 +103,6 @@
                                     <br />
                                 {/if}
 							{/foreach}
-							{$dog->getZdravotniKomentar()}
 						</td>
 					</tr>
 					{if !empty($dog->getChovnyKomentar())}
@@ -251,7 +258,7 @@
                                 {if ($lastParent != $descennt->getMID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
                                     <tr class="dogView">
                                         <td colspan="4" class="parentMarker">
-                                            {if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
+                                            {if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("j.n.Y")} :: {/if}
                                             {=DOG_FORM_FEMALE}:
                                             <a href={link view, $descennt->getMID()}>{$dogRepository->getName($descennt->getMID())|noescape}</a>
                                         </td>
@@ -264,7 +271,7 @@
                                 {if ($lastParent != $descennt->getOID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
                                     <tr class="dogView">
                                         <td colspan="4" class="parentMarker">
-                                            {if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
+                                            {if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("j.n.Y")} :: {/if}
                                             {=DOG_FORM_MALE}:
                                             <a href={link view, $descennt->getOID()}>{$dogRepository->getName($descennt->getOID())}</a>
                                         </td>
@@ -313,7 +320,7 @@
 					{foreach $showTitles as $data}
 						{if ($data['showDog']->getTrida() != $lastTrida) || ($data['showDog']->getOceneni() != $lastOceneni) || ($data['showDog']->getPoradi() != $lastPoradi) || ($data['show']->getDatum() != $lastDatum)}
 							<tr>
-								<td>{if $data['show']->getDatum() != null}{$data['show']->getDatum()->format('d.m.Y')}{/if}</td>
+								<td>{if $data['show']->getDatum() != null}{$data['show']->getDatum()->format('j.n.Y')}{/if}</td>
 								<td>{$data['show']->getMisto()}</td>
 								<td>{$enumRepo->findEnumItemByOrder($lang, $data['show']->getTyp())}</td>
 								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getTrida())}</td>
@@ -341,8 +348,8 @@
 				<div class="viewHeader">{=DOG_FORM_SHOWS_NOTE}</div>
 				<div class="dogViewSingleContent">{nl2br($dog->getKomentar())|noescape}</div>
 
-				{* <div class="viewHeader">{=DOG_FORM_SHOWS_EXAMS}</div>
-				<div class="dogViewSingleContent">{nl2br($dog->getZkousky())|noescape}</div> *}
+				<div class="viewHeader">{=DOG_FORM_SHOWS_EXAMS}</div>
+				<div class="dogViewSingleContent">{nl2br($dog->getZkousky())|noescape}</div>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_RACES}</div>
 				<div class="dogViewSingleContent">{nl2br($dog->getZavody())|noescape}</div>

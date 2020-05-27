@@ -285,12 +285,14 @@ class DogRepository extends BaseRepository {
 		if (
 			isset($filter[DogFilterForm::DOG_FILTER_HEALTH])
 			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])
-			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]
+            || isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])
+            || isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]
 			)) {
 			$joins[] = "left join `appdata_zdravi` as az on ap.ID = az.pID ";
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
-			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+            unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+            unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);
 		}
 
 		return $joins;
@@ -305,7 +307,8 @@ class DogRepository extends BaseRepository {
 	private function getWhereFromKeyValueArray(array $filter, $owner = null, $breeder = null) {
 		// odstraním data, která jsou součástí filteru, ale nepatří do WHERE klauzule
 		unset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]);	// tohle sem v podstatě nepatří, ale je to souččástí filtru
-		$return = ((count($filter) > 0) || ($owner != null) || ($breeder != null) ? " and " : "");
+
+        $return = ((count($filter) > 0) || ($owner != null) || ($breeder != null) ? " and " : "");
 
 		$dbDriver = $this->connection->getDriver();
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
@@ -345,13 +348,12 @@ class DogRepository extends BaseRepository {
 			$return .= sprintf("az.Typ = %d", $filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
-
-			if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) { // ale musím připojit vysledek
-				$return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
-				$return .= (count($filter) > 1 ? " and " : "");
-			}
-		}
-		unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);	// tohle musím pro unsetnout vždy, protože když to někdo vyplní a nevybere typ zdravi tak je to bezpředmětný
+        }
+        if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) { // ale musím připojit vysledek
+            $return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
+            $return .= (count($filter) > 1 ? " and " : "");
+            unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);
+        }		
 
 		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) || isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
 			$dkk = (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) ? $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]) : "");
@@ -1277,7 +1279,7 @@ class DogRepository extends BaseRepository {
             break;
 
             default:
-            return 25;
+            return 0;
         break;
         }
 
