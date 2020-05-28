@@ -97,14 +97,18 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 */
 	public function dogFilter(Form $form) {
-		$filter = "1&";
-		foreach ($form->getHttpData() as $key => $value) {
-			if ($value != "") {
-				$filter .= $key . "=" . $value . "&";
-			}
-		}
-		$this->filter = $filter;
-		$this->redirect("default");
+		if (isset($form->getHttpData()["clearFilter"])) {
+            $this->filter = "";
+        } else {
+            $filter = "1&";
+            foreach ($form->getValues() as $key => $value) {
+                if ($value != "") {
+                    $filter .= $key . "=" . $value . "&";
+                }
+            }
+            $this->filter = $filter;
+        }
+        $this->redirect("default");
 	}
 
 	/**

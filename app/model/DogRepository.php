@@ -193,7 +193,6 @@ class DogRepository extends BaseRepository {
 	 * @throws \Dibi\Exception
 	 */
 	public function findDogs(Paginator $paginator, array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
-        unset($filter["_do"], $filter["_form"], $filter["_token"]);  // remove this because of Nette adding this hidden inputs in the form
         if (empty($filter) && ($owner == null) && ($breeder == null)) {
             if ($restrictVisibilityByUser) {
                 $query = ["select * from appdata_pes where Stav = %i and SkrytCelouKartu = 0 order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
@@ -239,7 +238,6 @@ class DogRepository extends BaseRepository {
 	 * @throws \Dibi\Exception
 	 */
 	public function getDogsCount(array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
-        unset($filter["_do"], $filter["_form"], $filter["_token"]);  // remove this because of Nette adding this hidden inputs in the form
         $query = [];
         if (empty($filter) && ($owner == null) && ($breeder == null)) {
             $query[] = "select count(ID) as pocet from appdata_pes as ap ";

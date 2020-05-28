@@ -479,6 +479,7 @@ define("DOG_TABLE_FILTER_LABEL", 'Filtr tabulky');
 define("DOG_TABLE_HEADER_ADD_DOG", 'nový');
 define("DOG_TABLE_FILTER_TOGGLE", 'filtr');
 define("DOG_TABLE_BTN_FILTER", 'filtrovat');
+define("DOG_TABLE_BTN_CLEAR_FILTER", 'zrušit filtr');
 define("DOG_TABLE_HEADER_NAME", 'jméno');
 define("DOG_TABLE_HEADER_BREED", 'plemeno');
 define("DOG_TABLE_HEADER_COLOR", 'barva');

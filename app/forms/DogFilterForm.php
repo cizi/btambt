@@ -126,9 +126,11 @@ class DogFilterForm {
 		$form->addCheckbox(self::DOG_FILTER_LAST_14_DAYS, DOG_TABLE_LAST_14_DAYS)
 			->setAttribute("class", "margin10");
 
-		$form->addGroup();
-		$form->addSubmit("filter", DOG_TABLE_BTN_FILTER)
+        $form->addSubmit("filter", DOG_TABLE_BTN_FILTER)
 			->setAttribute("class","btn btn-info margin10");
+
+        $form->addSubmit("clearFilter", DOG_TABLE_BTN_CLEAR_FILTER)
+			->setAttribute("class","btn btn-danger margin10");
 
 		return $form;
 	}

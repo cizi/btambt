@@ -460,6 +460,7 @@ define("DOG_TABLE_FILTER_LABEL", 'Filter');
 define("DOG_TABLE_HEADER_ADD_DOG", 'new');
 define("DOG_TABLE_FILTER_TOGGLE", 'filter');
 define("DOG_TABLE_BTN_FILTER", 'filter');
+define("DOG_TABLE_BTN_CLEAR_FILTER", 'clear filter');
 define("DOG_TABLE_HEADER_NAME", 'name');
 define("DOG_TABLE_HEADER_BREED", 'breed');
 define("DOG_TABLE_HEADER_COLOR", 'colour');
