@@ -42,7 +42,9 @@ class LitterApplicationDetailForm {
 		$form->addHidden('Klub');	// DB
 		$form->addHidden('MajitelFeny');	// DB
 		$form->addHidden('cID');
-		$form->addHidden('title');
+        $form->addHidden('title');
+        $form->addHidden('basePath');
+        $form->addHidden('number');
 
 		$barvy = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::BARVA);
 		$barvyBezPrazdne = $this->enumerationRepository->findEnumItemsForSelectIgnoreEmpty($currentLang, EnumerationRepository::BARVA);
@@ -63,6 +65,7 @@ class LitterApplicationDetailForm {
 		$form->addSelect("otecBarva", DOG_TABLE_HEADER_COLOR, $barvy);
 		$form->addSelect("otecSrst", LITTER_APPLICATION_DETAIL_FUR_TYPE, $srst);
 		$form->addText("otecBon", LITTER_APPLICATION_DETAIL_BONITATION, 20);
+		$form->addText("otecCisZap", LITTER_APPLICATION_DETAIL_BONITATION, 20);
 		// $form->addText("otecHeight", DOG_TABLE_HEADER_HEIGHT ,4);
 
 		// matka
@@ -73,10 +76,11 @@ class LitterApplicationDetailForm {
 		$form->addText("matkaPP", LITTER_APPLICATION_DETAIL_CARD_NO, 20);
 		$form->addSelect("matkaBarva", DOG_TABLE_HEADER_COLOR, $barvy);
 		$form->addSelect("matkaSrst", LITTER_APPLICATION_DETAIL_FUR_TYPE, $srst);
-		$form->addText("matkaBon", LITTER_APPLICATION_DETAIL_BONITATION, 20);
+        $form->addText("matkaBon", LITTER_APPLICATION_DETAIL_BONITATION, 20);
+        $form->addText("matkaCisZap", LITTER_APPLICATION_DETAIL_BONITATION, 20);
 		// $form->addText("matkaHeight", DOG_TABLE_HEADER_HEIGHT ,4);
 
-		$form->addText("chovatel", LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS, 120);
+		$form->addText("chovatel", LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS, 80);
 		$form->addText("datumkryti", MATING_FORM_DATE, 15)
 			->setAttribute("class", "tinym_required_field")
 			->setAttribute("validation", LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ);

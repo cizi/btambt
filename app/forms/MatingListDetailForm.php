@@ -10,6 +10,9 @@ class MatingListDetailForm {
 
     use Nette\SmartObject;
 
+    /** @const pocet radek formulare o štěňatech */
+	const NUMBER_OF_LINES = 10;
+
 	/** @var FormFactory */
 	private $factory;
 
@@ -35,7 +38,10 @@ class MatingListDetailForm {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
-		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 7);
+        $plemeno = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 7);
+        $pohlavi = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::POHLAVI);
+        $barvyBezPrazdne = $this->enumerationRepository->findEnumItemsForSelectIgnoreEmpty($currentLang, EnumerationRepository::BARVA);
+
 		$form->addHidden('cID');
 
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno)
@@ -119,13 +125,19 @@ class MatingListDetailForm {
 			->setAttribute("placeholder", LITTER_APPLICATION_DOG_DEATH)
 			->setAttribute("tabindex", $counter++);
 
-		$form->addTextArea("PocetStenatPozn", LITTER_APPLICATION_PUPPIES_DETAILS, 100, 10)
+		$form->addText("PocetStenatPozn", LITTER_APPLICATION_PUPPIES_DETAILS, 80)
 			->setAttribute("placeholder", LITTER_APPLICATION_PUPPIES_DETAILS)
 			->setAttribute("tabindex", $counter++);
 
 		$form->addCheckbox("UvedeniNaWebu")
 			->setAttribute("placeholder", MATING_FORM_RULES)
-			->setAttribute("tabindex", $counter++);
+            ->setAttribute("tabindex", $counter++);
+            
+        for ($i=1; $i <= self::NUMBER_OF_LINES; $i++) {
+            $form->addSelect("pohlavi" . $i, "", $pohlavi);
+            $form->addText("jmeno" . $i, "", 20);
+            $form->addSelect("barva" . $i, "", $barvyBezPrazdne);
+        }
 
 		// ------------------------------------------------------------
 

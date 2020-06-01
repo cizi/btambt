@@ -44,7 +44,7 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 	private $matingListDetailForm;
 
 	/**
-	 * FeItem2velord17Presenter constructor.
+	 * FeItem1velord9Presenter constructor.
 	 * @param LitterApplicationForm $litterApplicationForm
 	 * @param DogRepository $dogRepository
 	 * @param LitterApplicationDetailForm $litterApplicationDetailForm
@@ -158,11 +158,17 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->getBaseUrl();
 			$latteParams['puppiesLines'] = LitterApplicationDetailForm::NUMBER_OF_LINES;
 			$latteParams['enumRepository'] = $this->enumerationRepository;
-			$latteParams['currentLang'] = $this->langRepository->getCurrentLang($this->session);
+            $latteParams['currentLang'] = $this->langRepository->getCurrentLang($this->session);
+            $latteParams["PlemenoNazev"] = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $latteParams["Plemeno"]);
+            $latteParams["number"] = $array["number"];
+
+            $clubName = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $array["cID"]);
+            $latteParams["clubName"] = $clubName;
+            $latteParams["dateFormat"] = DogEntity::MASKA_DATA_ZOBRAZENI;
 
 			$latte = new \Latte\Engine();
 			$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
-			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord17/pdf.latte', $latteParams);
+			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord9/pdf.latte', $latteParams);
 
 			$data = base64_encode(gzdeflate(serialize($_POST)));
 			$litterApplicationEntity->setData($data);
@@ -177,8 +183,8 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 				$litterApplicationEntity->setPlemeno(null);
 			}
 			//dump($litterApplicationEntity); die;
-			$this->litterApplicationRepository->save($litterApplicationEntity);
-
+            $this->litterApplicationRepository->save($litterApplicationEntity);
+            
 			// email pro admina/y
 			$userEntity = $this->userRepository->getUser($this->user->getId());
 			$emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
@@ -210,7 +216,7 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 		if (!empty($id)) {	// pokud máme ID přihlášky vrhu, načteme jeji její data do fromu
 			$litterApplication = $this->litterApplicationRepository->getLitterApplication($id);
 			if (!empty($litterApplication)) {
-				$data = $litterApplication->getDataDecoded();
+                $data = $litterApplication->getDataDecoded();
 				$this['litterApplicationDetailForm']->setDefaults($data);
 				$this['litterApplicationDetailForm']->addHidden('ID')->setValue($id);	// DB
 				$this['litterApplicationDetailForm']->addHidden('Zavedeno')->setValue($litterApplication->getZavedeno());	// DB
@@ -224,9 +230,18 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 		$this['litterApplicationDetailForm']['title']->setDefaultValue($title);
 
 		$this['litterApplicationDetailForm']['oID']->setDefaultValue($pID);
-		$this['litterApplicationDetailForm']['mID']->setDefaultValue($fID);
+        $this['litterApplicationDetailForm']['mID']->setDefaultValue($fID);
+        
 		$clubName = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
-		$this['litterApplicationDetailForm']['Klub']->setDefaultValue($clubName);
+        $this->template->clubName = $clubName;
+        $counterKey = ($cID == 157 ? WebconfigRepository::KEY_COUNTER_APPLICAIOTN_FORM_BT : WebconfigRepository::KEY_COUNTER_APPLICAIOTN_FORM_MBT);
+        $counterNum = $this->webconfigRepository->getByKey($counterKey, WebconfigRepository::KEY_LANG_FOR_COMMON);
+        $this->template->tempNumber = $counterNum . "/" . date('Y');
+        $this->webconfigRepository->incrementCounter($counterKey, WebconfigRepository::KEY_LANG_FOR_COMMON);
+        $this['litterApplicationDetailForm']['number']->setDefaultValue($this->template->tempNumber);
+
+        $this['litterApplicationDetailForm']['Klub']->setDefaultValue($clubName);
+        $this['litterApplicationDetailForm']['Plemeno']->setDefaultValue(($cID == 157 ? EnumerationRepository::PLEMENO_BT : EnumerationRepository::PLEMENO_MBT));
 
 		$femaleOwners = $this->userRepository->findDogOwnersAsEntities($fID);
 		$appBreeder = $this->userRepository->getUser($this->getUser()->getId());
@@ -242,7 +257,7 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			}
 		}
 		$this['litterApplicationDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnsId);
-		if ($appBreeder != null) {	 // z přihlášky vrhu je chovatelem majitel feny a pokud nebyl nalezen tak ten kdo to hlásí
+		if (($id == null) && ($appBreeder != null)) {	 // z přihlášky vrhu je chovatelem majitel feny a pokud nebyl nalezen tak ten kdo to hlásí
 			$breederName = trim($appBreeder->getTitleBefore() . " " . $appBreeder->getName() . " " . $appBreeder->getSurname());
 			$stateEnum = new StateEnum();
 			$breederState = $stateEnum->getValueByKey($appBreeder->getState());
@@ -250,37 +265,16 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			$this['litterApplicationDetailForm']['chs']->setDefaultValue($appBreeder->getStation());
 			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $appBreeder->getStation() . "; " . $breederAddress);
 		}
-		/*$femaleBreeder = $this->userRepository->getBreederByDogAsUser($fID);
-		if ($femaleBreeder != null) {
-			$this['litterApplicationDetailForm']['chs']->setDefaultValue($femaleBreeder->getStation());
-		}*/
 
 		$pes = $this->dogRepository->getDog($pID);
 		$name = trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem());
 		$this['litterApplicationDetailForm']['otec']->setDefaultValue($name);
-		$this['litterApplicationDetailForm']['otecBarva']->setDefaultValue($pes->getBarva());
-		$this['litterApplicationDetailForm']['otecSrst']->setDefaultValue($pes->getSrst());
-		$this['litterApplicationDetailForm']['otecBon']->setDefaultValue($pes->getBonitace());
-		// $this['litterApplicationDetailForm']['otecHeight']->setDefaultValue($pes->getVyska());
-		$this['litterApplicationDetailForm']['otecPP']->setDefaultValue($pes->getCisloZapisu());
-		if ($pes->getDatNarozeni() != null) {
-			$this['litterApplicationDetailForm']['otecDN']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
-		}
+		$this['litterApplicationDetailForm']['otecCisZap']->setDefaultValue($pes->getCisloZapisu());
 
 		$fena = $this->dogRepository->getDog($fID);
 		$name = trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem());
-		$this['litterApplicationDetailForm']['matka']->setDefaultValue($name);
-		$this['litterApplicationDetailForm']['matkaBarva']->setDefaultValue($fena->getBarva());
-		$this['litterApplicationDetailForm']['matkaSrst']->setDefaultValue($fena->getSrst());
-		$this['litterApplicationDetailForm']['matkaBon']->setDefaultValue($fena->getBonitace());
-		// $this['litterApplicationDetailForm']['matkaHeight']->setDefaultValue($fena->getVyska());
-		$this['litterApplicationDetailForm']['matkaPP']->setDefaultValue($fena->getCisloZapisu());
-		if ($fena->getDatNarozeni() != null) {
-			$this['litterApplicationDetailForm']['matkaDN']->setDefaultValue($fena->getDatNarozeni()->format(DogEntity::MASKA_DATA));
-		}
-		if ($fena->getPlemeno() != null) {
-			$this['litterApplicationDetailForm']['Plemeno']->setDefaultValue($fena->getPlemeno());
-		}
+        $this['litterApplicationDetailForm']['matka']->setDefaultValue($name);
+        $this['litterApplicationDetailForm']['otecCisZap']->setDefaultValue($fena->getCisloZapisu());		
 
 		$this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
 		$this->template->title = $title;
@@ -326,6 +320,9 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 					}
 				}
             }
+            $latteParams['enumRepository'] = $this->enumerationRepository;
+            $latteParams['puppiesLines'] = LitterApplicationDetailForm::NUMBER_OF_LINES;
+            $latteParams['currentLang'] = $this->langRepository->getCurrentLang($this->session);
             $latteParams["dateFormat"] = DogEntity::MASKA_DATA_ZOBRAZENI;
 			$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->getBaseUrl();
 			$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $form->getValues()['cID']);
@@ -333,7 +330,7 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord9/matingPdf.latte', $latteParams);
 
 			$pdf = new \Joseki\Application\Responses\PdfResponse($template);
-			$pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
+			$pdf->documentTitle = MATING_FORM_SAVE . "_" . date("Y-m-d_His");
 			$this->sendResponse($pdf);
 		} catch (AbortException $e) {
 			throw $e;
@@ -394,7 +391,8 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 		for($i=0; $i<count($femaleOwners); $i++) {
 			$femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . (($i+1) != count($femaleOwners) ? ", " : "");
 			$femaleOwnersTelToInput .= $femaleOwners[$i]->getPhone() . (($i+1) != count($femaleOwners) ? ", " : "");
-		}
+        }
+        $this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
 		$this['matingListDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnersToInput);
 		$this['matingListDetailForm']['MajitelFenyTel']->setDefaultValue($femaleOwnersTelToInput);
 

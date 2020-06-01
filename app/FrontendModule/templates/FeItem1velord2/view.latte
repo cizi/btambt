@@ -47,7 +47,7 @@
 						{* <th>{=DOG_FORM_DEAD_COM}:}</th>
 						<td>{$dog->getUmrtiKomentar()}</td> *}
 
-                        {if $amIAdmin}
+                        {if $canSeeAdminNote}
                             <th>{=DOG_FORM_HEALTH_COM}:</th>
                             <td>{$dog->getZdravotniKomentar()}</td>
                         {else}

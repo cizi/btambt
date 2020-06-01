@@ -222,9 +222,9 @@ class DogForm {
 		$form->addTextArea("Komentar",DOG_FORM_SHOWS_NOTE, null, 7)
             ->setAttribute("class", "form-control");
             
-        $form->addCheckbox("SkrytPotomky", " " . DOG_FORM_HIDE_DESCENDANTS);
+        /* $form->addCheckbox("SkrytPotomky", " " . DOG_FORM_HIDE_DESCENDANTS);
 
-        $form->addCheckbox("SkrytSourozence", " " . DOG_FORM_HIDE_SIBLINGS);
+        $form->addCheckbox("SkrytSourozence", " " . DOG_FORM_HIDE_SIBLINGS); */
 
         $form->addCheckbox("SkrytCelouKartu", " " . DOG_FORM_HIDE_DOG_CARD);
 

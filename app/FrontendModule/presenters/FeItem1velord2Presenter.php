@@ -87,7 +87,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 	public function startup() {
 		$this->template->amIAdmin = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
-		$this->template->canDirectEdit = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
+        $this->template->canDirectEdit = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
+        $this->template->canSeeAdminNote = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] >= UserRoleEnum::USER_EDITOR);
         
         $this->hideContentByDogSetting = (($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] <= UserRoleEnum::USER_REGISTERED) || ($this->getUser()->isLoggedIn() == false));
         $this->template->hideContentByDogSetting = $this->hideContentByDogSetting;

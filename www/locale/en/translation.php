@@ -168,6 +168,9 @@ define("COUNTER_TITLE_INFO", 'Configuration of used counters in the system');
 define("COUNTER_COVERAGE_COUNTER", 'System counters of coverage lists');
 define("COUNTER_COVERAGE_BT_COUNTER", 'Next number of the coverage list for bull terriers');
 define("COUNTER_COVERAGE_MBT_COUNTER", 'Next number of the coverage list for mini bull terriers');
+define("COUNTER_LITTER_COUNTER", 'System counters of litter application forms');
+define("COUNTER_LITTER_BT_COUNTER", 'Next number of the litter application form for bull terriers');
+define("COUNTER_LITTER_MBT_COUNTER", 'Next number of the litter application form mini bull terriers');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');
@@ -502,7 +505,7 @@ define("DOG_FORM_NAME", 'Name');
 define("DOG_FORM_NAME_MANDATORY", 'Name is mandatory field');
 define("DOG_FORM_NAME_SUFFIX", 'Titles behind name');
 define("DOG_FORM_BREED", 'Breed');
-define("DOG_FORM_FUR", 'Colour and length of the fur');
+define("DOG_FORM_FUR", 'Colour of the fur');
 define("DOG_FORM_FUR_COLOUR", 'Colour');
 define("DOG_FORM_FUR_COM", 'Comment');
 define("DOG_FORM_SEX", 'Sex');
@@ -584,7 +587,7 @@ define("MATING_FORM_FID", 'Male');
 define("MATING_FORM_MID", 'Female');
 define("MATING_FORM_SAVE", 'Litter report');
 define("MATING_FORM_SAVE1", 'Generate coverage report');
-define("MATING_FORM_SAVE2", 'II. Litter application');
+define("MATING_FORM_SAVE2", 'Litter application');
 define("MATING_FORM_PICK_MALE", 'Choose a male');
 define("MATING_FORM_PICK_FEMALE", 'Choose a female');
 define("MATING_FORM_NO_MATCH", 'No match found');
@@ -592,7 +595,7 @@ define("MATING_FORM_COVERAGE", 'MATING FORM - coverage report');
 define("MATING_FORM_TYPE", 'breed type: controlled');
 define("MATING_FORM_COVERAGE_DETAIL", '- for the owner of the cover dog');
 define("MATING_FORM_BON_CODE", 'Bonitation code');
-define("MATING_FORM_PLACE_DETAIL", 'Covering was carried out in (place)');
+define("MATING_FORM_PLACE_DETAIL", 'Covering was carried out');
 define("MATING_FORM_PLACE_DETAIL_DAY", 'date');
 define("MATING_FORM_PLACE_DETAIL_DAY_REPEAT", 'repeat on day');
 define("MATING_FORM_ESTIMATE_DATE", 'Date of litter');
@@ -723,12 +726,8 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "New dog inserted"
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Hello, <br />a new dog card has been created %s. Please, log in for approval or decline the request.");
 define("LITTER_APPLICATION", "Litter application");
 define("LITTER_APPLICATION_DETAIL_TITLE", "Collie and sheltie breeders club");
-define("LITTER_APPLICATION_DETAIL_APPLICATION", "Registration for puppies in a dog book");
-define("LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST", "Request for identification of the tattoo mark and application for the registration of puppies in the dog book");
-define("LITTER_APPLICATION_DETAIL_BOOK_MANAGER", "To be completed by the studbook<br /><br />
-									day:<br /><br />
-									finished:<br /><br />
-									Identity cards. sent:");
+define("LITTER_APPLICATION_DETAIL_APPLICATION", "Litter application form KABT");
+define("LITTER_APPLICATION_DETAIL_APPLICATION_COUNTER_PREFIX", "KL-");
 define("LITTER_APPLICATION_DETAIL_STATION_TITLE", "Name of kennel");
 define("LITTER_APPLICATION_DETAIL_DOG_TITLES", "exhibition awards and achievements");
 define("LITTER_APPLICATION_DETAIL_CARD_NO", "card number incl. Abbreviations of the stud book");
@@ -748,9 +747,9 @@ define("LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES", "females");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW", "Sex unknow");
 define("LITTER_APPLICATION_DETAIL_TEXT_1", "<b>Fill ČMKU</b><br />NO record<br />Tatto number");
 define("LITTER_APPLICATION_DETAIL_TEXT_2", "<b>Chip number</b><br />(see 2. page)");
-define("LITTER_APPLICATION_DETAIL_TEXT_3", "<b>Name of puppy</b><br />(by alphabet,<br />males first)");
-define("LITTER_APPLICATION_DETAIL_TEXT_4", "<b>Sex</b><br />(males first)");
-define("LITTER_APPLICATION_DETAIL_TEXT_5", "<b>Fur and colour kind</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_3", "<b>Name of puppy</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_4", "<b>Sex</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_5", "<b>Colour kind</b>");
 define("LITTER_APPLICATION_DETAIL_TEXT_6", "<br /><br />
 									I confirm with my signature that I am the breeder of the above puppies and that all the data in the application are true.
 									* By signing, I confirm my consent to the use of this data for the club's records within the Club's genealogy.

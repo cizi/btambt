@@ -50,8 +50,7 @@
 	}
 	.itemFull {
 		margin-bottom:10px;
-		border-bottom:1px solid black;
-		margin-right:8cm;
+        text-align: left;
 	}
 	.itemFullName {
 		margin-bottom:10px;
@@ -160,181 +159,164 @@
 						{form litterApplicationDetailForm}
 							<div class="prihlaska">
 								<div class="prihlaska_top">
-									{if $cID == 159}
+									{if $cID == 157}
 										<img src="{$basePath|noescape}/images/logo-prihlaskaCKCHS.jpg" />
 									{else}
 										<img src="{$basePath|noescape}/images/logo-prihlaska.jpg" />
 									{/if}
 								</div>
-								<div class="heading1">{$title|upper}</div>
-								{if $cID == 159}
-									<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST|upper}</div>
-								{else}
-									<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION|upper}</div>
-								{/if}
-
-								<div class="PKblock">{=LITTER_APPLICATION_DETAIL_BOOK_MANAGER|noescape}</div>
-
-								<div class="clearL"></div>
+								<div class="heading1">
+                                        {=LITTER_APPLICATION_DETAIL_APPLICATION|upper}
+                                        {=LITTER_APPLICATION_DETAIL_APPLICATION_COUNTER_PREFIX|upper}{$tempNumber}<br />
+                                        {=$clubName|upper}                                
+                                        <div style="font-weight: normal; text-align: left;">
+                                            <br />
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i>Kontaktní adresa:  <b>ČMKJ, Irena Šestáková, Lešanská 1176/2a, 141 00 Praha 4 - Chodov</b></i><br />
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            Vyřizuje: Irena Šestáková, tel. 224 948 478, e-mail: sestakova@cmkj.info
+                                        </div>
+                                </div>
+                                
+								<div class="clearL">
+                                    Přihláška se zasílá nejpozději do 28 dnů od data vrhu na ČMKJ (kontaktní adresa), kde Vám budou přidělena čísla 
+                                    zápisu a přihláška zaslána zpět. Pak můžete teprve čipovat. Prosím podepište se na druhé straně.
+                                </div><br />
 
 								<div class="itemFull">
 									<div class="itemFullName">{label Plemeno/}</div>
 									{input Plemeno}
+                                    (razítko a podpis poradce chovu)……………………………………………………………
 								</div>
 
+                                
 								<div class="itemFull">
 									<div class="itemFullName">{label chs/}:</div> {input chs}
 								</div>
 
-								<div class="clear"></div>
-								&nbsp;<br />
+                                <div class="itemFull">
+                                    <div class="itemFullName">{label chovatel/}: </div> {input chovatel}</div>
+                                </div><br />
 
-								<div class="prihlaska_left">
-									<div class="itemFullName2">{label otec/}:</div>{input otec}<br />
-									<div class="itemFullName2"> &nbsp; {label otecDN/}:</div>{input otecDN}<br />
-									<div class="itemShim">&nbsp; {label otecV/}:</div> {input otecV}<br /><br />
-								</div>
-								<div class="prihlaska_right">
-									{label otecPP/}: {input otecPP}<br />
-									<div class="itemFullName2">{label otecBarva/}:</div>{input otecBarva}<br />
-									<div class="itemFullName2">{label otecSrst/}:</div>{input otecSrst}<br />
-									<div class="itemFullName2">{label otecBon/}:</div>{input otecBon}
-								</div>
+                                <div class="itemFull">
+                                    <b>Otec vrhu:</b> {input otec}
+                                    <b>č.zápisu </b>{input otecCisZap}
+                                </div>
 
-								<div class="clear"></div>
+                                <div class="itemFull">
+                                    <b>Matka vrhu:</b> {input matka}
+                                    <b>č.zápisu </b>{input matkaCisZap}
+                                </div>
 
-								<div class="prihlaska_left">
-									<div class="itemFullName2">{label matka/}: </div>{input matka}<br />
-									<div class="itemFullName2"> &nbsp; {label matkaDN/}: </div>{input matkaDN}<br />
-									<div class="itemShim">&nbsp;  {label matkaV/}: </div> {input matkaV}<br /><br />
-								</div>
-								<div class="prihlaska_right">
-									{label matkaPP/}: {input matkaPP}<br />
-									<div class="itemFullName2">{label matkaBarva/}: </div>{input matkaBarva}<br />
-									<div class="itemFullName2">{label matkaSrst/}: </div>{input matkaSrst}<br />
-									<div class="itemFullName2">{label matkaBon/}: </div>{input matkaBon}
-								</div>
+                                <div class="itemFull">
+                                    {label datumkryti/}: {input datumkryti}
+								    &nbsp; &nbsp; &nbsp; &nbsp; <b>Datum vrhu: </b> {input datumnarozeni}
+                                    &nbsp; &nbsp; &nbsp; &nbsp; Živě vrženo psů: {input kzapisuPsu}
+                                    &nbsp; &nbsp; &nbsp; &nbsp; fen: {input kzapisuFen}
+                                </div>
 
 								<div class="clear"></div>
 								&nbsp;<br />
 
-								<div class="itemFullName">{label chovatel/}: </div> {input chovatel}<br /><br />
-								<div class="itemFullName">{label datumkryti/}: </div> {input datumkryti}
-								&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {label datumnarozeni/}: &nbsp; &nbsp; &nbsp; {input datumnarozeni}<br /><br />
-
-								<div class="pro3"><b>{=LITTER_APPLICATION_DETAIL_PUPPIES_INFO}:</b></div>
-
-								<div class="prihlaska_border">
+                                <div class="itemFull">
+									
 									<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
 										<tr>
-											<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_COUNT}</td>
-											<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_COUNT}</td>
-											<td colspan="3">{=LITTER_APPLICATION_DETAIL_PUPPIES_FORCE_DEATH_COUNT}</td>
-											<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_APPLICATION_FOR}</td>
-											<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_TO_NURSE}</td>
-											<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_BEFORE_APPLICATION}</td>
-										</tr>
-										<tr>
-											<td>{label porozenoPsu/} {input porozenoPsu}</td>
-											<td>{label porozenoFen/} {input porozenoFen}</td>
-											<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {input porozenoNez}</td>
-											<td>{label mrtvychPsu/} {input mrtvychPsu}</td>
-											<td>{label mrtvychFen/} {input mrtvychFen}</td>
-											<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {input mrtvychNez}</td>
-											<td>{label usmrcenoPsu/} {input usmrcenoPsu}</td>
-											<td>{label usmrcenoFen/} {input usmrcenoFen}</td>
-											<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {input usmrcenoNez}</td>
-											<td>{label kzapisuPsu/} {input kzapisuPsu}</td>
-											<td>{label kzapisuFen/} {input kzapisuFen}</td>
-											<td>{label kojnePsu/} {input kojnePsu}</td>
-											<td>{label kojneFen/} {input kojneFen}</td>
-											<td>{label zahynuloPsu/} {input zahynuloPsu}</td>
-											<td>{label zahynuloFen/} {input zahynuloFen}</td>
-										</tr>
-									</table>
-									<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
-										<tr>
-											<td align="center" class="rbold" style="width:2.3cm; vertical-align: top"><div class="FlyToL">1)</div>{=LITTER_APPLICATION_DETAIL_TEXT_1|noescape}</td>
-											<td align="center" class="rbold" style="width:4.4cm; vertical-align: top"><div class="FlyToL">2)</div>{=LITTER_APPLICATION_DETAIL_TEXT_2|noescape}</td>
-											<td align="center" style="width:4.7cm; vertical-align: top"><div class="FlyToL">3)</div>{=LITTER_APPLICATION_DETAIL_TEXT_3|noescape}</td>
-											<td align="center" style="width:3cm; vertical-align: top"><div class="FlyToL">4)</div>{=LITTER_APPLICATION_DETAIL_TEXT_4|noescape}</td>
-											<td align="center" style="width:4.6cm; vertical-align: top"><div class="FlyToL">5)</div>{=LITTER_APPLICATION_DETAIL_TEXT_5|noescape}</td>
+											<td align="center" class="rbold" style="width:2.3cm; vertical-align: top">
+                                                <b>Číslo zápisu vyplní ČMKL</b>
+                                            </td>
+											<td align="center" class="rbold" style="width:6.4cm; vertical-align: top">
+                                                <b>Jméno štěněte (nejdříve psi, pak feny</b>
+                                            </td>
+											<td align="center" style="width:2.7cm; vertical-align: top">
+                                                <b>Pohlaví</b>
+                                            </td>
+											<td align="center" style="width:3cm; vertical-align: top">
+                                                <b>Barva srtsi</b>
+                                            </td>
+											<td align="center" style="width:4.6cm; vertical-align: top">
+                                                <b>tetovací číslo / číslo čipu</b> <br /><small>pokud budete čipovat, můžete tetovací číslo přelepit</small
+                                            </td>
 										</tr>
 
 										{for $i = 1; $i <= $puppiesLines; $i++}
 											<tr id="tr{$i}">
 												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
-												<td align="center" class="rbold">{input "mikrocip" . $i}</td>
 												<td align="center">{input "jmeno" . $i}</td>
 												<td align="center">{input "pohlavi" . $i}</td>
-												<td align="center">{input "srst" . $i}, {input "barva" . $i}</td>
+												<td align="center">{input "barva" . $i}</td>
+												<td align="center" class="rbold">{input "mikrocip" . $i}</td>
 											</tr>
 										{/for}
 
 									</table><!--tp-->
-								</div>
+								</div><br /><br />
 
-								<div class="clear"></div>
-								&nbsp;<br />
+                                <div class="itemFull">
+                                    <table style="margin-left: 0;">
+                                        <tr>
+                                            <td></td>
+                                            <td style="padding-left: 12px;">
+                                                <div>
+                                                    <table style="font-size: 16px; font-weight: bold;">
+                                                        <tr>
+                                                            <td><i>klub</i></td>
+                                                            <td style="padding-bottom: 18px;">&nbsp; ___________________________</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <table style="width: 100%; margin-top: -15px; margin-left: 10px;">
+                                        <tr>
+                                            <td style="width: 50%; text-align: left;"><h4> ANGLICKÉHO BULL TERRIERA</h4></td>
+                                            <td style="text-align: left;"></td>
+                                        </tr>
+                                    </table>
+                                </div>
 
-								<div class="pro3">{label kontrolaVrhu/}<br />
-									{input kontrolaVrhu}
-								</div>
+                                <div class="itemFull">
+                                    Prohlašuji, že všechny údaje jsou pravdivé. Souhlasím se zveřejněním 
+                                    svého jména, adresy, telefonu případným zájemcům o štěňata. 
+                                </div>
 
-								<div class="clear"></div>
-								&nbsp;<br />
+                                <div class="itemFull">
+                                    Souhlasím se zveřejněním svého jména, adresy, telefonu případným 
+                                    zájemcům o štěňata.    
+                                </div> 
 
-								<p class="pro3">{=LITTER_APPLICATION_DETAIL_INC}:
-									{input kryci_list} {label kryci_list/} &bull;
-									{input pp_psa} {label pp_psa/} &bull; {input pp_feny} {label pp_feny/} &bull; {input poplatky} {label poplatky/} &bull; {input fotokopiechs} {label fotokopiechs/} &bull; {input fotokopietitulu} {label fotokopietitulu/}
-									{=LITTER_APPLICATION_DETAIL_TEXT_6|noescape}
-								</p>
-								<div class="prihlaska_left">
-									{label misto/} {input misto}
-								</div>
-								<div class="prihlaska_right tright">
-									{=LITTER_APPLICATION_DETAIL_TEXT_7|noescape}
-								</div>
+                                <div class="itemFull">
+                                    ANO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    NE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    Člen KABT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    ANO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    NE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    Tetování / čipování od: ................................<br /><br />
+                                    Datum a podpis chovatele: .....................................<br />
+                                    prosím vyplňte před odesláním na ČMKJ
+                                </div> 
+                                <hr />
 
-								<!-- smazat --><br>&nbsp;<hr>&nbsp;<br>
+                                <div class="itemFull">
+                                    Tetoval / čipoval dne:  ……………………………………………………………………psů……………………fen……………………….<br /><br />
+                                    Zakroužkujte provedené<br /><br />
+                                    Razítko a podpis veterináře:<br /><br /><br />
+  
+                                    Ihned po <b>otetování</b> či <b>očipování</b> s razítkem a podpisem veterinárního 
+                                    lékaře se tiskopis zasílá na kontrolu poradci chovu. <br /><br />
+                                    
+                                    Bez razítka poradce chovu nebudou rodokmeny vystaveny. <b>Razítko dává poradce chovu po 
+                                    očipování a přidělení čísel zápisu!</b><br /><br />
+                                    
+                                    Poradce chovu formulář orazítkuje a zašle na ČMKJ.<br /><br />
 
-								<p class="bcenter pagebreak morept">{=LITTER_APPLICATION_DETAIL_TEXT_8|noescape}</a></p>
+                                    ČMKJ vystaví rodokmeny a zašle je na adresu chovatele.<br /><br />
 
-								<table class="prihlaska_table plusb" cellspacing="0" border="1" align="center">
-									<tr>
-										<td style="width:3.9cm;height:1.7cm" align="center">{=LITTER_APPLICATION_DETAIL_NO}</td>
-										<td style="width:7.4cm" align="center">{=LITTER_APPLICATION_DETAIL_CHIP_BLISTER}</td>
-									</tr>
-									<tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr><tr>
-										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
-									</tr>
-								</table>
-								<br />&nbsp;<br />
+                                    <b>Poradce chovu:  Jitka Zezulová, Na Budínku 39, 664 51 Kobylnice</b>
 
-								<!--<div class="prihlaska_left morept">
-									Další sadu samolepek <b>volně přiložte</b> k přihlášce <br />	pro nalepení do průkazů původu <b>plemennou knihou ČMKU</b>!
-								</div>-->
-
-								<div class="pro3 fright tright morept">{=LITTER_APPLICATION_DETAIL_TEXT_9|noescape}</div>
-								<div class="clear"></div>
+                                </div> 
 							</div>
 
 							<div class="form-group row alignRight">

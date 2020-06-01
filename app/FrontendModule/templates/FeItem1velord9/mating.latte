@@ -153,9 +153,9 @@
 									{/formContainer}
 
 									<tr>
-										<td class="tdleft"><div class="heading2 tdleft">{label MistoKryti/} : {input MistoKryti}</div></td>
+										<td class="tdleft"><div class="heading2 tdleft">{label MistoKryti/}: {input DatumKryti} </div></td>  {* input MistoKryti}</div></td> *}
 										<td class="tdleft">
-											<div class="heading2 tdleft" style="padding-left: 74px;">{label DatumKryti/}: {input DatumKryti}</div><br />
+											{* <div class="heading2 tdleft" style="padding-left: 74px;">{label DatumKryti/}: {input DatumKryti}</div><br /> *}
 											<div class="heading2 tdleft" style="margin-top: 0;">{label DatumKrytiOpakovane/}: {input DatumKrytiOpakovane}</div>
 										</td>
 
@@ -192,7 +192,23 @@
 
 									<tr>
 										<td colspan="2" class="tdleft">
-											<div class="heading2 tdleft">{label PocetStenatPozn/}: <br /> {input PocetStenatPozn}</div><br />
+                                            <div class="heading2 tdleft">{label PocetStenatPozn/}: {input PocetStenatPozn}</div><br />
+						                    <table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+                                                <tr>
+                                                    <td align="center" style="width:3cm; vertical-align: top"><div class="FlyToL">4)</div>{=LITTER_APPLICATION_DETAIL_TEXT_4|noescape}</td>
+                                                    <td align="center" style="width:4.7cm; vertical-align: top"><div class="FlyToL">3)</div>{=LITTER_APPLICATION_DETAIL_TEXT_3|noescape}</td>
+                                                    <td align="center" style="width:4.6cm; vertical-align: top"><div class="FlyToL">5)</div>{=LITTER_APPLICATION_DETAIL_TEXT_5|noescape}</td>
+                                                </tr>
+
+                                                {for $i = 1; $i <= $puppiesLines; $i++}
+                                                    <tr id="tr{$i}">
+                                                        <td align="center">{input "pohlavi" . $i}</td>
+                                                        <td align="center">{input "jmeno" . $i}</td>
+                                                        <td align="center">{input "barva" . $i}</td>
+                                                    </tr>
+                                                {/for}
+
+                                            </table><!--tp-->
 										</td>
 									</tr>
 

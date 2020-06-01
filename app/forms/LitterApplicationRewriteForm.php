@@ -73,17 +73,17 @@ class LitterApplicationRewriteForm {
 			$container->addText("Jmeno", DOG_FORM_NAME)
 				->setAttribute("class", "form-control");
 
-			$container->addTextArea("KontrolaVrhu", DOG_FORM_LITTER_CHECK)
-				->setAttribute("class", "form-control");
+			/* $container->addTextArea("KontrolaVrhu", DOG_FORM_LITTER_CHECK)
+				->setAttribute("class", "form-control");  */
 
 			$container->addSelect("PohlaviSel", DOG_FORM_SEX, $pohlavi)
 				->setAttribute("class", "form-control")
 				->setDisabled();
 			$container->addHidden("Pohlavi");
 
-			$container->addSelect("SrstSel", LITTER_APPLICATION_REWRITE_PUPPIES_FUR, $srst)
+			/* $container->addSelect("SrstSel", LITTER_APPLICATION_REWRITE_PUPPIES_FUR, $srst)
 				->setAttribute("class", "form-control")
-				->setDisabled();
+				->setDisabled(); */
 			$container->addHidden("Srst");
 
 			$container->addSelect("BarvaSel", DOG_FORM_FUR_COLOUR, $barvy)

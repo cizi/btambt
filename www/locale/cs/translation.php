@@ -182,6 +182,9 @@ define("COUNTER_TITLE_INFO", 'Konfigurace číselných řad použitých v systé
 define("COUNTER_COVERAGE_COUNTER", 'Číselné řady krycích listů');
 define("COUNTER_COVERAGE_BT_COUNTER", 'Nadcházející číslo krycího listu BT');
 define("COUNTER_COVERAGE_MBT_COUNTER", 'Nadcházející číslo krycího listu MBT');
+define("COUNTER_LITTER_COUNTER", 'Číselné řady přihlášek k zápisu vrhu');
+define("COUNTER_LITTER_BT_COUNTER", 'Nadcházející číslo přihlášky k zápisu vrhu BT');
+define("COUNTER_LITTER_MBT_COUNTER", 'Nadcházející číslo přihlášky k zápisu vrhu MBT');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');
@@ -521,7 +524,7 @@ define("DOG_FORM_NAME", 'Jméno');
 define("DOG_FORM_NAME_MANDATORY", 'Jméno je povinná položka');
 define("DOG_FORM_NAME_SUFFIX", 'Tituly za jménem');
 define("DOG_FORM_BREED", 'Plemeno');
-define("DOG_FORM_FUR", 'Barva a délka srsti');
+define("DOG_FORM_FUR", 'Barva srsti');
 define("DOG_FORM_FUR_COLOUR", 'Barva');
 define("DOG_FORM_FUR_COM", 'Komentář');
 define("DOG_FORM_SEX", 'Pohlaví');
@@ -603,7 +606,7 @@ define("MATING_FORM_FID", 'Pes');
 define("MATING_FORM_MID", 'Fena');
 define("MATING_FORM_SAVE", 'Hlášení vrhu');
 define("MATING_FORM_SAVE1", 'Generovat krycí list');
-define("MATING_FORM_SAVE2", 'II. Přihláška k zápisu vrhu');
+define("MATING_FORM_SAVE2", 'Přihláška k zápisu vrhu');
 define("MATING_FORM_PICK_MALE", 'Vyberte psa');
 define("MATING_FORM_PICK_FEMALE", 'Vyberte fenu');
 define("MATING_FORM_NO_MATCH", 'Shoda nenalezena');
@@ -611,7 +614,7 @@ define("MATING_FORM_COVERAGE", 'KRYCÍ LIST - hlášení o krytí');
 define("MATING_FORM_TYPE", 'typ chovu: řízený');
 define("MATING_FORM_COVERAGE_DETAIL", '- pro majitele krycího psa');
 define("MATING_FORM_BON_CODE", 'Bonitační kód');
-define("MATING_FORM_PLACE_DETAIL", 'Krytí bylo uskutečněno v (místo)');
+define("MATING_FORM_PLACE_DETAIL", 'Krytí bylo uskutečněno');
 define("MATING_FORM_PLACE_DETAIL_DAY", 'dne');
 define("MATING_FORM_PLACE_DETAIL_DAY_REPEAT", 'opakováno dne');
 define("MATING_FORM_ESTIMATE_DATE", 'Datum vrhu');
@@ -744,12 +747,9 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Dobrý den, <br />by
 
 define("LITTER_APPLICATION", "Přihláška vrhu");
 define("LITTER_APPLICATION_DETAIL_TITLE", "Klub chovatelů collií a sheltií");
-define("LITTER_APPLICATION_DETAIL_APPLICATION", "Přihláška k zápisu štěňat do plemené knihy psů");
-define("LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST", "Žádanka pro určení tetovací značky a přihláška k zápisu štěňat do plemenné knihy psů");
-define("LITTER_APPLICATION_DETAIL_BOOK_MANAGER", "Vyplní správa plemenné knihy<br /><br />
-									došlo dne:<br /><br />
-									vyřízeno:<br /><br />
-									průkazy pův. odeslány:");
+define("LITTER_APPLICATION_DETAIL_APPLICATION", "PŘIHLÁŠKA K ZÁPISU VRHU ŠTĚŇAT KABT");
+define("LITTER_APPLICATION_DETAIL_APPLICATION_COUNTER_PREFIX", "KL-");
+
 define("LITTER_APPLICATION_DETAIL_STATION_TITLE", "Název chovatelské stanice");
 define("LITTER_APPLICATION_DETAIL_DOG_TITLES", "výstavní ocenění a dosažené tituly");
 define("LITTER_APPLICATION_DETAIL_CARD_NO", "číslo průkazu vč. zkratky plemenné knihy");
@@ -769,9 +769,9 @@ define("LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES", "fen");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW", "Pohlaví nezjištěno");
 define("LITTER_APPLICATION_DETAIL_TEXT_1", "<b>Vyplní ČMKU</b><br />Číslo zápisu<br />Tetovací číslo");
 define("LITTER_APPLICATION_DETAIL_TEXT_2", "<b>Číslo mikročipu</b><br />(viz 2. strana)");
-define("LITTER_APPLICATION_DETAIL_TEXT_3", "<b>Jméno štěňat</b><br />(podle abecedy,<br />napřed psi)");
-define("LITTER_APPLICATION_DETAIL_TEXT_4", "<b>Pohlaví</b><br />(napřed psi)");
-define("LITTER_APPLICATION_DETAIL_TEXT_5", "<b>Druh srsti a barva</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_3", "<b>Jméno štěňat</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_4", "<b>Pohlaví</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_5", "<b>Barva</b>");
 define("LITTER_APPLICATION_DETAIL_TEXT_6", "<br /><br />
 									Potvrzuji svým podpisem, že jsem chovatelem výše uvedených štěňat a že všechny údaje v přihlášce uvedené  jsou pravdivé.<br>
 									*Podpisem stvrzuji souhlas s využitím uvedených údajů pro evidenci klubu v rámci genealogie Klubu.

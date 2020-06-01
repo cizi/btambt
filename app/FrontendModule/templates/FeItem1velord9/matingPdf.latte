@@ -166,15 +166,23 @@
 
 
 								<tr style="vertical-align: top;">
-									<td class="tdleft" style="vertical-align: top;"><div class="heading2 tdleft"><strong>{=MATING_FORM_PLACE_DETAIL}</strong>: <br />{$MistoKryti}</div></td>
 									<td class="tdleft" style="vertical-align: top;">
-										<div class="heading2 tdleft" style="padding-left: 74px;">
+                                        <div class="heading2 tdleft">
+                                            <strong>{=MATING_FORM_PLACE_DETAIL}</strong>:  {* <br />{$MistoKryti *}
+                                            {if !empty($DatumKryti)}
+                                                {var $dt = new DateTime($DatumKryti)}
+                                                {$dt->format($dateFormat)}
+                                            {/if}
+                                        </div>
+                                    </td>
+									<td class="tdleft" style="vertical-align: top;">
+										{* <div class="heading2 tdleft" style="padding-left: 74px;">
                                             <strong>{=MATING_FORM_PLACE_DETAIL_DAY}</strong>: 
                                             {if !empty($DatumKryti)}
                                                 {var $dt = new DateTime($DatumKryti)}
                                                 {$dt->format($dateFormat)}
                                             {/if}
-                                        </div><br />
+                                        </div><br /> *}
 										<div class="heading2 tdleft" style="margin-top: 0;">
                                             <strong>{=MATING_FORM_PLACE_DETAIL_DAY_REPEAT}</strong>: 
                                             {if !empty($DatumKrytiOpakovane)}
@@ -223,9 +231,33 @@
 								<tr><td colspan="2"><br /><br /></td></tr>
 
 								<tr>
-									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_PUPPIES_DETAILS}</strong>:<br /> {nl2br($PocetStenatPozn)|noescape}</div></td>
+									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=LITTER_APPLICATION_PUPPIES_DETAILS}</strong>: {nl2br($PocetStenatPozn)|noescape}</div></td>
 								</tr>
+                            </table>
 
+                            <table class="prihlaska_table" style="width: 100%;" cellspacing="0" border="1">
+                                <thead>
+                                    <tr>
+                                        <td align="center" style="width:3cm; vertical-align: top;"><div class="FlyToL"></div>{=LITTER_APPLICATION_DETAIL_TEXT_4|noescape}</td>
+                                        <td align="center" style="width:4.7cm; vertical-align: top;"><div class="FlyToL"></div>{=LITTER_APPLICATION_DETAIL_TEXT_3|noescape}</td>
+                                        <td align="center" style="width:4.6cm; vertical-align: top;"><div class="FlyToL"></div>{=LITTER_APPLICATION_DETAIL_TEXT_5|noescape}</td>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                {for $i = 1; $i <= $puppiesLines; $i++}
+                                    {if ${"jmeno".$i} != ""}
+                                            <tr>
+                                                <td class="fontBold" align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
+                                                <td class="fontBold" align="center">{${"jmeno".$i}}</td>
+                                                <td class="fontBold" align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
+                                            </tr>
+                                        {/if}
+                                {/for}
+                                </tbody>
+                            </table><!--tp-->
+
+                            <table style="width: 100%;">
 								<tr><td colspan="2"><br /><br /></td></tr>
 
 								<tr><td colspan="2"><br /><br /></td></tr>
