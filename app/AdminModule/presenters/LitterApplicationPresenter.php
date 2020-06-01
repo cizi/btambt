@@ -249,7 +249,7 @@ class LitterApplicationPresenter extends SignPresenter {
 	 */
 	public function litterApplicationFilterSubmit(Form $form) {
 		$filter = "1&";
-		foreach ($form->getHttpData() as $key => $value) {
+		foreach ($form->getValues() as $key => $value) {
 			if ($value != "") {
 				$filter .= $key . "=" . $value . "&";
 			}
