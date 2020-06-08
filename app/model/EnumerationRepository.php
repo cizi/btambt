@@ -26,7 +26,9 @@ class EnumerationRepository extends BaseRepository {
     ZDRAVI_DNA = 66,
     ZDRAVI_PLL = 69,
     
-    CHOVNOST_CHOVNY = 27;
+    CHOVNOST_CHOVNY = 27,
+
+    STATY = 25;
 
 	/**
 	 * @param int $id

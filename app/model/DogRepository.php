@@ -273,10 +273,9 @@ class DogRepository extends BaseRepository {
 		if ($breeder != null) {
 			$joins[] = "left join `appdata_chovatel` as ach on ap.ID = ach.pID";
 		}
-		if (isset($filter[DogFilterForm::DOG_FILTER_LAND]) || isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
+		if (isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
 			$joins[] = "left join `appdata_chovatel` as ac on ap.ID = ac.pID
 						left join `user` as u on ac.uID = u.ID ";
-			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
 		}
 
@@ -326,9 +325,9 @@ class DogRepository extends BaseRepository {
 			$return .= " PosledniZmena >= (CURDATE() - INTERVAL 14 DAY)";
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS]);
-		}
+        }
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAND])) {
-			$return .= sprintf("u.state = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_LAND]));
+            $return .= sprintf("ap.Zeme = %d", $filter[DogFilterForm::DOG_FILTER_LAND]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
 		}
