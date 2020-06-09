@@ -105,7 +105,7 @@ class DogFilterForm {
 		$form->addText(self::DOG_FILTER_HEALTH_TEXT, DOG_TABLE_HEADER_HEALTH_TEXT)
 			->setAttribute("class", "form-control");
 
-        $states = $this->enumerationRepository->findEnumItemsForSelectWithoutEmpty($langCurrent, EnumerationRepository::STATY);
+        $states = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::ZEME);
 		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states)
 			->setAttribute("class", "form-control");
 
