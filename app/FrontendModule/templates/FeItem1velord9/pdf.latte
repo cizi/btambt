@@ -251,7 +251,7 @@
                 <b>Pohlaví</b>
             </td>
             <td align="center" style="vertical-align: top">
-                <b>Barva srtsi</b>
+                <b>Barva srsti</b>
             </td>
             <td align="center" style="vertical-align: top">
                 <b>tetovací číslo / číslo čipu</b> <br /><small>pokud budete čipovat, můžete tetovací číslo přelepit</small>
@@ -260,7 +260,7 @@
 
         {for $i = 1; $i <= $puppiesLines; $i++}
             <tr id="tr{$i}">
-                <td align="center">&nbsp;<!-- CZAP_{$i} --></td>
+                <td align="center">&nbsp;<!-- CZAP_{$i} --><br /><br /><br /></td>
                 <td align="center">{${"jmeno".$i}}</td>
                 <td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
                 <td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>

@@ -56,7 +56,7 @@ define("USER_DELETED", "User has been deleted");
 define("USER_ADDED", "User added");
 define("USER_EDITED", "User data updated");
 define("USER_EMAIL_ALREADY_EXISTS", "User email already exists in the database");
-define("USER_DELETED_FAILED", "Users has not been deleted, please repeat action later.");
+define("USER_DELETED_FAILED", "Users has not been deleted.");
 define("USER_DELETE", 'Delete user');
 define("USER_EDIT", 'Edit user');
 define("USER_ADD_USER", 'Add new user');
@@ -69,6 +69,8 @@ define("USER_CREATED_MAIL_SUBJECT", 'New user registration');
 define("USER_CREATED_MAIL_BODY", "Hello there, <br /><br /> your registration on server %s has been successful.<br /> Your credentials are: <br /> login: %s <br /> password: %s <br /><br />");
 define("USER_SEARCH_FIELD", "Fulltext searching in users");
 define("USER_SEARCH_BUTTON", "Search");
+define("USER_DELETE_FAIL_BREEDER",  "User is as a breeder with these dogs: ");
+define("USER_DELETE_FAIL_OWNER",  "User is as a owner with these dogs: ");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');

@@ -124,7 +124,7 @@ class LitterApplicationDetailForm {
 			->setAttribute("class", "btn margin10")
 			->setAttribute("onclick", "location.assign('" . $linkBack . "')");
 
-		$form->addSubmit("generate", MATING_FORM_SAVE)
+		$form->addSubmit("generate", MATING_FORM_SAVE2)
 			->setAttribute("class", "btn btn-primary margin10");
 
 		return $form;

@@ -142,11 +142,15 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	 * @return bool
 	 */
 	public function deleteUser($id) {
-		$return = false;
-		if (!empty($id)) {
-			$query = ["delete from user where id = %i", $id];
-			$return = ($this->connection->query($query) == 1 ? true : false);
-		}
+        $return = false;
+        if (!empty($id)) {
+            $majitele = $this->findDogOwnersAsEntitiesUserById($id);
+            $chovatele = $this->findDogBreedersAsEntitiesUserById($id);
+            if ((count($majitele) == 0) && (count($chovatele) == 0)) {
+                $query = ["delete from user where id = %i", $id];
+                $return = ($this->connection->query($query) == 1 ? true : false);
+            }
+        }
 
 		return $return;
 	}
@@ -303,6 +307,42 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		}
 
 		return $owners;
+    }
+    
+    /**
+	 * @param int $pID
+	 * @return DogOwnerEntity[]
+	 */
+	public function findDogOwnersAsEntitiesUserById($uID) {
+		$owners = [];
+		$query = ["select * from appdata_majitel where uID = %i", $uID];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$dogOwnerEntity = new DogOwnerEntity();
+			$dogOwnerEntity->hydrate($row->toArray());
+			$owners[] = $dogOwnerEntity;
+		}
+
+		return $owners;
+    }
+    
+    /**
+	 * @param int $pID
+	 * @return DogBreederEntity[]
+	 */
+	public function findDogBreedersAsEntitiesUserById($uID) {
+		$breeders = [];
+		$query = ["select * from appdata_chovatel where uID = %i", $uID];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$dogBreederEntity = new BreederEntity();
+			$dogBreederEntity->hydrate($row->toArray());
+			$breeders[] = $dogBreederEntity;
+		}
+
+		return $breeders;
 	}
 
 	/**

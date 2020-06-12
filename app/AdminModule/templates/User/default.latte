@@ -5,7 +5,7 @@
 
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
-			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message|noescape}</div>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">

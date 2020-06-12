@@ -666,6 +666,9 @@ class DogRepository extends BaseRepository {
 			}
 			if ($dogEntity->getOID() == 0) {
 				$dogEntity->setOID(null);
+            }
+            if ($dogEntity->getZeme() == 0) {
+				$dogEntity->setZeme(null);
 			}
 			if ($dogEntity->getID() == null) {	// nový pes
 				$query = ["insert into appdata_pes ", $dogEntity->extract()];

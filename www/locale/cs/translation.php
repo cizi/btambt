@@ -57,7 +57,7 @@ define("USER_DELETED", "Uživatel byl smazán");
 define("USER_ADDED", "Uživatel přidán");
 define("USER_EDITED", "Uživatel upraven");
 define("USER_EMAIL_ALREADY_EXISTS", "Uživatel s tímto emailem je již registrován");
-define("USER_DELETED_FAILED", "Uživatele se nepovedlo smazat, opakujte později.");
+define("USER_DELETED_FAILED", "Uživatele se nepovedlo smazat.");
 define("USER_DELETE", 'Odstranit uživatele');
 define("USER_EDIT", 'Editovat uživatele');
 define("USER_ADD_USER", 'Přidat uživatele');
@@ -70,6 +70,8 @@ define("USER_CREATED_MAIL_SUBJECT", 'Registrace nového uživatele');
 define("USER_CREATED_MAIL_BODY", "Dobrý den, <br /><br /> Vaše registace na serveru %s proběhla úspěšně.<br /> Vaše příhlašovací údaje jsou: <br /> jméno: %s <br /> heslo: %s <br /><br />");
 define("USER_SEARCH_FIELD",  "Fulltextové vyhledávání v uživatelích");
 define("USER_SEARCH_BUTTON",  "Hledat");
+define("USER_DELETE_FAIL_BREEDER",  "Je uveden jako chovatel u těcho psů: ");
+define("USER_DELETE_FAIL_OWNER",  "Je uveden jako majitel / bývalý majitel u těcho psů: ");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');

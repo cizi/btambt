@@ -9,6 +9,7 @@ use App\Forms\UserFilterForm;
 use App\Forms\UserForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
+use App\Model\DogRepository;
 use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
@@ -25,16 +26,21 @@ class UserPresenter extends SignPresenter {
 	private $userForm;
 
 	/** @var UserFilterForm  */
-	private $userFilterForm;
+    private $userFilterForm;
+    
+    /** @var DogRepository */
+    private $dogRepository;
 
 	/**
 	 * @param UserRepository $userRepository
 	 * @param UserForm $userForm
+     * @param DogRepository $dogRepository
 	 */
-	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm) {
+	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm, DogRepository $dogRepository) {
 		$this->userRepository = $userRepository;
 		$this->userForm = $userForm;
-		$this->userFilterForm = $userFilterForm;
+        $this->userFilterForm = $userFilterForm;
+        $this->dogRepository = $dogRepository;
 	}
 
 	/**
@@ -67,11 +73,32 @@ class UserPresenter extends SignPresenter {
 	/**
 	 * @param int $id
 	 */
-	public function actionDeleteUser($id) {
+	public function actionDeleteUser($id) {      
 		if ($this->userRepository->deleteUser($id)) {
 			$this->flashMessage(USER_DELETED, "alert-success");
 		} else {
-			$this->flashMessage(USER_DELETED_FAILED, "alert-danger");
+            $usr = $this->userRepository->getUser($id);
+            $errMessage = (!empty($usr) ? $usr->getFullName() . " - " : "") . USER_DELETED_FAILED;
+            $this->flashMessage($errMessage, "alert-danger");
+            $majitele = $this->userRepository->findDogOwnersAsEntitiesUserById($id);
+            if (count($majitele)) {
+                $links = USER_DELETE_FAIL_OWNER;
+                foreach($majitele as $majitel) {
+                    $dog = $this->dogRepository->getDog($majitel->getPID());
+                    $links .= "<a target='_blank' href='" . $this->presenter->link(":Frontend:FeItem1velord2:edit", $majitel->getPID()) . "'>" . $dog->getJmeno() . "</a>, ";
+                }
+                $this->flashMessage($links, "alert-danger");
+            }
+    
+            $chovatele = $this->userRepository->findDogBreedersAsEntitiesUserById($id);
+            if (count($chovatele)) {
+                $links = USER_DELETE_FAIL_BREEDER;
+                foreach($chovatele as $chovatel) {
+                    $dog = $this->dogRepository->getDog($majitel->getPID());
+                    $links .= "<a target='_blank' href='" . $this->presenter->link(":Frontend:FeItem1velord2:edit", $chovatel->getPID()) . "'>" . $dog->getJmeno() . "</a>, ";
+                }
+                $this->flashMessage($links, "alert-danger");
+            }			
 		}
 		$this->redirect('default');
 	}
@@ -102,7 +129,7 @@ class UserPresenter extends SignPresenter {
 			if ($isEditation) {	// pokud edituji tak propíšu jen heslo a počet pokusů o přihlášení (to nikde ve formuláři nezobrazuji)
                 $userCurrent = $this->userRepository->getUser($values['id']);	// uživatel kterého měním
                 $userDuplicateEmail = $this->userRepository->getUserByEmail($userEntity->getEmail());
-                if (($userDuplicateEmail != null) && ($userCurrent->getId() != $userDuplicateEmail->getId())) {
+                if (($userDuplicateEmail != null) && ($userCurrent->getId() != $userDuplicateEmail->getId)) {
                     $this->flashMessage(USER_EMAIL_ALREADY_EXISTS, "alert-danger");
                     $form->addError(USER_EMAIL_ALREADY_EXISTS);                  
                 } else {

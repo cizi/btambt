@@ -1,6 +1,11 @@
 {block content}
 	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
 
+    <style>
+        .chosen-container { 
+            width: 100%!important;
+        }
+    </style>
 	<div class="myContent">
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
@@ -147,6 +152,11 @@
 		$('#confirm-delete').on('show.bs.modal', function(e) {
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		});
+
+         $("#frm-dogFilterForm-DOG_FILTER_BREEDER").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+        });
 
 		$("#DatNarozeni").datetimepicker({
 			format: 'yyyy-mm-dd',
