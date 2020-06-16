@@ -274,7 +274,7 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 		$fena = $this->dogRepository->getDog($fID);
 		$name = trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem());
         $this['litterApplicationDetailForm']['matka']->setDefaultValue($name);
-        $this['litterApplicationDetailForm']['otecCisZap']->setDefaultValue($fena->getCisloZapisu());		
+        $this['litterApplicationDetailForm']['matkaCisZap']->setDefaultValue($fena->getCisloZapisu());		
 
 		$this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
 		$this->template->title = $title;
