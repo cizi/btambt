@@ -102,5 +102,37 @@ class LitterApplicationRepository extends BaseRepository {
 		}
 
 		return $return;
+    }
+    
+    /**
+	 * @return array - [uID]
+	 */
+	public function findUsersInApplications() {
+		$users = [];
+		$applications = $this->findLitterApplications();
+		foreach ($applications as $application) {
+			$data = $application->getDataDecoded();
+			if (isset($data['MajitelFeny'])) {
+				$users[$data['MajitelFeny']] = "";
+			}
+		}
+
+		return $users;
+    }
+    
+    /**
+	 * @param int $id
+	 */
+	public function findUsedUserInApplication($id) {
+		$records = [];
+		$applications = $this->findLitterApplications();
+		foreach ($applications as $application) {
+			$data = $application->getDataDecoded();
+			if (isset($data['MajitelFeny']) && ($data['MajitelFeny'] == $id)) {
+				$records[$application->getID()] = $application;
+			}
+		}
+
+		return $records;
 	}
 }

@@ -119,12 +119,27 @@
 								<table style="width: 70%;">
 									<tr>
 										<td style="width: 33%"></td>
-										{* <td style="width: 33%; font-size: 14px;"><div>{=MATING_FORM_TYPE}</div></td> *}
-										<td><div class="heading2" style="margin-top: 0">{label Plemeno/}: {input Plemeno}</div></td>
+										<td>
+                                            <div class="heading2" style="margin-top: 0; text-align: right;">{label No/} {=LITTER_APPLICATION_DETAIL_APPLICATION_COUNTER_PREFIX} &nbsp;&nbsp;</div>
+                                        </td>
+                                        <td style="font-size: 14px;">{input No}</td>
+									</tr>
+                                    <tr>
+										<td style="width: 33%"></td>
+										<td>
+                                            <div class="heading2" style="margin-top: 0; text-align: right;">{label Plemeno/}: &nbsp;&nbsp;</div>
+                                        </td>
+                                        <td style="font-size: 14px;">{input Plemeno}</td>
+									</tr>
+                                    <tr>
+										<td style="width: 33%"></td>
+										<td>
+                                            <div class="heading2" style="margin-top: 0; text-align: right;">{label ChovStaniceVrh/}: &nbsp;&nbsp;</div>
+                                        </td>
+                                        <td style="font-size: 14px;">{input ChovStaniceVrh}</td>
 									</tr>
 								</table>
 
-								<div class="heading2">{label ChovStaniceVrh/}: {input ChovStaniceVrh}</div>
 								<hr>
 
 								<table border="0" width="100%">

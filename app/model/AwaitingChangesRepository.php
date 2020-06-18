@@ -197,6 +197,23 @@ class AwaitingChangesRepository extends BaseRepository {
 			$this->connection->rollback();
 		}
 		$this->connection->commit();
+    }
+    
+    /**
+	 * @return AwaitingChangesEntity[]
+	 */
+	public function findChangesByUser($uID) {
+		$query = ["select * from appdata_zmeny where uID= %i order by datimVlozeno asc", $uID];
+		$result = $this->connection->query($query);
+
+		$awaitingChanges = [];
+		foreach ($result->fetchAll() as $row) {
+			$change = new AwaitingChangesEntity();
+			$change->hydrate($row->toArray());
+			$awaitingChanges[] = $change;
+		}
+
+		return $awaitingChanges;
 	}
 
 	/**

@@ -1,0 +1,173 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'user'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							<h1>{=USER_REFERENCES}</h1>
+							<span>{=USER_REFERENCES_INFO|noescape}</span>
+							<br /><br />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-3 col-md-2 col-sm-1"></div>
+						<div class="col-lg-6 col-md-8 col-sm-10">
+							<h3>{=AWAITING_CHANGES_USER}</h3>
+							<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$user->getStation()}<br />
+							<strong>{$user->getTitleBefore()} {$user->getName()} {$user->getSurname()} {$user->getTitleAfter()} </strong><br />
+							<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($user->getState())}<br />
+							<b>{=VET_ADDRESS}:</b> {$user->getCity()}, {$user->getZip()}<br />
+							<b>{=USER_EDIT_PHONE_LABEL}:</b> {$user->getPhone()}<br />
+							<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$user->getEmail()}<br />
+							<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$user->getWeb()}>{$user->getWeb()}</a>
+						</div>
+
+						<div class="col-lg-3 col-md-2 col-sm-1"></div>
+					</div>
+
+					{* majitel psa *}
+					{if count($userOwnDogs)}
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>{=USER_REFERENCES_OWNER|noescape}</th>
+									<th class="alignRight"></th>
+								</tr>
+								</thead>
+								<tbody>
+									{foreach $userOwnDogs as $tableRecId => $dog}
+										<tr>
+											{var $fullName = trim($dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem())}
+											{if $fullName == ""}
+												<td>{=USER_REFERENCES_CORRUPT_DOG_REF|noescape}</td>
+											{else}
+												<td><a href={link :Frontend:FeItem1velord2:edit, $dog->getId()} target="_blank">{$fullName}</a></td>
+											{/if}
+											<td class="alignRight">
+												<a href={link deleteDogOwner, $tableRecId, $user->getId()} class="colorRed" title={=VET_CONFIRM_DELETE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											</td>
+										</tr>
+									{/foreach}
+								</tbody>
+							</table>
+						</div>
+					{/if}
+
+					{* chovatel psa *}
+					{if count($userBreedDogs)}
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>{=USER_REFERENCES_BREEDER|noescape}</th>
+									<th class="alignRight"></th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach $userBreedDogs as $tableRecId => $dog}
+									<tr>
+										{var $fullName = trim($dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem())}
+										{if $fullName == ""}
+											<td>{=USER_REFERENCES_CORRUPT_DOG_REF|noescape}</td>
+										{else}
+											<td><a href={link :Frontend:FeItem1velord2:edit, $dog->getId()} target="_blank">{$fullName}</a></td>
+										{/if}
+										<td class="alignRight">
+											<a href={link deleteDogBreeder, $tableRecId, $user->getId()} class="colorRed" title={=VET_CONFIRM_DELETE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+						</div>
+					{/if}
+
+					{* inzeráty štěňat *}
+					{if count($userInPuppyAdd)}
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>{=USER_REFERENCES_PUPPY|noescape}</th>
+									<th class="alignRight"></th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach $userInPuppyAdd as $tableRecId => $add}
+									<tr>
+										<td><a href={link :Frontend:FeItem1velord6:edit, $tableRecId} target="_blank">{$add->getPodrobnosti()}</a></td>
+										<td class="alignRight">
+											<a href={link deletePuppyAdd, $tableRecId, $user->getId()} class="colorRed" title={=VET_CONFIRM_DELETE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+						</div>
+					{/if}
+
+					{if $userChangeRequestAsHtml != ""}
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<h4>{=USER_REFERENCES_REQUESTED_CHANGES}</h4>
+							{$userChangeRequestAsHtml|noescape}
+						</div>
+					{/if}
+
+					{* odkaz na MajiteleFeny v přihláškách vrhu *}
+					{if count($userInLitterApplication)}
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<h4>{=USER_REFERENCES_LITTER_APP|noescape}</h4>
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>{=DOG_FORM_BREED}</th>
+									<th>{=LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY}</th>
+									<th>{=DOG_FORM_MALE}</th>
+									<th>{=DOG_FORM_FEMALE}</th>
+									<th>{=LITTER_APPLICATION_SAVE_REWRITTEN}</th>
+									<th class="alignRight"></th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach $userInLitterApplication as $tableRecId => $application}
+									<tr>
+									<tr>
+										<td>{if $application->getPlemeno() != null}{$enumRepo->findEnumItemByOrder($currentLang, $application->getPlemeno())}{/if}</td>
+										<td>{if $application->getDatumNarozeni() != null}{$application->getDatumNarozeni()->format('d.m.Y')}{/if}</td>
+										<td>{$dogRepo->getName($application->getOID())}</td>
+										<td>{$dogRepo->getName($application->getMID())}</td>
+										<td>{if $application->getZavedeno() == $litterApplicationStateEnumInsert}{=SHOW_UNDONE}{else}{=SHOW_DONE}{/if}</td>
+										<td class="alignRight" nowrap="nowrap">
+											<a href={link :Frontend:LitterApplicationPdfGenerator:default, $application->getID()} title={=LITTER_APPLICATION_GENERATE_PDF}><span class="glyphicon glyphicon-print black"></span></a> &nbsp;&nbsp;
+											{if $application->getZavedeno() == $litterApplicationStateEnumInsert}
+												<a href={link LitterApplication:RewriteDescendants, $application->getID()} title={=LITTER_APPLICATION_REWRITE_DESCENDANTS}><span class="glyphicon glyphicon-indent-left"></span></a> &nbsp;&nbsp;
+											{else}
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											{/if}
+											<a href={link deleteLitterApplication, $tableRecId, $user->getId()} class="colorRed" title={=VET_CONFIRM_DELETE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+										</td>
+									</tr>
+								{/foreach}
+								</tbody>
+							</table>
+						</div>
+					{/if}
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- /#wrapper -->
+{/block}

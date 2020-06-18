@@ -19,6 +19,7 @@ use Dibi\DateTime;
 use Nette\Application\UI\Presenter;
 use Nette\Security\User;
 
+
 class DogChangesComparatorController {
 
 	/**
@@ -431,6 +432,76 @@ class DogChangesComparatorController {
 			$htmlOut .= '</td></tr>';
 		}
 		$htmlOut .=	'</tbody></table>';
+
+		return $htmlOut;
+    }
+    
+    /**
+	 * @param Presenter $presenter
+	 * @param string $currentLang
+	 * @return string
+	 */
+	public function generateAwaitingChangesHtmlPerUser(Presenter $presenter, $currentLang, $uID) {
+		$htmlOut = "";
+		$awaitingChanges = $this->awaitingChangeRepository->findChangesByUser($uID);
+		if (count($awaitingChanges)) {
+			$htmlOut = "
+				<table class='table table-striped'>
+					<thead>
+						<tr>
+							<th>" . AWAITING_CHANGES_DOG . "</th>
+							<th>" . AWAITING_CHANGES_USER . "</th>
+							<th>" . AWAITING_CHANGES_TIMESTAMP . "</th>
+							<th>" . AWAITING_CHANGES_WHAT . "</th>
+							<th>" . AWAITING_CHANGES_ORIGINAL_VALUE . "</th>
+							<th>" . AWAITING_CHANGES_WANTED_VALUE . "</th>
+							<th>" . USER_REFERENCES_REQUESTED_CHANGES_STATE . "</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>";
+
+			foreach ($awaitingChanges as $awaitingChange) {
+				$htmlOut .= "<tr><td>";
+				$dog = $this->dogRepository->getDog($awaitingChange->getpID());
+				if ($dog != null) {
+					$htmlOut .= "<a href='" . $presenter->link(':Frontend:FeItem1velord2:view',
+							$dog->getID()) . "'>" . $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem() . "</a>";
+				}
+				$htmlOut .= '</td><td>';
+				$user = $this->userRepository->getUser($awaitingChange->getUID());
+				if ($user != null) {
+					$htmlOut .= $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter();
+				}
+				$htmlOut .= '</td><td >';
+				if ($awaitingChange->getDatimVlozeno() != null) {
+					$htmlOut .= $awaitingChange->getDatimVlozeno()->format('d.m.Y H:i:s');
+				}
+				$htmlOut .= '</td>';
+
+				$htmlOut .= $this->getChangeDetailByChange($awaitingChange,
+					$currentLang);    // vrátí detail změny podle jejího typu pes/zdraví/apod
+
+				$state = "";
+				switch ($awaitingChange->getStav()) {
+					case DogChangeStateEnum::INSERTED:
+						$state = AWAITING_CHANGE_PROCEEDED_INS;
+						break;
+					case DogChangeStateEnum::PROCEEDED:
+						$state = AWAITING_CHANGE_PROCEEDED_WHEN;
+						break;
+					case DogChangeStateEnum::DECLINED:
+						$state = AWAITING_CHANGE_PROCEEDED_DEC;
+						break;
+				}
+				$htmlOut .= "<td>". $state . "</td>";
+				$htmlOut .= '<td class="alignRight">';
+				$htmlOut .= "<a href='" . $presenter->link("User:DeleteUserChangeRequest", $awaitingChange->getID(),
+						$uID) . "' class='colorRed' title='" . VET_CONFIRM_DELETE_DELETE . "'><span class='glyphicon glyphicon-remove'></span></a>";
+				$htmlOut .= '</td></tr>';
+			}
+			$htmlOut .= '</tbody></table>';
+		}
 
 		return $htmlOut;
 	}

@@ -44,6 +44,11 @@ class MatingListDetailForm {
 
 		$form->addHidden('cID');
 
+        $form->addText("No", COUNTER_LITTER_NO_FROM_COVERAGE)
+            ->setAttribute("placeholder", COUNTER_LITTER_NO_FROM_COVERAGE)
+            ->setRequired(COUNTER_LITTER_NO_FROM_COVERAGE_REQ)
+			->setAttribute("tabindex", $counter++);
+
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno)
 			->setAttribute("tabindex", $counter);
 

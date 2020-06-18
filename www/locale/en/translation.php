@@ -71,6 +71,17 @@ define("USER_SEARCH_FIELD", "Fulltext searching in users");
 define("USER_SEARCH_BUTTON", "Search");
 define("USER_DELETE_FAIL_BREEDER",  "User is as a breeder with these dogs: ");
 define("USER_DELETE_FAIL_OWNER",  "User is as a owner with these dogs: ");
+define("USER_REFERENCES", 'User references');
+define("USER_REFERENCES_INFO",  "Here are all references to the database where user is in use. For user deletation you need do discard (delete) all references. <strong>ATTENTION</strong> can't be undone!");
+define("USER_REFERENCES_OWNER",  "Here are listed dogs where is user use as <strong>owner</strong>");
+define("USER_REFERENCES_TEMP_OWNER",  "Here are listed dogs where is user use as <strong>temporary owner</strong>");
+define("USER_REFERENCES_BREEDER",  "Here are listed dogs where is user use as <strong>breeder</strong>");
+define("USER_REFERENCES_TEMP_BREEDER",  "Here are listed dogs where is user use as <strong>temporary breeder</strong>");
+define("USER_REFERENCES_PUPPY",  "User has these adds listed");
+define("USER_REFERENCES_LITTER_APP",  "Here is user listed as <strong>'dog's female owner'</strong>");
+define("USER_REFERENCES_REQUESTED_CHANGES",  "Requested user changes");
+define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "State");
+define("USER_REFERENCES_CORRUPT_DOG_REF",  "<i>Invalid dog reference</i>");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');
@@ -170,9 +181,8 @@ define("COUNTER_TITLE_INFO", 'Configuration of used counters in the system');
 define("COUNTER_COVERAGE_COUNTER", 'System counters of coverage lists');
 define("COUNTER_COVERAGE_BT_COUNTER", 'Next number of the coverage list for bull terriers');
 define("COUNTER_COVERAGE_MBT_COUNTER", 'Next number of the coverage list for mini bull terriers');
-define("COUNTER_LITTER_COUNTER", 'System counters of litter application forms');
-define("COUNTER_LITTER_BT_COUNTER", 'Next number of the litter application form for bull terriers');
-define("COUNTER_LITTER_MBT_COUNTER", 'Next number of the litter application form mini bull terriers');
+define("COUNTER_LITTER_NO_FROM_COVERAGE", 'Number from coverage application');
+define("COUNTER_LITTER_NO_FROM_COVERAGE_REQ", 'Number from coverage application is mandatory!');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');

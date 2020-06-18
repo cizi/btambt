@@ -72,6 +72,17 @@ define("USER_SEARCH_FIELD",  "Fulltextové vyhledávání v uživatelích");
 define("USER_SEARCH_BUTTON",  "Hledat");
 define("USER_DELETE_FAIL_BREEDER",  "Je uveden jako chovatel u těcho psů: ");
 define("USER_DELETE_FAIL_OWNER",  "Je uveden jako majitel / bývalý majitel u těcho psů: ");
+define("USER_REFERENCES", 'Reference uživatele');
+define("USER_REFERENCES_INFO", 'Zde jsou zobrazeny veškeré odkazy na uživatele. Pokud chcete uživatele odstranit, nesmí mít žádné odkazy do databáze. <strong>POZOR</strong> akce je nevratná!');
+define("USER_REFERENCES_OWNER",  "U těchto psů je uživatel veden jako <strong>majitel</strong>");
+define("USER_REFERENCES_TEMP_OWNER",  "U těchto psů je uživatel veden jako <strong>dočasný majitel</strong>");
+define("USER_REFERENCES_BREEDER",  "U těchto psů je uživatel veden jako <strong>chovatel</strong>");
+define("USER_REFERENCES_TEMP_BREEDER",  "U těchto psů je uživatel veden jako <strong>dočasný chovatel</strong>");
+define("USER_REFERENCES_PUPPY",  "Uživatel má vystaveny tyto inzeráty štěňat");
+define("USER_REFERENCES_LITTER_APP",  "U těchto přihlášek vrhu je uživatel veden jako <strong>'majitel feny'</strong>");
+define("USER_REFERENCES_REQUESTED_CHANGES",  "Požadované změny uživatele");
+define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "Stav");
+define("USER_REFERENCES_CORRUPT_DOG_REF",  "<i>Neplatná reference na psa</i>");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');
@@ -94,6 +105,7 @@ define("USER_EDIT_BACK_BTN_LABEL", 'Zpět');
 define("USER_EDIT_SAVE_FAILED", 'Nepovedlo se zpracovat změny, opakujte prosím později');
 define("USER_EDIT_PASSWORDS_EMPTY", 'Neplatné heslo');
 define("USER_EDIT_PASSWORDS_DOESNT_MATCH", 'Hesla se neshodují');
+
 // frontend - user
 define("USER_EDIT_CURRENT_PASSWORD", 'Aktuální heslo');
 define("USER_EDIT_CURRENT_PASSWORD_FAILED", 'Aktuální heslo není správné');
@@ -184,9 +196,8 @@ define("COUNTER_TITLE_INFO", 'Konfigurace číselných řad použitých v systé
 define("COUNTER_COVERAGE_COUNTER", 'Číselné řady krycích listů');
 define("COUNTER_COVERAGE_BT_COUNTER", 'Nadcházející číslo krycího listu BT');
 define("COUNTER_COVERAGE_MBT_COUNTER", 'Nadcházející číslo krycího listu MBT');
-define("COUNTER_LITTER_COUNTER", 'Číselné řady přihlášek k zápisu vrhu');
-define("COUNTER_LITTER_BT_COUNTER", 'Nadcházející číslo přihlášky k zápisu vrhu BT');
-define("COUNTER_LITTER_MBT_COUNTER", 'Nadcházející číslo přihlášky k zápisu vrhu MBT');
+define("COUNTER_LITTER_NO_FROM_COVERAGE", 'Číslo z krycího listu');
+define("COUNTER_LITTER_NO_FROM_COVERAGE_REQ", 'Číslo z krycího listu je povinná položka!');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');

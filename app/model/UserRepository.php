@@ -9,6 +9,7 @@ use App\Model\Entity\DogOwnerEntity;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\Security\Passwords;
+use App\Model\Entity\DogEntity;
 
 class UserRepository extends BaseRepository implements Nette\Security\IAuthenticator {
 
@@ -543,5 +544,126 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		}
 
 		return $users;
+    }
+    
+    /**
+	 * @return array - [userId]
+	 */
+	public function findUsedOwnersInDogs() {
+		$owners = [];
+		$query = ["select distinct uID from appdata_majitel"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$owners[$user['uID']] = "";
+		}
+
+		return $owners;
+    }
+    
+    /**
+	 * @return array
+	 */
+	public function findUsedBreedersInDogs() {
+		$breeders = [];
+		$query = ["select distinct uID from appdata_chovatel"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$breeders[$user['uID']] = "";
+		}
+
+		return $breeders;
+    }
+    
+    /**
+	 * @return array
+	 */
+	public function findUsedUserInPuppies() {
+		$users = [];
+		$query = ["select distinct uID from appdata_stenata"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$users[$user['uID']] = "";
+		}
+
+		return $users;
+    }
+    
+    /**
+	 * @return array
+	 */
+	public function findUsedUserInChanges() {
+		$users = [];
+		$query = ["select distinct uID from appdata_zmeny"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$users[$user['uID']] = "";
+		}
+
+		return $users;
+    }
+    
+    /**
+	 * @return array - [idZáznau v tabulce] = data o psovi
+	 */
+	public function findRecOwnersInDogs($uID) {
+		$owners = [];
+		$query = ["select am.id as amId, ap.* from appdata_majitel as am left join appdata_pes as ap on am.pID = ap.ID where am.uID = %i", $uID];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$data = $row->toArray();
+			$dog = new DogEntity();
+			$dog->hydrate($data);
+			$owners[$data['amId']] = $dog;
+		}
+
+		return $owners;
+    }
+    
+    /**
+	 * @return array - [idZáznau v tabulce] = data o psovi
+	 */
+	public function findRecBreedersInDogs($uID) {
+		$owners = [];
+		$query = ["select ac.id as acId, ap.* from appdata_chovatel as ac left join appdata_pes as ap on ac.pID = ap.ID where ac.uID = %i", $uID];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$data = $row->toArray();
+			$dog = new DogEntity();
+			$dog->hydrate($data);
+			$owners[$data['acId']] = $dog;
+		}
+
+		return $owners;
+    }
+    
+    /**
+	 * Vrátí inzeráty uživatele
+	 * @param int $id
+	 * @return array
+	 */
+	public function findRecUserInPuppies($id) {
+		$adds = [];
+		$query = ["select * from appdata_stenata where uID = %i", $id];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$data = $row->toArray();
+			$puppy = new PuppyEntity();
+			$puppy->hydrate($data);
+			$adds[$data['ID']] = $puppy;
+		}
+
+		return $adds;
 	}
+
 }

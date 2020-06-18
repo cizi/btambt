@@ -42,18 +42,6 @@ class CounterForm {
             ->setAttribute("tabindex", "2")
             ->setRequired()
             ->addRule(Form::INTEGER);
-            
-        $form->addText(WebconfigRepository::KEY_COUNTER_APPLICAIOTN_FORM_BT, COUNTER_LITTER_BT_COUNTER)
-			->setAttribute("class", "form-control")
-            ->setAttribute("tabindex", "3")
-            ->setRequired()
-	        ->addRule(Form::INTEGER);
-
-		$form->addText(WebconfigRepository::KEY_COUNTER_APPLICAIOTN_FORM_MBT, COUNTER_LITTER_MBT_COUNTER)
-			->setAttribute("class", "form-control")
-            ->setAttribute("tabindex", "4")
-            ->setRequired()
-	        ->addRule(Form::INTEGER);
 
 		$form->addSubmit("confirm", USER_EDIT_SAVE_BTN_LABEL)
 			->setAttribute("class","btn btn-primary")

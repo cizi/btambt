@@ -59,7 +59,15 @@
 										</td>
 										<td>{$userForeach->getRegisterTimestamp()|date: 'j.n.Y G:i:s'}</td>
 										<td>{$userForeach->getLastLogin()|date: 'j.n.Y G:i:s'}</td>
-										<td class="alignRight">
+                                        <td class="alignRight">
+											{if isset($usedOwnersPerDog[$userForeach->getId()])
+												|| isset($usedBreedersPerDog[$userForeach->getId()])
+												|| isset($usedUserInPuppies[$userForeach->getId()])
+												|| isset($usedUserInChanges[$userForeach->getId()])
+												|| isset($usedUserInLitterApp[$userForeach->getId()])
+											}
+												<a href={link userReferences, $userForeach->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
+											{/if}
 											<a href={link User:Edit, $userForeach->getId()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
 											<a href="#" data-href={link User:DeleteUser, $userForeach->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 										</td>

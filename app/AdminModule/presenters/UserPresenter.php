@@ -16,8 +16,16 @@ use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
 use Nette\Security\User;
 use Nette\Utils\Paginator;
+use App\Model\LitterApplicationRepository;
+use App\Enum\StateEnum;
+use App\Model\EnumerationRepository;
+use App\Enum\LitterApplicationStateEnum;
+use App\Controller\DogChangesComparatorController;
 
 class UserPresenter extends SignPresenter {
+
+    /** @persistent */
+	public $filter;
 
 	/** @var UserRepository */
 	protected $userRepository;
@@ -31,16 +39,39 @@ class UserPresenter extends SignPresenter {
     /** @var DogRepository */
     private $dogRepository;
 
+    /** @var LitterApplicationRepository */
+    private $litterApplicationRepository;
+    
+    /** @var EnumerationRepository */
+    private $enumerationRepository;
+    
+    /** @var DogChangesComparatorController  */
+	private $dogChangesComparatorController;
+
 	/**
 	 * @param UserRepository $userRepository
 	 * @param UserForm $userForm
      * @param DogRepository $dogRepository
+     * @param LitterApplicationRepository $litterApplicationRepository
+     * @param EnumerationRepository $enumerationRepository
+     * @param DogChangesComparatorController $dogChangesComparatorController
 	 */
-	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm, DogRepository $dogRepository) {
+	public function __construct(
+        UserRepository $userRepository, 
+        UserForm $userForm, 
+        UserFilterForm $userFilterForm, 
+        DogRepository $dogRepository, 
+        LitterApplicationRepository $litterApplicationRepository, 
+        EnumerationRepository $enumerationRepository,
+        DogChangesComparatorController $dogChangesComparatorController
+    ) {
 		$this->userRepository = $userRepository;
 		$this->userForm = $userForm;
         $this->userFilterForm = $userFilterForm;
         $this->dogRepository = $dogRepository;
+        $this->litterApplicationRepository = $litterApplicationRepository;
+        $this->enumerationRepository = $enumerationRepository;
+        $this->dogChangesComparatorController = $dogChangesComparatorController;
 	}
 
 	/**
@@ -56,18 +87,44 @@ class UserPresenter extends SignPresenter {
 	/**
 	 * defaultní akce presenteru načte uživatele
 	 */
-	public function actionDefault($id, $filter) {
+	public function actionDefault($id) {
+        $filter = $this->decodeFilterFromQuery();
+        $this['userFilterForm']->setDefaults($filter);
+        $userSearchField = (isset($filter[UserRepository::USER_SEARCH_FIELD]) ? $filter[UserRepository::USER_SEARCH_FIELD] : null);
+
 		$page = (empty($id) ? 1 : intval($id));
 		$this['userFilterForm'][UserRepository::USER_CURRENT_PAGE]->setDefaultValue($page);
 		$paginator = new Paginator();
-		$paginator->setItemCount($this->userRepository->getUsersCount($filter)); // celkový počet položek
+		$paginator->setItemCount($this->userRepository->getUsersCount($userSearchField)); // celkový počet položek
 		$paginator->setItemsPerPage(50); // počet položek na stránce
 		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
 
 		$userRoles = new UserRoleEnum();
 		$this->template->paginator = $paginator;
-		$this->template->users = $this->userRepository->findUsers($paginator, $filter);
-		$this->template->roles = $userRoles->translatedForSelect();
+		$this->template->users = $this->userRepository->findUsers($paginator, $userSearchField);
+        $this->template->roles = $userRoles->translatedForSelect();
+        
+        $this->template->usedOwnersPerDog = $this->userRepository->findUsedOwnersInDogs();
+		$this->template->usedBreedersPerDog = $this->userRepository->findUsedBreedersInDogs();
+		$this->template->usedUserInPuppies = $this->userRepository->findUsedUserInPuppies();
+		$this->template->usedUserInChanges = $this->userRepository->findUsedUserInChanges();
+		$this->template->usedUserInLitterApp = $this->litterApplicationRepository->findUsersInApplications();
+    }
+    
+    public function actionUserReferences($id) {
+		$this->template->stateEnum = new StateEnum();
+		$this->template->enumRepo = $this->enumerationRepository;
+		$this->template->dogRepo = $this->dogRepository;
+		$this->template->litterApplicationStateEnumInsert = LitterApplicationStateEnum::INSERT;			// php 5.4 workaround
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->user = $this->userRepository->getUser($id);
+		$this->template->userOwnDogs = $this->userRepository->findRecOwnersInDogs($id);
+		$this->template->userBreedDogs = $this->userRepository->findRecBreedersInDogs($id);
+		$this->template->userInPuppyAdd = $this->userRepository->findRecUserInPuppies($id);
+
+		$currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->userChangeRequestAsHtml = $this->dogChangesComparatorController->generateAwaitingChangesHtmlPerUser($this->presenter, $currentLang, $id);
+		$this->template->userInLitterApplication = $this->litterApplicationRepository->findUsedUserInApplication($id);
 	}
 
 	/**
@@ -217,7 +274,7 @@ class UserPresenter extends SignPresenter {
 
 	public function createComponentUserFilterForm() {
 		$form = $this->userFilterForm->create();
-		$form->onSubmit[] = [$this, 'submitUserFilterForm'];
+		$form->onSubmit[] = [$this, 'dogFilter'];
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
@@ -229,6 +286,24 @@ class UserPresenter extends SignPresenter {
 		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
 
 		return $form;
+    }
+    
+    /**
+	 * @param Form $form
+	 */
+	public function dogFilter(Form $form) {
+        if (isset($form->getHttpData()["clearFilter"])) {
+            $this->filter = "";
+        } else {
+            $filter = "1&";
+            foreach ($form->getValues() as $key => $value) {
+                if ($value != "") {
+                    $filter .= $key . "=" . $value . "&";
+                }
+            }
+            $this->filter = $filter;
+        }
+        $this->redirect("default");
 	}
 
 	public function submitUserFilterForm(Form $form) {
@@ -239,5 +314,75 @@ class UserPresenter extends SignPresenter {
 		} else {
 			$this->redirect("default");
 		}
+    }
+    
+    /**
+	 * Smaže záznam v tabulce majitelů podle ID
+	 * @param int $id
+	 * @param int $uID
+	 */
+	public function actionDeleteDogOwner($id, $uID) {
+		if ($this->userRepository->deleteOwner($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $uID);
+	}
+
+	/**
+	 * Smaže záznam v tabulce chovatelů podle ID
+	 * @param int $id
+	 * @param int $uID
+	 */
+	public function actionDeleteDogBreeder($id, $uID) {
+		if ($this->userRepository->deleteBreeder($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $uID);
+	}
+
+	/**
+	 * Smaže záznam v tabulce inzerátu štěňat
+	 * @param $id
+	 * @param $uID
+	 */
+	public function actionDeletePuppyAdd($id, $uID) {
+		if ($this->puppyRepository->deletePuppy($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $uID);
+	}
+
+	/**
+	 * Smaže záznam v tabulce změn
+	 * @param $id
+	 * @param $uID
+	 */
+	public function actionDeleteUserChangeRequest($id, $uID) {
+		if ($this->awaitingChangesRepository->deleteAwaitingChange($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+
+		$this->redirect("userReferences", $uID);
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $uID
+	 */
+	public function actionDeleteLitterApplication($id, $uID) {
+		if ($this->litterApplicationRepository->delete($id)) {
+			$this->flashMessage(LITTER_APPLICATION_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(LITTER_APPLICATION_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $uID);
 	}
 }

@@ -53,6 +53,11 @@ class LitterApplicationDetailForm {
 		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::PLEMENO);
 		$pohlavi = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::POHLAVI);
 
+        $form->addText("No", COUNTER_LITTER_NO_FROM_COVERAGE)
+            ->setAttribute("class", "tinym_required_field")
+            ->setAttribute("validation", COUNTER_LITTER_NO_FROM_COVERAGE_REQ)
+            ->setAttribute("placeholder", COUNTER_LITTER_NO_FROM_COVERAGE);
+
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno);
 		$form->addText("chs", LITTER_APPLICATION_DETAIL_STATION_TITLE, 80);
 

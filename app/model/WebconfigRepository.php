@@ -110,8 +110,6 @@ class WebconfigRepository extends BaseRepository{
     /** @const for counters section */
     const KEY_COUNTER_COVERAGE_BT = "COUNTER_COVERAGE_BT";
     const KEY_COUNTER_COVERAGE_MBT = "COUNTER_COVERAGE_MBT";
-    const KEY_COUNTER_APPLICAIOTN_FORM_BT = "COUNTER_APPLICAIOTN_FORM_BT";
-    const KEY_COUNTER_APPLICAIOTN_FORM_MBT = "COUNTER_APPLICAIOTN_FORM_MBT";
 
 	/** @var array cache for values => less queris to DB */
 	private $cache = [];
@@ -137,7 +135,7 @@ class WebconfigRepository extends BaseRepository{
 	 */
     public function loadCounters($lang) {
         $ret = [];
-        $counters = [self::KEY_COUNTER_COVERAGE_BT, self::KEY_COUNTER_COVERAGE_MBT, self::KEY_COUNTER_APPLICAIOTN_FORM_BT, self::KEY_COUNTER_APPLICAIOTN_FORM_MBT];
+        $counters = [self::KEY_COUNTER_COVERAGE_BT, self::KEY_COUNTER_COVERAGE_MBT];
         $query = ["select id, value from web_config where lang = %s and id in %in", $lang, $counters];
         $ret = $this->connection->query($query)->fetchPairs("id", "value");
         

@@ -146,7 +146,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
-		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['container'] = 'div';
 		$renderer->wrappers['pair']['.error'] = 'has-error';
 		$renderer->wrappers['control']['container'] = 'div class=col-md-3';
 		$renderer->wrappers['label']['container'] = 'div class="col-md-3 control-label"';

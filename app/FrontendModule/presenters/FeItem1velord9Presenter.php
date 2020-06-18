@@ -234,11 +234,6 @@ class FeItem1velord9Presenter extends FrontendPresenter {
         
 		$clubName = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
         $this->template->clubName = $clubName;
-        $counterKey = ($cID == 157 ? WebconfigRepository::KEY_COUNTER_APPLICAIOTN_FORM_BT : WebconfigRepository::KEY_COUNTER_APPLICAIOTN_FORM_MBT);
-        $counterNum = $this->webconfigRepository->getByKey($counterKey, WebconfigRepository::KEY_LANG_FOR_COMMON);
-        $this->template->tempNumber = $counterNum . "/" . date('Y');
-        $this->webconfigRepository->incrementCounter($counterKey, WebconfigRepository::KEY_LANG_FOR_COMMON);
-        $this['litterApplicationDetailForm']['number']->setDefaultValue($this->template->tempNumber);
 
         $this['litterApplicationDetailForm']['Klub']->setDefaultValue($clubName);
         $this['litterApplicationDetailForm']['Plemeno']->setDefaultValue(($cID == 157 ? EnumerationRepository::PLEMENO_BT : EnumerationRepository::PLEMENO_MBT));
