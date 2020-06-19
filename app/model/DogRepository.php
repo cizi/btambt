@@ -208,8 +208,10 @@ class DogRepository extends BaseRepository {
             if ($restrictVisibilityByUser) {
                 $query[] = " and SkrytCelouKartu = 0";
             }
-			$query[] = $this->getWhereFromKeyValueArray($filter, $owner, $breeder);
-			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
+            $query[] = $this->getWhereFromKeyValueArray($filter, $owner, $breeder);
+            if (isset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS])) {
+                $query[] = " order by `PosledniZmena` desc limit %i , %i";
+            } else if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
 				$query[] = " order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
 			} else {
 				$query[] = " order by `Jmeno` asc limit %i , %i";

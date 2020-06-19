@@ -23,4 +23,7 @@ $container = $configurator->createContainer();
 
 $container->getService('application')->errorPresenter = 'Frontend:Error';
 
+$panel = new Dibi\Bridges\Tracy\Panel;
+$panel->register($container->getByType(\Dibi\Connection::class));
+
 return $container;
