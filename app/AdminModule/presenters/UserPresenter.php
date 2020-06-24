@@ -186,7 +186,7 @@ class UserPresenter extends SignPresenter {
 			if ($isEditation) {	// pokud edituji tak propíšu jen heslo a počet pokusů o přihlášení (to nikde ve formuláři nezobrazuji)
                 $userCurrent = $this->userRepository->getUser($values['id']);	// uživatel kterého měním
                 $userDuplicateEmail = $this->userRepository->getUserByEmail($userEntity->getEmail());
-                if (($userDuplicateEmail != null) && ($userCurrent->getId() != $userDuplicateEmail->getId)) {
+                if (($userDuplicateEmail != null) && ($userCurrent->getId() != $userDuplicateEmail->getId())) {
                     $this->flashMessage(USER_EMAIL_ALREADY_EXISTS, "alert-danger");
                     $form->addError(USER_EMAIL_ALREADY_EXISTS);                  
                 } else {
