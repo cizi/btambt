@@ -25,6 +25,11 @@ class EmailController {
         $email->Body = $body;
         $email->isSMTP();
 
+        // SNAS config
+        $email->isSMTP();
+        $email->Host = 'localhost';
+        $email->Port = 25;
+
 		if (strpos($emailTo, ";") !== false) {	// více příjemců
 			$addresses = explode(";", $emailTo);
 			foreach ($addresses as $address) {
