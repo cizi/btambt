@@ -253,7 +253,7 @@
             <td align="center" style="vertical-align: top">
                 <b>Barva srsti</b>
             </td>
-            <td align="center" style="vertical-align: top">
+            <td align="center" style="vertical-align: top; width: 35%;">
                 <b>tetovací číslo / číslo čipu</b> <br /><small>pokud budete čipovat, můžete tetovací číslo přelepit</small>
             </td>
         </tr>
@@ -262,8 +262,13 @@
             <tr id="tr{$i}">
                 <td align="center">&nbsp;<!-- CZAP_{$i} --><br /><br /><br /></td>
                 <td align="center">{${"jmeno".$i}}</td>
-                <td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
-                <td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
+                {if ${"jmeno".$i} != ""}
+                    <td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
+                    <td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
+                {else}
+                    <td align="center"></td>
+                    <td align="center"></td>
+                {/if}
                 <td align="center" class="rbold fontBold">{${"mikrocip".$i}}</td>
             </tr>
         {/for}
@@ -302,12 +307,7 @@
                                             <td style="text-align: left;"></td>
                                         </tr>
                                     </table>
-                                    <br /><br />
-                                </div>
-
-                                <div class="itemFull">
-                                    Prohlašuji, že všechny údaje jsou pravdivé. Souhlasím se zveřejněním 
-                                    svého jména, adresy, telefonu případným zájemcům o štěňata. 
+                                    <br />
                                 </div>
 
                                 <div class="itemFull">
@@ -316,11 +316,15 @@
                                 </div> 
 
                                 <div class="itemFull"><br />
-                                    ANO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    NE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <strong>ANO</strong>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <strong>NE</strong>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     Člen KABT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    ANO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    NE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <strong>ANO</strong>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <strong>NE</strong>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <strong>Tetování / čipování od: </strong>.........................<br /><br />
                                     <strong>Datum a podpis chovatele: </strong>.....................................<br /><br />
                                     prosím vyplňte před odesláním na ČMKJ

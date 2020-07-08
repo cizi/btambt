@@ -23,7 +23,6 @@ class EmailController {
 		$email->isHTML(true);
 		$email->Subject = $subject;
         $email->Body = $body;
-        $email->isSMTP();
 
         // SNAS config
         $email->isSMTP();

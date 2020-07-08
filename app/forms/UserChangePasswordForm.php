@@ -2,8 +2,8 @@
 
 namespace App\Forms;
 
-use Nette\Forms\Form;
 use Nette;
+use Nette\Application\UI\Form;
 
 class UserChangePasswordForm {
 
@@ -25,7 +25,7 @@ class UserChangePasswordForm {
 	public function create() {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
-		$tabIndex = 1;
+        $tabIndex = 1;
 
 		$form->addPassword("passwordCurrent", USER_EDIT_CURRENT_PASSWORD)
 			->setAttribute("type","password")
@@ -34,23 +34,23 @@ class UserChangePasswordForm {
 			->setAttribute("validation", USER_EDIT_CURRENT_PASSWORD_REQ)
 			->setAttribute("tabindex", $tabIndex++);
 
-		$form->addPassword("password", USER_EDIT_PASS_LABEL)
+		 $form->addPassword("passwordNew", USER_EDIT_PASS_LABEL)
 			->setAttribute("type","password")
 			->setAttribute("class", "tinym_required_field form-control")
 			->setAttribute("placeholder", USER_EDIT_PASS_LABEL)
 			->setAttribute("validation", USER_EDIT_PASS_REQ)
 			->setAttribute("tabindex", $tabIndex++);
 
-		$form->addPassword("passwordConfirm", USER_EDIT_PASS_AGAIN_LABEL)
+		$form->addPassword("passwordNewConfirm", USER_EDIT_PASS_AGAIN_LABEL)
 			->setAttribute("type","password")
 			->setAttribute("class", "tinym_required_field form-control")
 			->setAttribute("placeholder", USER_EDIT_PASS_AGAIN_LABEL)
 			->setAttribute("validation", USER_EDIT_PASS_AGAIN_REQ)
-			->setAttribute("tabindex", $tabIndex++);
-
+            ->setAttribute("tabindex", $tabIndex++); 
+        
 		$form->addSubmit("confirm", USER_EDIT_SAVE_BTN_LABEL)
 			->setAttribute("class","btn btn-primary")
-			->setAttribute("tabindex", $tabIndex++);
+			->setAttribute("tabindex", $tabIndex++); 
 
 		return $form;
 	}

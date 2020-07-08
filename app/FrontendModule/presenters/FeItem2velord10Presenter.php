@@ -6,8 +6,8 @@ use App\Forms\UserChangePasswordForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
 use Nette\Application\AbortException;
-use Nette\Forms\Form;
 use Nette\Security\Passwords;
+use Nette\Application\UI\Form;
 
 class FeItem2velord10Presenter extends FrontendPresenter {
 
@@ -24,42 +24,41 @@ class FeItem2velord10Presenter extends FrontendPresenter {
 
 	public function startup() {
 		parent::startup();
-
-		if ($this->user->isLoggedIn() == false) {
-			$this->redirect($this->getPresenterLink(1, 14) . ":default");
+		if ($this->user->isLoggedIn() == false) {	// pokud nejsem přihlášen tak nemám co měnit -> tedy login
+			$this->redirect(BasePresenter::PRESENTER_PREFIX . "1" . BasePresenter::LEVEL_ORDER_DELIMITER. "14:default");
 		}
-	}
+    }
 
 	/**
-	 * Vytvo�� komponentu pro zm�nu hesla u�ivatele
+	 * Vytvori komponentu pro zmen hesla uzivatele
 	 */
 	public function createComponentChangePasswordForm() {
 		$form = $this->userChangePasswordForm->create();
-		$form->onSubmit[] = [$this, 'updatePassword'];
+        $form->onSubmit[] = [$this, 'updatePassword'];
 
-		return $form;
-	}
+        return $form;
+    }
 
 	/**
-	 * Zvaliduje dormul�� zm�ny hesla
-	 * @param Form $form
+	 * Zvaliduje formular zmeny hesla
+	 * @param Form $form $form
 	 */
 	public function updatePassword(Form $form) {
-		$values = $form->getHttpData();
-		$userEntity = $this->userRepository->getUser($this->user->getId());
-
 		try {
+            $values = $form->getValues();
+            $userEntity = $this->userRepository->getUser($this->user->getId());
+        
 			if (!Passwords::verify($values['passwordCurrent'], $userEntity->getPassword())) {
 				$this->flashMessage(USER_EDIT_CURRENT_PASSWORD_FAILED, "alert-danger");
 				$form->addError(USER_EDIT_CURRENT_PASSWORD_FAILED);
-			} elseif ((trim($values['passwordConfirm']) == "") || (trim($values['password']) == "")) {
+			} elseif ((trim($values['passwordNewConfirm']) == "") || (trim($values['passwordNew']) == "")) {
 				$this->flashMessage(USER_EDIT_PASSWORDS_EMPTY, "alert-danger");
 				$form->addError(USER_EDIT_PASSWORDS_EMPTY);
-			} elseif (trim($values['passwordConfirm']) != trim($values['password'])) {
+			} elseif (trim($values['passwordNewConfirm']) != trim($values['passwordNew'])) {
 				$this->flashMessage(USER_EDIT_PASSWORDS_DOESNT_MATCH, "alert-danger");
 				$form->addError(USER_EDIT_PASSWORDS_DOESNT_MATCH);
 			} else {
-				if ($this->userRepository->changePassword($this->user->getId(), $values['password'])) {
+				if ($this->userRepository->changePassword($this->user->getId(), $values['passwordNew'])) {
 					$this->flashMessage(USER_EDIT_PASSWORD_CHANGED, "alert-success");
 					$this->redirect("default");
 				} else {
@@ -74,7 +73,6 @@ class FeItem2velord10Presenter extends FrontendPresenter {
 				$this->flashMessage(USER_EDIT_SAVE_FAILED, "alert-danger");
 				$form->addError(USER_EDIT_SAVE_FAILED);
 			}
-		}
-
-	}
+        }
+    }
 }
