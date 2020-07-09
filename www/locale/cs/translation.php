@@ -768,7 +768,8 @@ define("LITTER_APPLICATION_DETAIL_DOG_TITLES", "výstavní ocenění a dosažen�
 define("LITTER_APPLICATION_DETAIL_CARD_NO", "číslo průkazu vč. zkratky plemenné knihy");
 define("LITTER_APPLICATION_DETAIL_FUR_TYPE", "druh srsti");
 define("LITTER_APPLICATION_DETAIL_BONITATION", "bonitace");
-define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Jméno a adresa chovatele");
+define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Chovatel");
+define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS_DET", "(majitel feny, jméno, adresa, PSČ, telefon, e-mail)");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY", "Datum narození štěňat");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_INFO", "Údaje o počtu narozených štěňat");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_COUNT", "Kolik štěňat fena porodila");

@@ -745,7 +745,8 @@ define("LITTER_APPLICATION_DETAIL_DOG_TITLES", "exhibition awards and achievemen
 define("LITTER_APPLICATION_DETAIL_CARD_NO", "card number incl. Abbreviations of the stud book");
 define("LITTER_APPLICATION_DETAIL_FUR_TYPE", "fur type");
 define("LITTER_APPLICATION_DETAIL_BONITATION", "bonitations");
-define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Name and address of the breeder");
+define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Breeder");
+define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS_DET", "(female owner, name, address, ZIP, phone, e-mail)");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY", "Date of birth of puppies");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_INFO", "Data on the number of puppies born");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_COUNT", "How many puppies gave birth to");
