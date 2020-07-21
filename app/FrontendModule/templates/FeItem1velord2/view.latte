@@ -151,17 +151,22 @@
 						<th>{=DOG_FORM_TITLES}:</th>
 						<td>{nl2br($dog->getTitulyKomentar())|noescape} </td>
 
-						<th>{=DOG_FORM_PIC_UPLOAD_FILE}:</th>
-						<td>
-							{foreach $dogFiles as $file}
-								<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
-								{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
-									{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
-									<small>({constant($typ)|lower})</small>
-								{/if}
-								<br />
-							{/foreach}
-						</td>
+                        {if !empty($dogFiles)}
+                            <th>{=DOG_FORM_PIC_UPLOAD_FILE}:</th>
+                            <td>
+                                {foreach $dogFiles as $file}
+                                    <a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
+                                    {if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
+                                        {var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+                                        <small>({constant($typ)|lower})</small>
+                                    {/if}
+                                    <br />
+                                {/foreach}
+                            </td>
+                        {else}
+                            <th></th>
+                            <td></td>
+                        {/if}
 					</tr>
 					{if !empty($dog->getKontrolaVrhu())}
 					<tr>

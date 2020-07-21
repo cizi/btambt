@@ -116,8 +116,9 @@ class DogFilterForm {
 		$form->addText(self::DOG_FILTER_EXAM, DOG_TABLE_HEADER_EXAM)
 			->setAttribute("class", "form-control");
 
-		$form->addText("Vyska", DOG_TABLE_HEADER_HEIGHT)
-			->setAttribute("class", "form-control");
+        // ChovnyKomentar je CZDR
+		$form->addText("ChovnyKomentar", DOG_FORM_BREEDING_COM)
+            ->setAttribute("class", "form-control");
 
 		$form->addCheckbox(self::DOG_FILTER_LAST_14_DAYS, DOG_TABLE_LAST_14_DAYS)
 			->setAttribute("class", "margin10");

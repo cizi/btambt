@@ -188,6 +188,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 
             $latteParams["fenaMajitele"] = $femaleOwnersToInput;
             $latteParams["fenaStanice"] = $femaleStation;
+            $latteParams["cID"] = $cID;
 
             $latte = new \Latte\Engine();
             $latte->setTempDirectory(__DIR__ . '/../../../temp/cache');

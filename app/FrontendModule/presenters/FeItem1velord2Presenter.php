@@ -88,7 +88,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	public function startup() {
 		$this->template->amIAdmin = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
         $this->template->canDirectEdit = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
-        $this->template->canSeeAdminNote = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] >= UserRoleEnum::USER_EDITOR);
+        $this->template->canSeeAdminNote = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] >= UserRoleEnum::USER_EDITOR);    // práva pro poradce chovu
         
         $this->hideContentByDogSetting = (($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] <= UserRoleEnum::USER_REGISTERED) || ($this->getUser()->isLoggedIn() == false));
         $this->template->hideContentByDogSetting = $this->hideContentByDogSetting;
@@ -351,7 +351,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 		$dogPics = $this->dogRepository->findDogPics($id);
 		$this->template->dogPics = $dogPics;
-		$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
+		$this->template->dogFiles = ($this->template->canSeeAdminNote ? $this->dogRepository->findDogFiles($id) : []);
 		$this->template->dogFileEnum = new DogFileEnum();
 		$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
 		$this->template->lang = $lang;
