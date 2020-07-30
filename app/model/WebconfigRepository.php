@@ -129,26 +129,6 @@ class WebconfigRepository extends BaseRepository{
 
 		return $ret;
     }
-    
-    /**
-	 * @return array
-	 */
-    public function loadCounters($lang) {
-        $ret = [];
-        $counters = [self::KEY_COUNTER_COVERAGE_BT, self::KEY_COUNTER_COVERAGE_MBT];
-        $query = ["select id, value from web_config where lang = %s and id in %in", $lang, $counters];
-        $ret = $this->connection->query($query)->fetchPairs("id", "value");
-        
-        return $ret;
-    }
-
-    /**
-	 * @return array
-	 */
-    public function incrementCounter($counterKey, $lang) {
-        $query = ["update web_config set value = value + 1 where lang = %s and id = %s", $lang, $counterKey];
-        return $this->connection->query($query);
-    }
 
 	/**
 	 * @param string $key

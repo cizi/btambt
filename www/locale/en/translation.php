@@ -598,7 +598,7 @@ define("MATING_FORM_CLUB", 'Mating list');
 define("MATING_FORM_FID", 'Male');
 define("MATING_FORM_MID", 'Female');
 define("MATING_FORM_SAVE", 'Litter report');
-define("MATING_FORM_SAVE1", 'Generate coverage report');
+define("MATING_FORM_SAVE1", 'Send coverage report');
 define("MATING_FORM_SAVE2", 'Litter application');
 define("MATING_FORM_PICK_MALE", 'Choose a male');
 define("MATING_FORM_PICK_FEMALE", 'Choose a female');
@@ -616,6 +616,8 @@ define("MATING_FORM_NOTE", 'Note (insemination, cover for cover, etc.)');
 define("MATING_FORM_NOTE_2", "The owner of the cover dog is obliged to send within 7 days after coverage the completed cover sheet - a report on the coverage of the herd book manager. In case of foreign cover, the owner sends the bitch.");
 define("MATING_FORM_OWNER", "");
 define("MATING_FORM_INFO_BREEDER", "Breeder will write for folders for puppies to Mrs. Hradecká to email VendulaHradeck@email.cz");
+define("COVERAGE_EXPRESS", "Express coverage sheet");
+define("COVERAGE_SAVED_OK", "Covere sheet has been successfully saved and sent to process");
 
 define("MATING_FORM_DATE_SHORT", 'Date');
 define("MATING_FORM_DATE", 'Mating date');

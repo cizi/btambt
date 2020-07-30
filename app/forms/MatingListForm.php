@@ -63,7 +63,14 @@ class MatingListForm {
             
         $form->addSelect("pID3", MATING_FORM_FID, $males)
 			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $counter++);
+            ->setAttribute("tabindex", $counter++);
+            
+        $form->addMultiUpload("attachemets", CONTACT_FORM_ATTACHMENT)
+            ->setAttribute("class", "form-control")
+            ->setAttribute("tabindex", $counter++);
+
+        $form->addCheckbox("express", " " . COVERAGE_EXPRESS)
+            ->setAttribute("tabindex", $counter++);
             
 		$form->addSubmit("save", MATING_FORM_SAVE1)
 			->setAttribute("class", "btn btn-primary margin10")

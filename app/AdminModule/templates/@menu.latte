@@ -58,10 +58,12 @@
 				<a href="{link Enumeration:Default}" {if $item == "enumeration"} style="color: white" {/if}>
 					<span class="glyphicon glyphicon-list-alt menuItem"></span>{=MENU_ENUMERATION}
 				</a>
-            <li>
-				<a href="{link Counter:Default}" {if $item == "counter"} style="color: white" {/if}>
-					<span class="glyphicon glyphicon-sort menuItem"></span>{=MENU_COUNTER}</a>
-			</li>
+            {if (($mainUser->getRoles()[0] >= App\Enum\UserRoleEnum::USER_EDITOR))}
+                <li>
+                    <a href="{link Coverage:Default}" {if $item == "coverage"} style="color: white" {/if}>
+                        <span class="glyphicon glyphicon-sort menuItem"></span>{=MENU_COUNTER}</a>
+                </li>
+		    {/if}
 			</li>
 			<li>
 				<a href="{link Vet:Default}" {if $item == "vet"} style="color: white" {/if}>

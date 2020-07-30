@@ -1,0 +1,22 @@
+{block content}
+	<div id="wrapper">
+		{include '../@menu.latte', item => 'coverage'}
+		<a href="#menu-toggle" class="menuToggle" id="menu-toggle"><span class="glyphicon glyphicon-chevron-left">&nbsp;&nbsp;</span></a>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+				<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-3 col-md-2 col-sm-1">
+					</div>
+
+					
+				</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+{/block}
+

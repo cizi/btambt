@@ -618,7 +618,7 @@ define("MATING_FORM_CLUB", 'Krycí list');
 define("MATING_FORM_FID", 'Pes');
 define("MATING_FORM_MID", 'Fena');
 define("MATING_FORM_SAVE", 'Hlášení vrhu');
-define("MATING_FORM_SAVE1", 'Generovat krycí list');
+define("MATING_FORM_SAVE1", 'Odeslat krycí list');
 define("MATING_FORM_SAVE2", 'Přihláška k zápisu vrhu');
 define("MATING_FORM_PICK_MALE", 'Vyberte psa');
 define("MATING_FORM_PICK_FEMALE", 'Vyberte fenu');
@@ -636,6 +636,8 @@ define("MATING_FORM_NOTE", 'Poznámka (inseminace, náhrada za krytí, apod.)');
 define("MATING_FORM_NOTE_2", "Majitel krycího psa je povinen do 7 dnů po krytí odeslat vyplněný Krycí list – hlášení o krytí správci plemenné knihy. Při zahraničním krytí odesílá majitel feny.");
 define("MATING_FORM_OWNER", "");
 define("MATING_FORM_INFO_BREEDER", "Chovatelé si napíší o složky ke štěňatům paní Hradecké na email VendulaHradeck@email.cz");
+define("COVERAGE_EXPRESS", "Expresní krycí list");
+define("COVERAGE_SAVED_OK", "Krycí list byl v pořádku uložen a zaslán ke zpracování");
 
 define("MATING_FORM_DATE_SHORT", 'Datum');
 define("MATING_FORM_DATE", 'Datum krytí');
