@@ -18,6 +18,7 @@ use Mpdf\Mpdf as mPDF;
 use Dibi\DateTime;
 use App\Model\Entity\CoverageApplicationAttachementEntity;
 use App\Controller\FileController;
+use App\Controller\EmailController;
 
 class FeItem1velord8Presenter extends FrontendPresenter {
 
@@ -192,9 +193,11 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $pdf->WriteHTML($template);
     
                 $timestamp = date("Y-m-d_His");
-                $pdf->Output(__DIR__ . "/../../../www/upload/" . MATING_FORM_CLUB . "_" . $timestamp . ".pdf");
+                $pdfOutput = __DIR__ . "/../../../www/upload/" . MATING_FORM_CLUB . "_" . $timestamp . ".pdf";
+                $pdf->Output($pdfOutput);
     
                 $attachs = [];
+                $mailAttachs = [$pdfOutput];
                 foreach($values["attachemets"] as $file) {
                     if ($file->name != "") {
                         $fileController = new FileController();
@@ -205,6 +208,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                         $cea = new CoverageApplicationAttachementEntity();
                         $cea->setCesta($fileController->getPathDb());
                         $attachs[] = $cea; 
+                        $mailAttachs[] = $fileController->getPath();
                     }
                 }
                 $ce = new CoverageApplicationEntity();
@@ -217,9 +221,12 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $ce->setUID($this->getUser()->getId());
                 $ce->setExpresni(isset($values["express"]) ? 1 : 0);
                 $this->coverageApplicationRepository->save($ce, $attachs);
-                    
 
-                // TODO - poslat emailem
+                
+                $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+                // poradcechovu@seznam.cz TODO
+                $emailBody = sprintf(COVERAGE_MAIL_BODY, $ce->getID());
+                EmailController::SendPlainEmail($emailFrom, "cizi@email.cz", COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);
                 
                 $this->flashMessage(COVERAGE_SAVED_OK, "alert-success");
                 $this->redirect("Default");

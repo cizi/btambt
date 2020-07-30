@@ -13,9 +13,10 @@ class EmailController {
 	 * @param $emailTo
 	 * @param $subject
 	 * @param $body
+     * @param array $attachements - string
 	 * @throws \Exception
 	 */
-	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body) {
+	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body, array $attachements) {
 		$email = new PHPMailer();
 		$email->CharSet = "UTF-8";
 		$email->From = $emailFrom;
@@ -38,7 +39,11 @@ class EmailController {
 			}
 		} else {	// jeden příjemnce
 			$email->AddAddress($emailTo);
-		}
+        }
+        
+        foreach ($attachements as $attachement) {
+            $email->addAttachment($attachement);
+        }
 
 		$email->Send();
 	}

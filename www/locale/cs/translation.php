@@ -638,6 +638,8 @@ define("MATING_FORM_OWNER", "");
 define("MATING_FORM_INFO_BREEDER", "Chovatelé si napíší o složky ke štěňatům paní Hradecké na email VendulaHradeck@email.cz");
 define("COVERAGE_EXPRESS", "Expresní krycí list");
 define("COVERAGE_SAVED_OK", "Krycí list byl v pořádku uložen a zaslán ke zpracování");
+define("COVERAGE_MAIL_SUBJECT", "Byl vytvořen nový krycí list");
+define("COVERAGE_MAIL_BODY", "V genealogii byl vytvořen nový krycí list s ID %s");
 
 define("MATING_FORM_DATE_SHORT", 'Datum');
 define("MATING_FORM_DATE", 'Datum krytí');
