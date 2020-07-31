@@ -32,12 +32,12 @@ define("MENU_LOGO", 'Slider');
 define("MENU_MENU", 'Nabídka');
 define("MENU_BLOCK", 'Bloky');
 define("MENU_MENU_BLOCK", 'Nabídka vs bloky');
-define("MENU_CONTACT_FORM", 'Kontaktní formulář');
+define("MENU_CONTACT_FORM", 'Kontaktní údaje / formulář');
 define("MENU_FOOTER", 'Patička');
 define("MENU_USERS", 'Uživatelé');
 define("MENU_SETTINGS", 'Nastavení');
 define("MENU_ENUMERATION", 'Číselníky');
-define("MENU_COUNTER", 'Číselné řady');
+define("MENU_COVERAGE", 'Krycí listy');
 define("MENU_VETS", 'Veterináři / Laboratoře');
 define("MENU_LANG", 'Jazyková nastavení');
 define("MENU_LOGOUT", 'Odhlásit');
@@ -198,6 +198,7 @@ define("COUNTER_COVERAGE_BT_COUNTER", 'Nadcházející číslo krycího listu BT
 define("COUNTER_COVERAGE_MBT_COUNTER", 'Nadcházející číslo krycího listu MBT');
 define("COUNTER_LITTER_NO_FROM_COVERAGE", 'Číslo z krycího listu');
 define("COUNTER_LITTER_NO_FROM_COVERAGE_REQ", 'Číslo z krycího listu je povinná položka!');
+define("COUNTER_LITTER_NO", 'Číslo krycího listu');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');
@@ -290,7 +291,7 @@ define("CONTACT_FORM_SETTING_BACKGROUND_COLOR", 'Barva pozadí kontaktního form
 define("CONTACT_FORM_SETTING_COLOR", 'Barva textu kontaktního formuláře');
 define("CONTACT_FORM_SETTING_RECIPIENT", 'Příjemce emailu z kontaktního formuláře');
 define("CONTACT_FORM_SETTING_RECIPIENT_VALIDATION", 'Email příjemce z kontaktního formuláře je povinná položka!');
-define("CONTACT_FORM_SETTING_RECIPIENT_INFO", 'Na tento email bude zaslána poptávka z kontaktního formuláře. Pokud chcete zadat více emailový adres oddelte je středníkem (;).');
+define("CONTACT_FORM_SETTING_RECIPIENT_INFO", 'Na tento email bude zaslána poptávka z kontaktního formuláře, také tento email bude figurovat jako odesílatel. Pokud chcete zadat více emailový adres oddelte je středníkem (;).');
 define("CONTACT_FORM_SETTING_ATTACHMENT", 'Umožnit poslat přílohu');
 define("CONTACT_FORM_SETTING_SAVE", 'Uložit');
 define("CONTACT_FORM_SETTING_COMPLETE_SAVE", 'Nastavení kontaktního formuláře bylo uloženo');
@@ -298,6 +299,7 @@ define("CONTACT_FORM_WAS_SENT", 'Váš dotaz byl úspěšně odeslán.');
 define("CONTACT_FORM_SENT_FAILED", 'Nebyly vyplněny všechny povinné položky pro odeslání.');
 define("CONTACT_FORM_UNSUPPORTED_FILE_FORMAT", 'Pokoušíte se přidat přílohu, která není podporována!');
 define("CONTACT_FORM_EMAIL_MY_SUBJECT", 'Poptávka z webového formuláře');
+define("CONTACT_FORM_BREEDING_CONSULTANT_EMAIL", 'Email poradce chovu');
 
 // footer
 define("FOOTER_CONTENT", 'Obsah patičky');

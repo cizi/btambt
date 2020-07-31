@@ -44,7 +44,37 @@ class CoverageApplicationRepository extends BaseRepository {
 		}
 
 		return $applications;
-	}
+    }
+    
+    /**
+	 * @return CoverageApplicationEntity
+	 */
+	public function getCoverageApplication($id) {
+        $query = ["select * from appdata_krycilist where ID = %i", $id];
+        $row = $this->connection->query($query)->fetch();
+		if ($row) {
+			$cae = new CoverageApplicationEntity();
+			$cae->hydrate($row->toArray());
+			return $cae;
+		}
+    }
+
+    /**
+	 * @return CoverageApplicationAttachementEntity[]
+	 */
+	public function findCoverageApplicationAttachments($id) {
+        $query = ["select * from appdata_krycilist_prilohy where kID = %i", $id];
+        $result = $this->connection->query($query);
+
+		$applications = [];
+		foreach ($result->fetchAll() as $row) {
+			$application = new CoverageApplicationAttachementEntity();
+            $application->hydrate($row->toArray());
+            $applications[] = $application;
+        }
+        
+        return $applications;
+    }
 
 	/**
 	 * @param CoverageApplicationEntity $CoverageApplicationEntity
@@ -97,8 +127,20 @@ class CoverageApplicationRepository extends BaseRepository {
 	public function delete($id) {
 		$return = false;
 		if (!empty($id)) {
-			$query = ["delete from appdata_krycilist where ID = %i", $id];
-			$return = ($this->connection->query($query) == 1 ? true : false);
+            try {
+                $this->connection->begin();
+
+                $query = ["delete from appdata_krycilist where ID = %i", $id];
+                $this->connection->query($query);
+
+                $query = ["delete from appdata_krycilist_prilohy where kID = %i", $id];
+                $this->connection->query($query);
+
+                $this->connection->commit();
+                $return = true;
+            } catch (Exception $e) {
+                $this->connection->rollback();
+            }
 		}
 
 		return $return;

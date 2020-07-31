@@ -56,11 +56,25 @@ class FeItem1velord8Presenter extends FrontendPresenter {
         $this->coverageApplicationRepository = $coverageApplicationRepository;
 	} 
 
-	public function actionDefault() {
+	public function actionDefault($id) {
 		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
-		}
+        }
+
+        if (!empty($id)) {
+            $cea = $this->coverageApplicationRepository->getCoverageApplication($id);
+            if (!empty($cea)) {
+                $this['matingListForm']['cID']->setValue($cea->getPlemeno());
+                $this['matingListForm']['fID']->setValue($cea->getMID());
+                $this['matingListForm']['pID1']->setValue($cea->getOID1());
+                $this['matingListForm']['pID2']->setValue($cea->getOID2());
+                $this['matingListForm']['pID3']->setValue($cea->getOID3());
+
+                $this['matingListForm']->addText("CisloKL", COUNTER_LITTER_NO)->setAttribute("class", "form-control");
+                $this['matingListForm']->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control");
+            } 
+        }
 	}
 
 	public function createComponentMatingListForm() {
@@ -78,7 +92,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 		$form->getElementPrototype()->class('form-horizontal');
 
 		return $form;
-	}
+    }
 
 	/**
 	 * Potvrzení formuláře krycího listu rozhodne co se bude dít
@@ -199,7 +213,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $attachs = [];
                 $mailAttachs = [$pdfOutput];
                 foreach($values["attachemets"] as $file) {
-                    if ($file->name != "") {
+                    if (isset($file->name) && ($file->name != "")) {
                         $fileController = new FileController();
                         if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
                             $error = true;
@@ -224,9 +238,9 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 
                 
                 $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
-                // poradcechovu@seznam.cz TODO
+                $emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL, WebconfigRepository::KEY_LANG_FOR_COMMON);
                 $emailBody = sprintf(COVERAGE_MAIL_BODY, $ce->getID());
-                EmailController::SendPlainEmail($emailFrom, "cizi@email.cz", COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);
+                EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);
                 
                 $this->flashMessage(COVERAGE_SAVED_OK, "alert-success");
                 $this->redirect("Default");

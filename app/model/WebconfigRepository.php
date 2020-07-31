@@ -46,6 +46,9 @@ class WebconfigRepository extends BaseRepository{
 	/** @const for recipient email address */
 	const KEY_CONTACT_FORM_RECIPIENT = "CONTACT_FORM_RECIPIENT";
 
+	/** @const for recipient email address */
+    const KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL = "CONTACT_FORM_BREEDER_CONSULTANT_EMAIL";
+    
 	/** @const for contact form attachment  */
 	const KEY_CONTACT_FORM_ATTACHMENT = "CONTACT_FORM_ATTACHMENT";
 

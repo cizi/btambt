@@ -9,8 +9,91 @@
 				<div class="container-fluid">
 
 					<div class="row">
-						<div class="col-lg-3 col-md-2 col-sm-1">
+					<div class="col-lg-12">
+						<h1>{=MENU_COVERAGE}</h1>
+						<br /><br />
+
+						<div class="container userTable">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+                                        <th>{=AWAITING_CHANGES_USER}</th>
+                                        <th>{=MATING_FORM_CLUB}</th>
+										<th>{=MATING_FORM_MID}</th>
+										<th>{=MATING_FORM_FID}</th>
+										<th>{=MATING_FORM_FID}</th>
+										<th>{=MATING_FORM_FID}</th>
+										<th>{=COVERAGE_EXPRESS}</th>
+                                        <th>{=CONTACT_FORM_ATTACHMENT}</th>
+                                        <th style="width: 60px;"></th>
+									</tr>
+								</thead>
+								<tbody>
+								{foreach $covers as $cover}	
+                                    <tr>
+                                        <td>
+                                            {var user = $userRepository->getUser($cover->getUID())}
+                                            <a target="_blank" href={link User:edit, $user->getID()}>{$user->getFullName()}</a>
+                                        </td>
+                                        <td>
+                                            {$enumRepo->findEnumItemByOrder($currentLang, $cover->getPlemeno())}
+                                        </td>
+
+                                        <td>
+                                            {if !empty($cover->getMID())}
+												{var pes = $dogRepository->getDog($cover->getMID())}
+												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
+											{/if}
+                                        </td>
+
+                                        <td>
+                                            {if !empty($cover->getOID1())}
+												{var pes = $dogRepository->getDog($cover->getOID1())}
+												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
+											{/if}
+                                        </td>
+
+                                        <td>
+                                            {if !empty($cover->getOID2())}
+												{var pes = $dogRepository->getDog($cover->getOID2())}
+												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
+											{/if}
+                                        </td>
+
+                                        <td>
+                                            {if !empty($cover->getOID3())}
+												{var pes = $dogRepository->getDog($cover->getOID3())}
+												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
+											{/if}
+                                        </td>  
+                                        <td>
+                                           {if $cover->isExpresni()}
+                                                {=SHOW_DONE}
+                                           {else}
+                                                {=SHOW_UNDONE} 
+                                           {/if} 
+                                        </td>     
+                                        <td>
+                                            {var attachs = $coverageApplicationRepo->findCoverageApplicationAttachments($cover->getID())}
+                                            {foreach $attachs as $attach}
+                                                <a href={$attach->getCesta()} target="_blank">{$attach->getNazevSouboru()}</a>
+                                                <br />
+                                            {/foreach}
+                                        </td>                         
+                                        <td class="alignRight">
+                                            <a target="_blank" href={link :Frontend:FeItem1velord8:Default, $cover->getID()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+                                            <a href="#" data-href={link Coverage:Delete, $cover->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+                                        </td>
+									</tr>
+								{/foreach}
+
+								</tbody>
+							</table>
+						</div>
+
+
 					</div>
+				</div>
 
 					
 				</div>
@@ -18,5 +101,30 @@
 		<!-- /#page-content-wrapper -->
 	</div>
 	<!-- /#wrapper -->
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=SHOW_ITEM_DELETE_HEADER}
+				</div>
+				<div class="modal-body">
+					{=SHOW_ITEM_DELETE_QUESTION}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=USER_CONFIRM_DELETE_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=USER_CONFIRM_DELETE_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+	</script>
+
+
 {/block}
 

@@ -53,6 +53,7 @@ class CoverageApplicationEntity {
         $this->setUID(isset($data['uID']) ? $data['uID'] : null);
         $this->setCisloKL(isset($data['CisloKL']) ? $data['CisloKL'] : null);
         $this->setExpresni(isset($data['Expresni']) ? $data['Expresni'] : null);
+        $this->setPlemeno(isset($data['Plemeno']) ? $data['Plemeno'] : null);
 	}
 
 	/**
@@ -277,9 +278,9 @@ class CoverageApplicationEntity {
     /**
      * Get the value of Expresni
      */ 
-    public function getExpresni()
+    public function isExpresni()
     {
-        return $this->Expresni;
+        return ($this->Expresni == 1);
     }
 
     /**

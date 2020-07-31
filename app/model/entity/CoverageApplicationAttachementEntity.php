@@ -21,7 +21,7 @@ class CoverageApplicationAttachementEntity {
 	public function hydrate(array $data) {
 		$this->setID(isset($data['ID']) ? $data['ID'] : null);
         $this->setKID(isset($data['kID']) ? $data['kID'] : null);
-        $this->setCesta(isset($data['Cesta']) ? $data['Cesta'] : null);
+        $this->setCesta(isset($data['cesta']) ? $data['cesta'] : null);
 	}
 
 	/**
@@ -31,7 +31,7 @@ class CoverageApplicationAttachementEntity {
 		return [
 			'ID'	=> $this->getID(),
 			'kID'	=> $this->getKID(),
-            'Cesta'	=> $this->getCesta()
+            'cesta'	=> $this->getCesta()
 		];
 	}
 
@@ -94,4 +94,16 @@ class CoverageApplicationAttachementEntity {
 
         return $this;
     }
+
+    /**
+	 * @return string original filename
+	 */
+	public function getNazevSouboru() {
+		$ret = "";
+		if (($this->getCesta() != null) && ($this->getCesta() != "")) {
+			$ret = substr($this->getCesta(), strrpos($this->getCesta(), "/") + 17, strlen($this->getCesta()));
+		}
+
+		return $ret;
+	}
 }

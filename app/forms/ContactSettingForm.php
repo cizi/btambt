@@ -67,7 +67,11 @@ class ContactSettingForm {
 			->setAttribute("id", "contactFormRecipient")
 			->setAttribute("class", "form-control tinym_required_field")
 			->setAttribute("validation", CONTACT_FORM_SETTING_RECIPIENT_VALIDATION)
-			->setAttribute("tabindex", $i++);
+            ->setAttribute("tabindex", $i++);
+            
+        $form->addText(WebconfigRepository::KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL, CONTACT_FORM_BREEDING_CONSULTANT_EMAIL)
+			->setAttribute("class", "form-control")
+            ->setAttribute("tabindex", $i++);
 
 		$form->addCheckbox(WebconfigRepository::KEY_CONTACT_FORM_ATTACHMENT)
 			->setAttribute("data-toggle", "toggle")

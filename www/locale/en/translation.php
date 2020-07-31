@@ -32,12 +32,12 @@ define("MENU_LOGO", 'Slider');
 define("MENU_MENU", 'Page menu');
 define("MENU_BLOCK", 'Page content blocks');
 define("MENU_MENU_BLOCK", 'Menu vs blocks');
-define("MENU_CONTACT_FORM", 'Contact form');
+define("MENU_CONTACT_FORM", 'Contact info / form');
 define("MENU_FOOTER", 'Page footer');
 define("MENU_USERS", 'Users');
 define("MENU_SETTINGS", 'Page setting');
 define("MENU_ENUMERATION", 'Enumerations');
-define("MENU_COUNTER", 'System counters');
+define("MENU_Coverage", 'Coverage applications');
 define("MENU_VETS", 'Vets / Labs');
 define("MENU_LANG", 'Language setting');
 define("MENU_LOGOUT", 'Logout');
@@ -183,6 +183,7 @@ define("COUNTER_COVERAGE_BT_COUNTER", 'Next number of the coverage list for bull
 define("COUNTER_COVERAGE_MBT_COUNTER", 'Next number of the coverage list for mini bull terriers');
 define("COUNTER_LITTER_NO_FROM_COVERAGE", 'Number from coverage application');
 define("COUNTER_LITTER_NO_FROM_COVERAGE_REQ", 'Number from coverage application is mandatory!');
+define("COUNTER_LITTER_NO", 'NO coverage application');
 
 // modal window
 define("MODAL_BUTTON_OK", 'OK');
@@ -274,7 +275,7 @@ define("CONTACT_FORM_SETTING_BACKGROUND_COLOR", 'Color of the contact form backg
 define("CONTACT_FORM_SETTING_COLOR", 'Font colour in the contact form');
 define("CONTACT_FORM_SETTING_RECIPIENT", 'An email recipient from contact form.');
 define("CONTACT_FORM_SETTING_RECIPIENT_VALIDATION", 'An email address of an email recipient is mandatory field!');
-define("CONTACT_FORM_SETTING_RECIPIENT_INFO", 'On this email address will be send a request from contact form. More addresses devide with semicolon (;).');
+define("CONTACT_FORM_SETTING_RECIPIENT_INFO", 'On this email address will be send a request from contact form. This email will also used as a sender email. More addresses devide with semicolon (;).');
 define("CONTACT_FORM_SETTING_ATTACHMENT", 'Enabled attachment');
 define("CONTACT_FORM_SETTING_SAVE", 'Save');
 define("CONTACT_FORM_SETTING_COMPLETE_SAVE", 'Setting of the contact form has been saved');
@@ -282,6 +283,7 @@ define("CONTACT_FORM_WAS_SENT", 'Your question has been successfully sent.');
 define("CONTACT_FORM_SENT_FAILED", 'Mandatory fields have not been filled.');
 define("CONTACT_FORM_UNSUPPORTED_FILE_FORMAT", 'You are trying to send unsupported attachment!');
 define("CONTACT_FORM_EMAIL_MY_SUBJECT", 'Inquiry from web contact form');
+define("CONTACT_FORM_BREEDING_CONSULTANT_EMAIL", 'Breeding consultant form');
 
 // footer
 define("FOOTER_CONTENT", 'Footer content');
