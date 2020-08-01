@@ -18,6 +18,8 @@
 								<thead>
 									<tr>
                                         <th>{=AWAITING_CHANGES_USER}</th>
+                                        <th>{=COUNTER_LITTER_NO}</th>
+                                        <th>{=DOG_FORM_HEALTH_DATE}</th>
                                         <th>{=MATING_FORM_CLUB}</th>
 										<th>{=MATING_FORM_MID}</th>
 										<th>{=MATING_FORM_FID}</th>
@@ -25,7 +27,7 @@
 										<th>{=MATING_FORM_FID}</th>
 										<th>{=COVERAGE_EXPRESS}</th>
                                         <th>{=CONTACT_FORM_ATTACHMENT}</th>
-                                        <th style="width: 60px;"></th>
+                                        <th style="width: 120px;"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -34,6 +36,13 @@
                                         <td>
                                             {var user = $userRepository->getUser($cover->getUID())}
                                             <a target="_blank" href={link User:edit, $user->getID()}>{$user->getFullName()}</a>
+                                        </td>
+                                        <td>{$cover->getCisloKL()}</td>
+                                        <td>
+                                            {if $cover->getDatum() != null}
+                                                {var dt = DateTime::createFromFormat('Y-m-d', $cover->getDatum())}
+                                                {$dt->format('j.n.Y')}
+                                            {/if}
                                         </td>
                                         <td>
                                             {$enumRepo->findEnumItemByOrder($currentLang, $cover->getPlemeno())}
@@ -74,15 +83,20 @@
                                            {/if} 
                                         </td>     
                                         <td>
+                                            <small>
                                             {var attachs = $coverageApplicationRepo->findCoverageApplicationAttachments($cover->getID())}
                                             {foreach $attachs as $attach}
                                                 <a href={$attach->getCesta()} target="_blank">{$attach->getNazevSouboru()}</a>
                                                 <br />
                                             {/foreach}
+                                            </small>
                                         </td>                         
                                         <td class="alignRight">
-                                            <a target="_blank" href={link :Frontend:FeItem1velord8:Default, $cover->getID()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
-                                            <a href="#" data-href={link Coverage:Delete, $cover->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+                                            <a target="_blank" style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "print"} title={=COVERAGE_MAIL_SEE}><span class="glyphicon glyphicon-eye-open"></span></a> &nbsp;&nbsp;
+                                            <a target="_blank" style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SEND}><span class="glyphicon glyphicon-envelope"></span></a> &nbsp;&nbsp;
+
+                                            <a target="_blank" href={link :Frontend:FeItem1velord8:Default, $cover->getID()} title={=COVERAGE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+                                            <a href="#" data-href={link Coverage:Delete, $cover->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=LITTER_APPLICATION_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
                                         </td>
 									</tr>
 								{/foreach}

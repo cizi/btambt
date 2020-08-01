@@ -57,7 +57,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 	} 
 
 	public function actionDefault($id) {
-		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsem přihlášen nemám tady co dělat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
         }
@@ -70,9 +70,17 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $this['matingListForm']['pID1']->setValue($cea->getOID1());
                 $this['matingListForm']['pID2']->setValue($cea->getOID2());
                 $this['matingListForm']['pID3']->setValue($cea->getOID3());
+                if ($cea->isExpresni()) {
+                    $this['matingListForm']['express']->setDefaultValue("checked");
+                }
 
-                $this['matingListForm']->addText("CisloKL", COUNTER_LITTER_NO)->setAttribute("class", "form-control");
-                $this['matingListForm']->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control");
+                $this['matingListForm']->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control")->setValue($cea->getDatum());
+                $this['matingListForm']->addText("CisloKL", COUNTER_LITTER_NO)->setAttribute("class", "form-control")->setValue($cea->getCisloKL());
+                unset($this['matingListForm']['save']);
+                $this['matingListForm']->addHidden("upd", "1");
+                $this['matingListForm']->addHidden("DatumVytvoreni", $cea->getDatumVytvoreni());
+                $this['matingListForm']->addHidden("recID", $cea->getID());
+                $this['matingListForm']->addSubmit("update", USER_EDIT_SAVE_BTN_LABEL)->setAttribute("class", "btn btn-primary margin10");
             } 
         }
 	}
@@ -230,25 +238,174 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $ce->setOID1(empty($pID1) ? null : $pID1);
                 $ce->setOID2(empty($pID2) ? null : $pID2);
                 $ce->setOID3(empty($pID3) ? null : $pID3);
-                $ce->setDatumVytvoreni(new Datetime());
                 $ce->setPlemeno($cID);  // tohle je ve skutečnosti název klubu (číselník 18)
                 $ce->setUID($this->getUser()->getId());
                 $ce->setExpresni(isset($values["express"]) ? 1 : 0);
+                if (isset($values["upd"])) {
+                    $ce->setID($values["recID"]);
+                    $ce->setCisloKL($values["CisloKL"]);
+                    $ce->setDatum($values["Datum"]);
+                    $ce->setDatumVytvoreni($values["DatumVytvoreni"]);
+                } else {
+                    $ce->setDatumVytvoreni(new Datetime());
+                }
                 $this->coverageApplicationRepository->save($ce, $attachs);
 
-                
-                $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
-                $emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL, WebconfigRepository::KEY_LANG_FOR_COMMON);
-                $emailBody = sprintf(COVERAGE_MAIL_BODY, $ce->getID());
-                EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);
-                
-                $this->flashMessage(COVERAGE_SAVED_OK, "alert-success");
-                $this->redirect("Default");
+                if (isset($values["upd"])) {   // jen aktualizace
+                    $this->flashMessage(VET_ADDED, "alert-success");
+                    $this->redirect("Default", $ce->getID());
+                } else {    // zaslání PDF emailem poradci chovu
+                    $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+                    $emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL, WebconfigRepository::KEY_LANG_FOR_COMMON);
+                    $emailBody = sprintf(COVERAGE_MAIL_BODY, $ce->getID());
+                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);                   
+                    $this->flashMessage(COVERAGE_SAVED_OK, "alert-success");
+                }               
             } catch (AbortException $e) {
                 throw $e;
             } catch (\Exception $e) {
-                dump($e); die;
+                //dump($e); die;
+                $this->flashMessage(BLOCK_SETTINGS_ITEM_SAVED_FAILED, "alert-danger");
             }
+            $this->redirect("Default");
         }
-	}
+    }
+    
+    /**
+	 * @param int $id
+	 * @param int $state
+	 */
+    public function actionPreview($id, $state) {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsem přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
+			$this->redirect("Homepage:Default");
+        }
+
+        $cea = $this->coverageApplicationRepository->getLitterApplication($id);
+        if ($cea) {
+            try {
+                $lang = $this->langRepository->getCurrentLang($this->session);
+
+                $latteParams = [];
+                $latteParams["title"] = $this->enumerationRepository->findEnumItemByOrder($lang, $cea->getPlemeno());
+                $latteParams["rok"] = date("Y");
+
+                if ($cea->getDatum() != null) {
+                    $dt = DateTime::createFromFormat('Y-m-d', $cea->getDatum());
+                    $latteParams["dnes"] = $dt->format('j.n.Y');
+                } else {
+                    $latteParams["dnes"] = "";
+                }
+
+                $maleOwnersToInput1 = "";
+                $pes1 = $this->dogRepository->getDog($cea->getOID1());
+                if ($pes1 != null) {
+                    $latteParams["pes1CeleJmeno"] = $pes1->getCeleJmeno();
+                    $latteParams["pes1Barva"] = (empty($pes1->getBarva()) ? "" : $this->enumerationRepository->findEnumItemByOrder($lang, $pes1->getBarva()));
+                    $latteParams["pes1Nar"] = ($pes1->getDatNarozeni() != null ? $pes1->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");
+                    $latteParams["pes1Cz"] = (!empty($pes1->getCisloZapisu()) ? $pes1->getCisloZapisu() : "");
+                    
+                    $maleOwners = $this->userRepository->findDogOwnersAsUser($cea->getOID1());
+                    for($i=0; $i<count($maleOwners); $i++) {
+                        $maleOwnersToInput1 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
+                    }
+                } else {
+                    $latteParams["pes1CeleJmeno"] = $latteParams["pes1Barva"] = $latteParams["pes1Nar"] = $latteParams["pes1Cz"] = "";
+                }            
+                $latteParams["pes1Majitele"] = $maleOwnersToInput1;
+
+                $maleOwnersToInput2 = "";
+                $pes2 = $this->dogRepository->getDog($cea->getOID2());
+                if ($pes2 != null) {
+                    $latteParams["pes2CeleJmeno"] = $pes2->getCeleJmeno();
+                    $latteParams["pes2Barva"] = (empty($pes2->getBarva()) ? "" : $this->enumerationRepository->findEnumItemByOrder($lang, $pes2->getBarva()));
+                    $latteParams["pes2Nar"] = ($pes2->getDatNarozeni() != null ? $pes2->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");
+                    $latteParams["pes2Cz"] = (!empty($pes2->getCisloZapisu()) ? $pes2->getCisloZapisu() : "");
+                
+                    $maleOwners = $this->userRepository->findDogOwnersAsUser($cea->getOID2());
+                    for($i=0; $i<count($maleOwners); $i++) {
+                        $maleOwnersToInput2 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
+                    }
+                } else {
+                    $latteParams["pes2CeleJmeno"] = $latteParams["pes2Barva"] = $latteParams["pes2Nar"] = $latteParams["pes2Cz"] = "";
+                }
+                $latteParams["pes2Majitele"] = $maleOwnersToInput2;
+
+                $maleOwnersToInput3 = "";
+                $pes3 = $this->dogRepository->getDog($cea->getOID3());
+                if ($pes3 != null) {
+                    $latteParams["pes3CeleJmeno"] = $pes3->getCeleJmeno();
+                    $latteParams["pes3Barva"] = (empty($pes3->getBarva()) ? "" : $this->enumerationRepository->findEnumItemByOrder($lang, $pes3->getBarva()));
+                    $latteParams["pes3Nar"] = ($pes3->getDatNarozeni() != null ? $pes3->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");    
+                    $latteParams["pes3Cz"] = (!empty($pes3->getCisloZapisu()) ? $pes3->getCisloZapisu() : "");
+                    // $maleOwnersTelToInput = "";
+                    $maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
+                    for($i=0; $i<count($maleOwners); $i++) {
+                        $maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
+                    }     
+                } else {
+                    $latteParams["pes3CeleJmeno"] = $latteParams["pes3Barva"] = $latteParams["pes3Nar"] = $latteParams["pes3Cz"] = "";
+                }
+                $latteParams["pes3Majitele"] = $maleOwnersToInput3;
+
+                $latteParams["fena"] = $fena = $this->dogRepository->getDog($cea->getMID());
+                $latteParams["fenaBarva"] = $this->enumerationRepository->findEnumItemByOrder($lang, $fena->getBarva());
+                $latteParams["fenaNar"] = ($fena->getDatNarozeni() != null ? $fena->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");
+                //$latteParams["fenaCz"] = (!empty($fena->getCisloZapisu()) ? $fena->getCisloZapisu() : "");
+                        
+
+                $femaleOwnersToInput = "";
+                $femaleStation = "";
+                // $maleOwnersTelToInput = "";
+                $femaleOwners = $this->userRepository->findDogOwnersAsUser($cea->getMID());
+                for($i=0; $i<count($femaleOwners); $i++) {
+                    $femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . (($i+1) != count($femaleOwners) ? ", " : "");
+                    $femaleStation = $femaleOwners[$i]->getStation();
+                    // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
+                }
+                $latteParams["cisloKrycihoListu"] = $cea->getCisloKL();
+
+                $latteParams["fenaMajitele"] = $femaleOwnersToInput;
+                $latteParams["fenaStanice"] = $femaleStation;
+                $latteParams["cID"] = $cea->getPlemeno();
+                $latteParams['basePath'] = $this->getHttpRequest()->getUrl()->getBaseUrl();
+
+                if ($state == "print") {
+                    $latte = new \Latte\Engine();
+                    $latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
+                    $template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord8/matingBtMbtPdf.latte', $latteParams);
+
+                    $pdf = new \Joseki\Application\Responses\PdfResponse($template);
+                    $pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
+                    $this->sendResponse($pdf);
+                } else {
+                    // TODO
+                    $pdf = new mPDF();
+                    $pdf->ignore_invalid_utf8 = true;
+                    $pdf->WriteHTML($template);
+        
+                    $timestamp = date("Y-m-d_His");
+                    $pdfOutput = __DIR__ . "/../../../www/upload/" . MATING_FORM_CLUB . "_" . $timestamp . ".pdf";
+                    $pdf->Output($pdfOutput);
+
+                    $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+                    $ceaUser = $this->userRepository->getUser($cea->geUID());
+                    $emailTo = $ceaUser->getEmail();
+                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT_UPDATE, COVERAGE_MAIL_BODY_TO_USER, $mailAttachs);                   
+                    $this->flashMessage(COVERAGE_MAIL_USER_SUCCESS, "alert-success");
+                    $this->redirect(":Admin:Coverage:Default");
+                }
+            } catch (AbortException $e) {
+                throw $e;
+            } catch (\Exception $e) {
+                // dump($e); die;
+            }
+        } else {
+            $this->flashMessage(COVERAGE_NOT_EXISTS, "alert-danger");
+			$this->redirect("Homepage:Default");
+        }
+    }
 }

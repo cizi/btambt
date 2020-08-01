@@ -71,7 +71,7 @@ class CoverageApplicationEntity {
             'uID'	=> $this->getUID(),
             'CisloKL'	=> $this->getCisloKL(),
             'DatumVytvoreni'	=> $this->getDatumVytvoreni(),
-            'Expresni'	=> $this->getExpresni(),
+            'Expresni'	=> ($this->isExpresni() ? 1 : 0),
 		];
 	}
 

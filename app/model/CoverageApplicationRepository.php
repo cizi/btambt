@@ -80,30 +80,30 @@ class CoverageApplicationRepository extends BaseRepository {
 	 * @param CoverageApplicationEntity $CoverageApplicationEntity
      * @param CoverageApplicationAttachementEntity[] $attachements
 	 */
-	public function save(CoverageApplicationEntity $CoverageApplicationEntity, array $attachements) {
-		if ($CoverageApplicationEntity->getID() == null) {
-            try {
-                $this->connection->begin();
+	public function save(CoverageApplicationEntity $CoverageApplicationEntity, array $attachements) {	
+        try {
+            $this->connection->begin();
 
+            if ($CoverageApplicationEntity->getID() == null) {  // nový záznam
                 $query = ["insert into appdata_krycilist ", $CoverageApplicationEntity->extract()];
                 $this->connection->query($query);
                 $CoverageApplicationEntity->setID($this->connection->getInsertId());
-                if (!empty($attachements)) {
-                    foreach($attachements as $attachement) {
-                        $attachement->setKID($CoverageApplicationEntity->getID());
-                        $query = ["insert into appdata_krycilist_prilohy ", $attachement->extract()];
-                        $this->connection->query($query);
-                    }
+            } else {    // aktualizace
+                $query = ["update appdata_krycilist set ", $CoverageApplicationEntity->extract(), "where ID=%i", $CoverageApplicationEntity->getID()];
+                $this->connection->query($query);
+            }
+            if (!empty($attachements)) {    // soubory
+                foreach($attachements as $attachement) {
+                    $attachement->setKID($CoverageApplicationEntity->getID());
+                    $query = ["insert into appdata_krycilist_prilohy ", $attachement->extract()];
+                    $this->connection->query($query);
                 }
-            } catch (\Exception $e) {
-				$this->connection->rollback();
-				$return = false;
-			}
+            }
             $this->connection->commit();
-		} else {
-			$query = ["update appdata_krycilist set ", $CoverageApplicationEntity->extract(), "where ID=%i", $CoverageApplicationEntity->getID()];
-			$this->connection->query($query);
-		}
+        } catch (\Exception $e) {
+            $this->connection->rollback();
+            $return = false;
+        }		
 	}
 
 	/**

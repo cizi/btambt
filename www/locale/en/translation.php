@@ -620,6 +620,14 @@ define("MATING_FORM_OWNER", "");
 define("MATING_FORM_INFO_BREEDER", "Breeder will write for folders for puppies to Mrs. Hradecká to email VendulaHradeck@email.cz");
 define("COVERAGE_EXPRESS", "Express coverage sheet");
 define("COVERAGE_SAVED_OK", "Covere sheet has been successfully saved and sent to process");
+define("COVERAGE_MAIL_SUBJECT", "New coverage application has been created");
+define("COVERAGE_MAIL_BODY", "New coverage application has been created with ID %s");
+define("COVERAGE_MAIL_BODY_TO_USER", "Your coverage application has been updated, please see the attachment.");
+define("COVERAGE_MAIL_SEE", "See");
+define("COVERAGE_MAIL_SEND", "Send to user");
+define("COVERAGE_EDIT", "Edit");
+define("COVERAGE_NOT_EXISTS", "Coverage application %s not exists!");
+define("COVERAGE_MAIL_USER_SUCCESS", "Coverage application has been sent");
 
 define("MATING_FORM_DATE_SHORT", 'Date');
 define("MATING_FORM_DATE", 'Mating date');

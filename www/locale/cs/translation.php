@@ -641,7 +641,14 @@ define("MATING_FORM_INFO_BREEDER", "Chovatelé si napíší o složky ke štěň
 define("COVERAGE_EXPRESS", "Expresní krycí list");
 define("COVERAGE_SAVED_OK", "Krycí list byl v pořádku uložen a zaslán ke zpracování");
 define("COVERAGE_MAIL_SUBJECT", "Byl vytvořen nový krycí list");
+define("COVERAGE_MAIL_SUBJECT_UPDATE", "Aktualizace krycího list");
 define("COVERAGE_MAIL_BODY", "V genealogii byl vytvořen nový krycí list s ID %s");
+define("COVERAGE_MAIL_BODY_TO_USER", "Váš krycí list byl aktualizován poradcem chovu. Prosím, zkontrolujte přílohu.");
+define("COVERAGE_MAIL_SEE", "Zobrazit");
+define("COVERAGE_MAIL_SEND", "Odeslat uživateli");
+define("COVERAGE_EDIT", "Upravit");
+define("COVERAGE_NOT_EXISTS", "Krycí list s čislem %s neexistuje!");
+define("COVERAGE_MAIL_USER_SUCCESS", "Krycí list byl úspěšně odeslán");
 
 define("MATING_FORM_DATE_SHORT", 'Datum');
 define("MATING_FORM_DATE", 'Datum krytí');
