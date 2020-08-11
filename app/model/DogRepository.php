@@ -9,6 +9,7 @@ use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
+use App\Model\Entity\ExamEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\VetEntity;
@@ -59,6 +60,9 @@ class DogRepository extends BaseRepository {
     /** @var VetRepository */
     private $vetRepository;
 
+    /** @var ExamRepository */
+    private $examRepository;
+
 	/**
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param Connection $connection
@@ -67,6 +71,7 @@ class DogRepository extends BaseRepository {
      * @param LitterApplicationRepository;
      * @param UserRepository $userRepository
      * @param VetRepository $vetRepository
+     * @param ExamRepository $examRepository
 	 */
 	public function __construct(
 		EnumerationRepository $enumerationRepository,
@@ -75,7 +80,8 @@ class DogRepository extends BaseRepository {
 		LangRepository $langRepository,
         LitterApplicationRepository $litterApplicationRepository,
         UserRepository $userRepository,
-        VetRepository $vetRepository
+        VetRepository $vetRepository,
+        ExamRepository $examRepository
 	) {
 		$this->enumRepository = $enumerationRepository;
 		$this->session = $session;
@@ -83,6 +89,7 @@ class DogRepository extends BaseRepository {
         $this->litterApplicationRepository = $litterApplicationRepository;
         $this->userRepository = $userRepository;
         $this->vetRepository = $vetRepository;
+        $this->examRepository = $examRepository;
 
 		parent::__construct($connection);
 	}
@@ -195,18 +202,18 @@ class DogRepository extends BaseRepository {
 	public function findDogs(Paginator $paginator, array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
         if (empty($filter) && ($owner == null) && ($breeder == null)) {
             if ($restrictVisibilityByUser) {
-                $query = ["select * from appdata_pes where Stav = %i and SkrytCelouKartu = 0 order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+                $query = ["select distinct ap.ID, ap.* from appdata_pes as ap where Stav = %i and SkrytCelouKartu = 0 order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
             } else {
-                $query = ["select * from appdata_pes where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+                $query = ["select distinct ap.ID, ap.* from appdata_pes as ap where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
             }
 		} else {
-			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
+			$query[] = "select distinct ap.ID, ap.*, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner, $breeder) as $join) {
 				$query[] = $join;
 			}
-            $query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
+            $query[] = "where (Stav = " . DogStateEnum::ACTIVE . ") ";
             if ($restrictVisibilityByUser) {
-                $query[] = " and SkrytCelouKartu = 0";
+                $query[] = " and (SkrytCelouKartu = 0)";
             }
             $query[] = $this->getWhereFromKeyValueArray($filter, $owner, $breeder);
             if (isset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS])) {
@@ -242,18 +249,18 @@ class DogRepository extends BaseRepository {
 	public function getDogsCount(array $filter, $owner = null, $breeder = null, $restrictVisibilityByUser = false) {
         $query = [];
         if (empty($filter) && ($owner == null) && ($breeder == null)) {
-            $query[] = "select count(ID) as pocet from appdata_pes as ap ";
+            $query[] = "select count(distinct ID) as pocet from appdata_pes as ap ";
             $query[] = "where Stav = " . DogStateEnum::ACTIVE;
 		} else {
 			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner, $breeder) as $join) {
 				$query[] = $join;
 			}
-			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
+			$query[] = "where (Stav = " . DogStateEnum::ACTIVE . ") ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner, $breeder);
         }
         if ($restrictVisibilityByUser) {
-            $query[] = " and ap.SkrytCelouKartu = 0";
+            $query[] = " and (ap.SkrytCelouKartu = 0)";
         }
 		$row = $this->connection->query($query);
 
@@ -268,7 +275,11 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	private function getJoinsToArray($filter, $owner = null, $breeder = null) {
-		$joins = [];
+        $joins = [];
+        if (isset($filter[DogFilterForm::DOG_FILTER_EXAM])) {
+            $joins[] = "left join `appdata_pes_zkousky` as apz on ap.ID = apz.pID";
+            unset($filter[DogFilterForm::DOG_FILTER_EXAM]);
+        }
 		if ($owner != null) {
 			$joins[] = "left join `appdata_majitel` as am on ap.ID = am.pID";
 		}
@@ -279,7 +290,7 @@ class DogRepository extends BaseRepository {
 			$joins[] = "left join `appdata_chovatel` as ac on ap.ID = ac.pID
 						left join `user` as u on ac.uID = u.ID ";
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
-		}
+        }
 
 		if (
 			isset($filter[DogFilterForm::DOG_FILTER_HEALTH])
@@ -310,9 +321,20 @@ class DogRepository extends BaseRepository {
         $return = ((count($filter) > 0) || ($owner != null) || ($breeder != null) ? " and " : "");
 
 		$dbDriver = $this->connection->getDriver();
-		$currentLang = $this->langRepository->getCurrentLang($this->session);
+        $currentLang = $this->langRepository->getCurrentLang($this->session);
+        
+        if (isset($filter[DogFilterForm::DOG_FILTER_EXAM])) {
+            if (is_array($filter[DogFilterForm::DOG_FILTER_EXAM])) {
+                $return .= sprintf("(apz.zID in (%s))", implode(",", $filter[DogFilterForm::DOG_FILTER_EXAM]));
+            } else {
+                $return .= sprintf("(apz.zID in (%s))", $filter[DogFilterForm::DOG_FILTER_EXAM]);
+            }
+			$return .= (count($filter) > 1 ? " and " : "");
+            unset($filter[DogFilterForm::DOG_FILTER_EXAM]);
+        }
+
 		if ($owner != null) {
-			$return .= sprintf("am.uID = %d and am.Soucasny = 1", $owner);	// je to soucasny spravne
+			$return .= sprintf("(am.uID = %d and am.Soucasny = 1)", $owner);	// je to soucasny spravne
 			if (($breeder == null) && ((count($filter) > 0))) {
 				$return .= " and ";
 			} elseif (($breeder != null)) {
@@ -320,36 +342,36 @@ class DogRepository extends BaseRepository {
 			}
 		}
 		if ($breeder != null) {
-			$return .= sprintf("ach.uID = %d", $breeder);	// a majitele
+			$return .= sprintf("(ach.uID = %d)", $breeder);	// a majitele
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS])) {
-			$return .= " PosledniZmena >= (CURDATE() - INTERVAL 14 DAY)";
+			$return .= " (PosledniZmena >= (CURDATE() - INTERVAL 14 DAY))";
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS]);
         }
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAND])) {
-            $return .= sprintf("ap.Zeme = %d", $filter[DogFilterForm::DOG_FILTER_LAND]);
+            $return .= sprintf("(ap.Zeme = %d)", $filter[DogFilterForm::DOG_FILTER_LAND]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
-			$return .= sprintf("ac.uID = %d", $filter[DogFilterForm::DOG_FILTER_BREEDER]);
+			$return .= sprintf("(ac.uID = %d)", $filter[DogFilterForm::DOG_FILTER_BREEDER]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
-		}
+        }
 		if (isset($filter["Jmeno"])) {
 			$return .= 	"(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like \"%".$filter["Jmeno"]."%\")";
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter["Jmeno"]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {	// pokud mám zdraví omezím výběr
-			$return .= sprintf("az.Typ = %d", $filter[DogFilterForm::DOG_FILTER_HEALTH]);
+			$return .= sprintf("(az.Typ = %d)", $filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
         }
         if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) { // ale musím připojit vysledek
-            $return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
+            $return .= sprintf("(az.Vysledek = %s)", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
             $return .= (count($filter) > 1 ? " and " : "");
             unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);
         }		
@@ -381,8 +403,8 @@ class DogRepository extends BaseRepository {
 
 		$i = 0;
 		foreach ($filter as $key => $value) {
-			if ($key == DogFilterForm::DOG_FILTER_EXAM) {	// like
-				$return .= 	sprintf("`Zkousky` like %s", $dbDriver->escapeLike($value, 0));
+			if ($key == DogFilterForm::DOG_FILTER_EXAM) {	// like - zkoušky jsou nyní jinde
+				// $return .= 	sprintf("`Zkousky` like %s", $dbDriver->escapeLike($value, 0));
 			} else {	// where
 				$return .= sprintf("%s = %s", $key, $dbDriver->escapeText($value));
 			}
@@ -461,7 +483,7 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
-	 * Uloží/aktualizuje zázanm do tabulky zdraví psa
+	 * Uloží/aktualizuje záznam do tabulky zdraví psa
 	 * @param DogHealthEntity $dogHealthEntity
 	 */
 	public function saveDogHealth(DogHealthEntity $dogHealthEntity) {
@@ -658,8 +680,9 @@ class DogRepository extends BaseRepository {
 	 * @param DogOwnerEntity[]
 	 * @param DogFileEntity[]
 	 * @param int [$mIdOrOidForNewDog]
+     * @param ExamEntity[]
 	 */
-	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null) {
+	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null, $exams) {
 		try {
 			$this->connection->begin();
 			$dogEntity->setPosledniZmena(new DateTime());
@@ -692,7 +715,14 @@ class DogRepository extends BaseRepository {
 					$dogHealthEntity->setVeterinar(null);
 				}
 				$this->saveDogHealth($dogHealthEntity);
-			}
+            }
+            $this->examRepository->deleteByPid($dogEntity->getID());    // nejdřív všechny zkoušky smažu 
+            /** @var ExamEntity $exam */
+			foreach($exams as $exam) {
+				$exam->setPID($dogEntity->getID());
+				$this->examRepository->save($exam); // poté vložím znovu
+            }
+            // TODO
 			/** @var BreederEntity $breeder */
 			foreach($breeders as $breeder) {
 				$breeder->setPID($dogEntity->getID());

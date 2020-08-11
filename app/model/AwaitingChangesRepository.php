@@ -8,6 +8,8 @@ use App\Model\Entity\AwaitingChangesEntity;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
+use App\Model\Entity\ExamEntity;
+use App\Model\ExamRepository;
 use Dibi\Connection;
 use Dibi\DateTime;
 use Nette\Security\User;
@@ -15,16 +17,21 @@ use Nette\Security\User;
 class AwaitingChangesRepository extends BaseRepository {
 
 	/** @var DogRepository */
-	private $dogRepository;
+    private $dogRepository;
+    
+    /** @var ExamRepository */
+    private $examRepository;
 
 	/**
 	 * AwaitingChangesRepository constructor.
 	 * @param DogRepository $dogRepository
 	 * @param Connection $connection
+     * @param ExamRepository $examRepository
 	 */
-	public function __construct(DogRepository $dogRepository, Connection $connection) {
+	public function __construct(DogRepository $dogRepository, Connection $connection, ExamRepository $examRepository) {
 		parent::__construct($connection);
-		$this->dogRepository = $dogRepository;
+        $this->dogRepository = $dogRepository;
+        $this->examRepository = $examRepository;
 	}
 
 	/**
@@ -139,8 +146,17 @@ class AwaitingChangesRepository extends BaseRepository {
 					$owner->setSoucasny(true);
 					$owner->setUID($awaitChngEnt->getPozadovanaHodnota());
 				}
-				$this->dogRepository->saveOwner($owner);
-			} else {	// tohle pokryje jen psa
+                $this->dogRepository->saveOwner($owner);                
+            } else if ($awaitChngEnt->getTabulka() == DogChangesComparatorController::TBL_EXAM_NAME) {	// zkoušky
+                if ($awaitChngEnt->getPozadovanaHodnota() == "") {    // mazání položky
+                    $this->examRepository->deleteByPidAndZid($awaitChngEnt->getPID(), $awaitChngEnt->getAktualniHodnota());
+                } else {    // vkládání nové položky
+                    $examEnt = new ExamEntity();
+                    $examEnt->setZID($awaitChngEnt->getPozadovanaHodnota());
+                    $examEnt->setPID($awaitChngEnt->getPID());
+                    $this->examRepository->save($examEnt);
+                }
+            } else {	// tohle pokryje jen psa
 				$query = ["update {$awaitChngEnt->getTabulka()} set `{$awaitChngEnt->getSloupec()}` = '{$awaitChngEnt->getPozadovanaHodnota()}' where `{$idColumn}` = '{$awaitChngEnt->getPID()}'"];
 				$this->connection->query($query);
 			}

@@ -62,11 +62,11 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 
 		$formData = [];
 		foreach($applications as $application) {
-			$data = $application->getDataDecoded();
-			$formData[$application->getID()]['males'] = (isset($data['porozenoPsu']) ? $data['porozenoPsu'] : "-");
-			$formData[$application->getID()]['females'] = (isset($data['porozenoFen']) ? $data['porozenoFen'] : "-");
-			$formData[$application->getID()]['birthMales'] = ($data['kzapisuPsu'] !="" && ($data['porozenoPsu'] != $data['kzapisuPsu']) ? " (" . $data['kzapisuPsu'] . ")" : "");
-			$formData[$application->getID()]['birthFemales'] = ($data['kzapisuFen'] !="" && ($data['porozenoFen'] != $data['kzapisuFen']) ? " (" . $data['kzapisuFen'] . ")" : "");
+            $data = $application->getDataDecoded();
+			$formData[$application->getID()]['males'] = "-"; //(isset($data['porozenoPsu']) ? $data['porozenoPsu'] : "-");
+			$formData[$application->getID()]['females'] = "-"; //(isset($data['porozenoFen']) ? $data['porozenoFen'] : "-");
+			$formData[$application->getID()]['birthMales'] = "-"; //($data['kzapisuPsu'] != "" && ($data['porozenoPsu'] != $data['kzapisuPsu']) ? " (" . $data['kzapisuPsu'] . ")" : "");
+			$formData[$application->getID()]['birthFemales'] = "-"; //($data['kzapisuFen'] !="" && ($data['porozenoFen'] != $data['kzapisuFen']) ? " (" . $data['kzapisuFen'] . ")" : "");
 			$formData[$application->getID()]['chs'] = (isset($data['chs']) ? $data['chs'] : "");
 			//$formData[$application->getID()]['birth'] = (isset($data['datumnarozeni']) ? \DateTime::createFromFormat("j.n.Y", $data['datumnarozeni']) : null);
 			$formData[$application->getID()]['birth'] = ($application->getDatumNarozeni() != null ? $application->getDatumNarozeni() : null);

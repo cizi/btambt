@@ -373,16 +373,14 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $latteParams["cID"] = $cea->getPlemeno();
                 $latteParams['basePath'] = $this->getHttpRequest()->getUrl()->getBaseUrl();
 
+                $latte = new \Latte\Engine();
+                $latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
+                $template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord8/matingBtMbtPdf.latte', $latteParams);
                 if ($state == "print") {
-                    $latte = new \Latte\Engine();
-                    $latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
-                    $template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord8/matingBtMbtPdf.latte', $latteParams);
-
                     $pdf = new \Joseki\Application\Responses\PdfResponse($template);
                     $pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
                     $this->sendResponse($pdf);
                 } else {
-                    // TODO
                     $pdf = new mPDF();
                     $pdf->ignore_invalid_utf8 = true;
                     $pdf->WriteHTML($template);
@@ -392,9 +390,9 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     $pdf->Output($pdfOutput);
 
                     $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
-                    $ceaUser = $this->userRepository->getUser($cea->geUID());
+                    $ceaUser = $this->userRepository->getUser($cea->getUID());
                     $emailTo = $ceaUser->getEmail();
-                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT_UPDATE, COVERAGE_MAIL_BODY_TO_USER, $mailAttachs);                   
+                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT_UPDATE, COVERAGE_MAIL_BODY_TO_USER, [$pdfOutput]);                   
                     $this->flashMessage(COVERAGE_MAIL_USER_SUCCESS, "alert-success");
                     $this->redirect(":Admin:Coverage:Default");
                 }

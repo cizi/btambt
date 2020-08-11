@@ -77,9 +77,9 @@ class DashboardPresenter extends SignPresenter {
 
 				$userRequestEntity = $this->userRepository->getUser($awaitingChange->getUID());
 				$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
-				$linkToDogView = $this->presenter->link("Frontend:FeItem1velord2:view", $awaitingChange->getPID());
+				$linkToDogView = $this->presenter->link(":Frontend:FeItem1velord2:view", $awaitingChange->getPID());
 				$body = sprintf(AWAITING_CHANGE_PROCEEDED_OK_BODY, $linkToDogView);
-				//EmailController::SendPlainEmail($emailFrom, $userRequestEntity->getEmail(), AWAITING_CHANGE_PROCEEDED_OK_SUBJECT, $body);
+				EmailController::SendPlainEmail($emailFrom, $userRequestEntity->getEmail(), AWAITING_CHANGE_PROCEEDED_OK_SUBJECT, $body);
 			} catch (\Exception $e) {
 				$this->flashMessage(AWAITING_CHANGE_CHANGE_ERR, "alert-danger");
 			}

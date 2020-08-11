@@ -24,6 +24,8 @@ use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
 use Nette\Utils\Paginator;
+use App\Model\ExamRepository;
+use App\Model\Entity\ExamEntity;
 
 class FeItem2velord11Presenter extends FrontendPresenter {
 
@@ -46,7 +48,10 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	private $enumerationRepository;
 
 	/** @var DogChangesComparatorController */
-	private $dogChangesComparatorController;
+    private $dogChangesComparatorController;
+    
+    /** @var ExamRepository */
+    private $examRepository;
 
 	public function __construct(
 		DogFilterForm $dogFilterForm,
@@ -54,14 +59,16 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
 		UserRepository $userRepository,
-		DogChangesComparatorController $changesComparatorController
+        DogChangesComparatorController $changesComparatorController,
+        ExamRepository $examRepository
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
-		$this->dogChangesComparatorController = $changesComparatorController;
+        $this->dogChangesComparatorController = $changesComparatorController;
+        $this->examRepository = $examRepository;
 	}
 
 	/**
@@ -102,7 +109,9 @@ class FeItem2velord11Presenter extends FrontendPresenter {
         } else {
             $filter = "1&";
             foreach ($form->getValues() as $key => $value) {
-                if ($value != "") {
+                if (is_array($value)) {
+                    $filter .= $key . "=" . \implode("##", $value) . "&";
+                } else if ($value != "") {
                     $filter .= $key . "=" . $value . "&";
                 }
             }
@@ -115,7 +124,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * Vytvoří komponentu pro změnu hesla uživatele
 	 */
 	public function createComponentDogFilterForm() {
-		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session));
+		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session), $this->getUser());
 		$form->onSubmit[] = [$this, 'dogFilter'];
 
 		$renderer = $form->getRenderer();
@@ -205,6 +214,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
 			$this->template->dogFileEnum = new DogFileEnum();
 
+            $dog->setZkousky($this->examRepository->findByPidToSelect($dog->getID()));
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog->getDatNarozeni() != null) {
 				$this['dogForm']['DatNarozeni']->setDefaultValue($dog->getDatNarozeni()->format(DogEntity::MASKA_DATA));
@@ -282,7 +292,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$newDogEntity = new DogEntity();
 		$pics = [];
 		$files = [];
-		$health = [];
+        $health = [];
+        $exams = [];
 		$breeders = [];
 		$owners = [];
 		try {
@@ -297,7 +308,18 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				}
 				$health[] = $healthEntity;
 			}
-			unset($formData['dogHealth']);
+            unset($formData['dogHealth']);
+            
+            // zkoušky
+            foreach($formData['Zkousky'] as $hodnota) {
+				$examEntity = new ExamEntity();
+                $examEntity->setZID($hodnota);
+                if (isset($formData['ID'])) {
+					$examEntity->setPID($formData['ID']);
+				}
+				$exams[] = $examEntity;
+            }
+            unset($formData['Zkousky']);
 
 			// chovatele
 			if (isset($formData['breeder'])) {
@@ -335,12 +357,15 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$this->directPicsUpload($currentDogEntity, $supportedPicFormats, (isset($formData['pics']) ? $formData['pics'] : []));
 				$this->directFilesUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []));
 				$newDogEntity->hydrate($formData);
-				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hotnoty
+				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hodnoty
 
 				$dogChanged = $this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity);
 
 				$currentDogHealth =$this->dogRepository->findAllHealthsByDogId($formData['ID']);
-				$healthChanged = $this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health);
+                $healthChanged = $this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health);
+                
+                $currentDogExams = $this->examRepository->findByPid($formData['ID']);
+                $examsChanged = $this->dogChangesComparatorController->compareDogsExams($currentDogExams, $exams, $formData['ID']);
 
 				$currentBreeder = $this->userRepository->getBreederByDog($formData['ID']);
 				$breederChanged = $this->dogChangesComparatorController->compareSaveBreeder($currentBreeder, $breeders);
@@ -390,7 +415,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				if (($isDirectEditAllowed == false) && ($newDogEntity->getID() == null)) {
 					$newDogEntity->setStav(DogStateEnum::INACTIVE);
 				}
-				$this->dogRepository->save($newDogEntity, $pics, $health, $breeders, $owners, $files);
+				$this->dogRepository->save($newDogEntity, $pics, $health, $breeders, $owners, $files, null, $exams);
 				// pokud nemám povovlenou přímou editaci/pořizování, tak po založení psa se stavem ke schválení musím udělat zápis a poslat mail
 				if ($isDirectEditAllowed == false) {
 					$linkToDogView = $this->getHttpRequest()->getUrl()->getBaseUrl() . $this->presenter->link("FeItem1velord2:view", $newDogEntity->getID());

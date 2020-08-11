@@ -16,7 +16,7 @@ class EmailController {
      * @param array $attachements - string
 	 * @throws \Exception
 	 */
-	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body, array $attachements) {
+	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body, array $attachements = []) {
 		$email = new PHPMailer();
 		$email->CharSet = "UTF-8";
 		$email->From = $emailFrom;

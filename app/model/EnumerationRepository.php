@@ -25,7 +25,8 @@ class EnumerationRepository extends BaseRepository {
     
     ZDRAVI_DNA = 66,
     ZDRAVI_PLL = 69,
-    
+
+    ZKOUSKY = 26,
     CHOVNOST_CHOVNY = 27;
 
 	/**

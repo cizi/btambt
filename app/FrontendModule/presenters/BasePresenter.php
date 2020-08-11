@@ -393,7 +393,11 @@ abstract class BasePresenter extends Presenter {
 					&& ($filterPiece[0] != "do")
 					&& ($filterPiece[1] != "0")
 				) {
-					$filter[$filterPiece[0]] = $filterPiece[1];
+                    if (strpos($filterPiece[1], '##') !== false) {
+                        $filter[$filterPiece[0]] = explode("##", $filterPiece[1]);
+                    } else {
+                        $filter[$filterPiece[0]] = $filterPiece[1];
+                    }
 				}
 			}
 		}

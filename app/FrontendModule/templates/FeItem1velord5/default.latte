@@ -12,9 +12,9 @@
 							<div class="dogViewName">{=CHS_TITLE}</div>
 							<br />&nbsp;
 							<ul>
-							{foreach $users as $user}
+							{foreach $users as $userFor}
 								<li>
-									{include '../@userInfoForList.latte', 'user' => $user}
+									{include '../@userInfoForList.latte', 'user' => $userFor}
 									<br />&nbsp;
 								</li>
 							{/foreach}

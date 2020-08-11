@@ -123,14 +123,14 @@
 						<th>{=DOG_FORM_BREEDER}:</th>
 						<td>
 						{if $chovatel != null}
-							{include ../@userInfo.latte, 'uzivatel' => $chovatel}
+							{include ../@userInfo.latte, 'uzivatel' => $chovatel, 'canSeeAdminNote' => $canSeeAdminNote}
 						{/if}
 						</td>
 
 						<th>{=DOG_FORM_OWNERS}:</th>
 						<td>
 							{foreach $majitele as $majitel}
-								{include ../@userInfo.latte, 'uzivatel' => $majitel}
+								{include ../@userInfo.latte, 'uzivatel' => $majitel, 'canSeeAdminNote' => $canSeeAdminNote}
 								{if $iterator->last == false}<hr class="margin5"/>{/if}
 							{/foreach}
 						</td>
@@ -354,7 +354,12 @@
 				<div class="dogViewSingleContent">{nl2br($dog->getKomentar())|noescape}</div>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_EXAMS}</div>
-				<div class="dogViewSingleContent">{nl2br($dog->getZkousky())|noescape}</div>
+				<div class="dogViewSingleContent">
+                    {* nl2br($dog->getZkousky())|noescape *}
+                    {foreach $exams as $exam}
+                        {$enumRepo->findEnumItemByOrder($lang, $exam->getZID())}, 
+                    {/foreach}
+                </div>
 
 				{* <div class="viewHeader">{=DOG_FORM_SHOWS_RACES}</div>
 				<div class="dogViewSingleContent">{nl2br($dog->getZavody())|noescape}</div> *}

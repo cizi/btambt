@@ -11,6 +11,7 @@ use App\Forms\DogForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\ExamEntity;
 use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
@@ -20,6 +21,7 @@ use App\Model\EnumerationRepository;
 use App\Model\ShowDogRepository;
 use App\Model\UserRepository;
 use App\Model\VetRepository;
+use App\Model\ExamRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
@@ -53,6 +55,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 	/** @var VetRepository */
     private $vetRepository;
+
+    /** @var ExamRepository */
+    private $examRepository;
     
     /** @var bool */
     private $hideContentByDogSetting = false;
@@ -66,6 +71,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param UserRepository $userRepository
 	 * @param ShowDogRepository $showDogRepository
 	 * @param VetRepository $vetRepository
+	 * @param ExamRepository $examRepository
 	 */
 	public function __construct(
 		DogFilterForm $dogFilterForm,
@@ -74,7 +80,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		EnumerationRepository $enumerationRepository,
 		UserRepository $userRepository,
 		ShowDogRepository $showDogRepository,
-		VetRepository $vetRepository
+        VetRepository $vetRepository,
+        ExamRepository $examRepository
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
@@ -82,7 +89,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
 		$this->showDogRepository = $showDogRepository;
-		$this->vetRepository = $vetRepository;
+        $this->vetRepository = $vetRepository;
+        $this->examRepository = $examRepository;
 	}
 
 	public function startup() {
@@ -99,7 +107,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionDefault($id) {
-		$filter = $this->decodeFilterFromQuery();
+        $filter = $this->decodeFilterFromQuery();
 		$this['dogFilterForm']->setDefaults($filter);
 
 		$recordCount = $this->dogRepository->getDogsCount($filter, null, null, $this->hideContentByDogSetting);
@@ -128,7 +136,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
         } else {
             $filter = "1&";
             foreach ($form->getValues() as $key => $value) {
-                if ($value != "") {
+                if (is_array($value)) {
+                    $filter .= $key . "=" . \implode("##", $value) . "&";
+                } else if ($value != "") {
                     $filter .= $key . "=" . $value . "&";
                 }
             }
@@ -141,7 +151,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * Vytvoří komponentu pro změnu hesla uživatele
 	 */
 	public function createComponentDogFilterForm() {
-		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session));
+		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session), $this->getUser());
 		$form->onSubmit[] = [$this, 'dogFilter'];
 
 		$renderer = $form->getRenderer();
@@ -224,6 +234,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
 			$this->template->dogFileEnum = new DogFileEnum();
 
+            $dog->setZkousky($this->examRepository->findByPidToSelect($dog->getID()));
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog->getDatNarozeni() != null) {
 				$this['dogForm']['DatNarozeni']->setDefaultValue($dog->getDatNarozeni()->format(DogEntity::MASKA_DATA));
@@ -362,24 +373,30 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->siblings = $this->dogRepository->findSiblings($id);
 		$this->template->descendants = $this->dogRepository->findDescendants($id);
 		$this->template->showDogRepo = $this->showDogRepository;
-		$this->template->showTitles = $this->showDogRepository->findTitlesByDog($id);
+        $this->template->showTitles = $this->showDogRepository->findTitlesByDog($id);
+        $this->template->exams = $this->examRepository->findByPid($id);
 	}
 
 	/**
 	 * @param int $id
 	 */
 	public function actionUserView($id) {
-		$user = $this->userRepository->getUser($id);
-		if ($user != null) {
-			$this->template->lang = $this->langRepository->getCurrentLang($this->session);
-			$this->template->user = $user;
-			$this->template->stateEnum = new StateEnum();
-			$this->template->enumRepo = $this->enumerationRepository;
-			$this->template->dogRepository = $this->dogRepository;
-			$this->template->dogsByBreeder = $this->dogRepository->findDogsByBreeder($id);
-			$this->template->dogByCurrentOwner = $this->dogRepository->findDogsByCurrentOwner($id);
-			$this->template->dogByPreviousOwner = $this->dogRepository->findDogsByPreviousOwner($id);
-		}
+        if ($this->getUser()->isLoggedIn() && ($this->getUser()->getRoles()[0] > UserRoleEnum::USER_REGISTERED)) {
+            $user = $this->userRepository->getUser($id);
+            if ($user != null) {
+                $this->template->lang = $this->langRepository->getCurrentLang($this->session);
+                $this->template->user = $user;
+                $this->template->stateEnum = new StateEnum();
+                $this->template->enumRepo = $this->enumerationRepository;
+                $this->template->dogRepository = $this->dogRepository;
+                $this->template->dogsByBreeder = $this->dogRepository->findDogsByBreeder($id);
+                $this->template->dogByCurrentOwner = $this->dogRepository->findDogsByCurrentOwner($id);
+                $this->template->dogByPreviousOwner = $this->dogRepository->findDogsByPreviousOwner($id);
+            }
+        } else {
+            $this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger"); 
+            $this->redirect('default');
+        }
 	}
 
 	/**
@@ -417,7 +434,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$dogEntity = new DogEntity();
 		$pics = [];
 		$files = [];
-		$health = [];
+        $health = [];
+        $exams = [];
 		$breeders = [];
 		$owners = [];
 		try {
@@ -429,7 +447,15 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				$healthEntity->setTyp($typ);
 				$health[] = $healthEntity;
 			}
-			unset($formData['dogHealth']);
+            unset($formData['dogHealth']);
+            
+            // zkousky
+            foreach($formData['Zkousky'] as $hodnota) {
+				$examEntity = new ExamEntity();
+				$examEntity->setZID($hodnota);
+				$exams[] = $examEntity;
+            }
+            unset($formData['Zkousky']);
 
 			/** @var FileUpload $file */
 			foreach($formData['pics'] as $file) {
@@ -483,7 +509,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
             $dogEntity->hydrate($formData);
 
 			$mIdOrOidForNewDog = (isset($formData['mIdOrOidForNewDog']) ? $formData['mIdOrOidForNewDog'] : null);
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog, $exams);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {
@@ -491,7 +517,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				throw $e;
 			} else {
 				$form->addError(DOG_FORM_ADD_FAILED);
-				$this->flashMessage(DOG_FORM_ADD_FAILED, "alert-danger");
+                $this->flashMessage(DOG_FORM_ADD_FAILED, "alert-danger");
 			}
 		}
 	}

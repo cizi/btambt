@@ -85,7 +85,7 @@ class DogEntity {
 	/** @var string */
 	public $Posudek;
 
-	/** @var string */
+	/** @var int[] */
     public $Zkousky;
     
     /** @var string */
@@ -530,14 +530,14 @@ class DogEntity {
 	}
 
 	/**
-	 * @return string
+	 * @return int[]
 	 */
 	public function getZkousky() {
 		return $this->Zkousky;
 	}
 
 	/**
-	 * @param string $Zkousky
+	 * @param int[] $Zkousky
 	 */
 	public function setZkousky($Zkousky) {
 		$this->Zkousky = $Zkousky;

@@ -208,6 +208,11 @@
 				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
 			});
 
+            $("#frm-dogForm-Zkousky").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+            });
+
 			{if $mIDFound == false}
 				$("#tinym_info_modal").modal();
 			{/if}

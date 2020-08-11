@@ -17,7 +17,7 @@
 		{if ($user->getSharing() >= 33) && ($user->isPrivacy())}
 			<li>{if $user->getPhone() != null}{$user->getPhone()}{/if}</li>
 			<li>{if $user->getEmail() != null}{$user->getEmail()}{/if}</li>
-			<li>{if $user->getWeb() != null}<a href="http://{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
+			<li>{if $user->getWeb() != null}<a href="{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
 		{/if}
 	</ul>
 {/if}

@@ -29,6 +29,7 @@ class DogChangesComparatorController {
 	const TBL_DOG_HEALTH_NAME = "appdata_zdravi";
 	const TBL_BREEDER_NAME = "appdata_chovatel";
 	const TBL_OWNER_NAME = "appdata_majitel";
+	const TBL_EXAM_NAME = "appdata_pes_zkousky";
 
 	/**
 	 * @const string sloupce
@@ -88,7 +89,57 @@ class DogChangesComparatorController {
 		}
 
 		return $array;
-	}
+    }
+  
+    /**
+	 * @param array $currentDogsExams
+	 * @param array $newDogsExams
+     * @param int $dogId
+	 * @return bool
+	 */
+    public function compareDogsExams(array $currentDogsExams, array $newDogsExams, $dogId) {
+        // dump($currentDogsExams, $newDogsExams); die;
+        $changes = [];
+        $new = [];
+        foreach ($newDogsExams as $exam) {
+            $new[] = $exam->getZID();           
+        }
+
+        $current = [];
+        foreach ($currentDogsExams as $exam) {
+            $current[] = $exam->getZID();
+        }
+
+        $changeMaster = new AwaitingChangesEntity();
+        $changeMaster->setPID($dogId);
+        $changeMaster->setUID($this->user->getId());
+        $changeMaster->setStav(DogChangeStateEnum::INSERTED);
+        $changeMaster->setDatimVlozeno(new DateTime());
+        $changeMaster->setTabulka(self::TBL_EXAM_NAME);
+        $changeMaster->setCID(EnumerationRepository::ZKOUSKY);
+        $changeMaster->setSloupec("zID");
+
+        foreach ($new as $newExam) {
+            if (!\in_array($newExam, $current)) {    // nový záznam
+                $change = clone($changeMaster);
+                $change->setAktualniHodnota("");
+                $change->setPozadovanaHodnota($newExam);
+                $changes[] = $change;
+            }
+        }
+
+        foreach ($current as $currentExam) {
+            if (!\in_array($currentExam, $new)) {
+                $change = clone($changeMaster);
+                $change->setAktualniHodnota($currentExam);
+                $change->setPozadovanaHodnota("");
+                $changes[] = $change;
+            }
+        }
+        $this->awaitingChangeRepository->writeChanges($changes);	// zapíšu změny
+
+		return (count($changes) > 0);
+    }
 
 	/**
 	 * @param array $currentDogHealth

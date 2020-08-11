@@ -2,15 +2,18 @@
 	<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$uzivatel->getStation()}<br />
 {/if}
 {if $uzivatel->getSharing() >= 32}
-	<b><a href={link userView, $uzivatel->getID()}>{$uzivatel->getFullName()}</a></b><br />
+    {if $canSeeAdminNote}
+	    <b><a href={link userView, $uzivatel->getID()}>{$uzivatel->getFullName()}</a></b><br />
+    {else}
+        <b>{$uzivatel->getFullName()}</b><br />
+    {/if}
 	{if $uzivatel->isPrivacy()}
 		<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($uzivatel->getState())}<br />
 		{if $uzivatel->getSharing() >= 33}
 			<b>{=VET_ADDRESS}:</b> {$uzivatel->getCity()}, {$uzivatel->getZip()}<br />
 			<b>{=USER_EDIT_PHONE_LABEL}:</b> {$uzivatel->getPhone()}<br />
 			<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$uzivatel->getEmail()}<br />
-			{var urlTarget = ((strpos($uzivatel->getWeb(), 'http://') !== false) ? $uzivatel->getWeb() : "http://" . $uzivatel->getWeb())}
-			<b>{=USER_EDIT_WEB_LABEL}:</b> <a target="_blank" href={$urlTarget}>{$uzivatel->getWeb()}</a>
+			<b>{=USER_EDIT_WEB_LABEL}:</b> <a target="_blank" href={$uzivatel->getWeb()}>{$uzivatel->getWeb()}</a>
 		{/if}
 	{/if}
 {/if}

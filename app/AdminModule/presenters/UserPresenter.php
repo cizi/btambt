@@ -207,7 +207,7 @@ class UserPresenter extends SignPresenter {
 					$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
 					$subject = USER_CREATED_MAIL_SUBJECT;
 					$body = sprintf(USER_CREATED_MAIL_BODY, $this->getHttpRequest()->getUrl()->getBaseUrl(), $userEntity->getEmail(), $values['password']);
-					EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), $subject, $body);
+					EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), $subject, $body, []);
 
 					$this->flashMessage(USER_ADDED, "alert-success");
 					$this->redirect("Default");

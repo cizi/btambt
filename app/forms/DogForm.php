@@ -210,8 +210,14 @@ class DogForm {
 		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT, null, 7)
 			->setAttribute("class", "form-control");
 
+        /* původní pole zkoušky přímo z tabulky appdata_pes
 		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
-			->setAttribute("class", "form-control"); 
+            ->setAttribute("class", "form-control"); 
+        */
+        
+        $exams = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, EnumerationRepository::ZKOUSKY);
+        $form->addMultiSelect("Zkousky", DOG_FORM_SHOWS_EXAMS, $exams)
+                ->setAttribute("class", "form-control chosen-select");
 
         /* $form->addTextArea("ZkouskySlozene", DOG_FORM_SHOWS_EXAMS_NEXT, null, 7)
             ->setAttribute("class", "form-control");

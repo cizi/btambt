@@ -8,6 +8,7 @@ use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
 use Nette\Application\UI\Form;
+use App\Enum\UserRoleEnum;
 
 class DogFilterForm {
 
@@ -56,7 +57,7 @@ class DogFilterForm {
 	/**
 	 * @return Form
 	 */
-	public function create($langCurrent) {
+	public function create($langCurrent, $user) {
 		$form = $this->factory->create();
 		$form->addGroup(DOG_TABLE_FILTER_LABEL)	;
 		//$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
@@ -71,7 +72,12 @@ class DogFilterForm {
 		$orderingEnum = new OrderingEnum();
 		$ordering = $orderingEnum->translatedForSelect(true);
 		$form->addSelect(self::DOG_FILTER_ORDER_NUMBER, DOG_TABLE_HEADER_WRITE_NUMBER, $ordering)
-			->setAttribute("class", "form-control");
+            ->setAttribute("class", "form-control");
+            
+        if ($user->getRoles()[0] >= UserRoleEnum::USER_EDITOR) {
+            $form->addText("Cip", DOG_FORM_NO_OF_CHIP)
+                ->setAttribute("class", "form-control");
+        }
 
 		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::BARVA);
 		$form->addSelect("Barva", DOG_TABLE_HEADER_COLOR, $barvy)
@@ -109,15 +115,18 @@ class DogFilterForm {
 		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states)
 			->setAttribute("class", "form-control");
 
-		$chovatele = $this->userRepository->findBreedersForSelect();
-		$form->addSelect(self::DOG_FILTER_BREEDER, DOG_TABLE_HEADER_BREEDER, $chovatele)
-			->setAttribute("class", "form-control");
+        if ($user->getRoles()[0] >= UserRoleEnum::USER_EDITOR) {
+            $chovatele = $this->userRepository->findBreedersForSelect();
+            $form->addSelect(self::DOG_FILTER_BREEDER, DOG_TABLE_HEADER_BREEDER, $chovatele)
+                ->setAttribute("class", "form-control");
+        }
 
-		$form->addText(self::DOG_FILTER_EXAM, DOG_TABLE_HEADER_EXAM)
-			->setAttribute("class", "form-control");
+        $exams = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::ZKOUSKY);
+		$form->addMultiSelect(self::DOG_FILTER_EXAM, DOG_TABLE_HEADER_EXAM, $exams)
+			->setAttribute("class", "form-control chosen-select");
 
         // ChovnyKomentar je CZDR
-		$form->addText("ChovnyKomentar", DOG_FORM_BREEDING_COM)
+		$form->addSelect("ChovnyKomentar", DOG_FORM_BREEDING_COM, [0 => "-", "CZDR I." => "CZDR I.", "CZDR II." => "CZDR II."])
             ->setAttribute("class", "form-control");
 
 		$form->addCheckbox(self::DOG_FILTER_LAST_14_DAYS, DOG_TABLE_LAST_14_DAYS)
