@@ -148,6 +148,9 @@ class DogEntity {
     /** @var int */
     public $SkrytCelouKartu;
 
+    /** @var int */
+    public $SkrytSvod;
+
 	/** @var  int */
 	private $stav = DogStateEnum::ACTIVE;
 
@@ -854,6 +857,7 @@ class DogEntity {
         $this->setSkrytPotomky(!empty($data['SkrytPotomky']) ? 1 : 0);
         $this->setSkrytSourozence(!empty($data['SkrytSourozence']) ? 1 : 0);
         $this->setSkrytCelouKartu(!empty($data['SkrytCelouKartu']) ? 1 : 0);
+        $this->setSkrytSvod(!empty($data['SkrytSvod']) ? 1 : 0);
 
 		if (isset($data['DatNarozeni']) && ($data['DatNarozeni'] != NULL)) {
 			if (($data['DatNarozeni'] instanceof DateTime) == false) {
@@ -916,7 +920,8 @@ class DogEntity {
             'Stav' => $this->getStav(),
             'SkrytPotomky' => $this->SkrytPotomky,
             'SkrytSourozence' => $this->SkrytSourozence,
-            'SkrytCelouKartu' => $this->SkrytCelouKartu
+            'SkrytCelouKartu' => $this->SkrytCelouKartu,
+            'SkrytSvod' => $this->SkrytSvod,
 		];
     }
     
@@ -952,5 +957,29 @@ class DogEntity {
         $this->setPosudek("");
         $this->setTitulyKomentar("");
         $this->setTetovani("");
+        $this->SkrytCelouKartu(0);
+        $this->SkrytSourozence(0);
+        $this->SkrytSvod(0);
+        $this->SkrytPotomky(0);
+    }
+
+    /**
+     * Get the value of SkrytSvod
+     */ 
+    public function isSkrytSvod()
+    {
+        return ($this->SkrytSvod == 1);
+    }
+
+    /**
+     * Set the value of SkrytSvod
+     *
+     * @return  self
+     */ 
+    public function setSkrytSvod($SkrytSvod)
+    {
+        $this->SkrytSvod = $SkrytSvod;
+
+        return $this;
     }
 }

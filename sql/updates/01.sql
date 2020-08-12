@@ -1,3 +1,7 @@
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+
 INSERT INTO `enum_header` (`id`, `description`) VALUES
 (26,	'USER ENUM');
 
@@ -28,7 +32,6 @@ INSERT INTO `enum_item` (`id`, `enum_header_id`, `lang`, `item`, `order`) VALUES
 (503,	26,	'en',	'ZVVZ - Zkoušky vyhánění',	231);
 
 
-DROP TABLE IF EXISTS `appdata_pes_zkousky`;
 CREATE TABLE `appdata_pes_zkousky` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `pID` int DEFAULT NULL,
@@ -38,4 +41,23 @@ CREATE TABLE `appdata_pes_zkousky` (
   CONSTRAINT `appdata_pes_zkousky_ibfk_1` FOREIGN KEY (`pID`) REFERENCES `appdata_pes` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `appdata_krycilist`
+DROP FOREIGN KEY `appdata_krycilist_ibfk_6`
 
+ALTER TABLE `appdata_krycilist`
+CHANGE `oID3` `oID3` varchar(255) NULL COMMENT 'Volný text pro psa' AFTER `oID2`;
+
+
+CREATE TABLE `appdata_krycilist_prilohy` (
+  `ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `kID` int DEFAULT NULL,
+  `cesta` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `kID` (`kID`),
+  CONSTRAINT `appdata_krycilist_prilohy_ibfk_1` FOREIGN KEY (`kID`) REFERENCES `appdata_krycilist` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `appdata_pes`
+ADD `SkrytSvod` tinyint NULL DEFAULT '0';
+
+SET foreign_key_checks = 1;

@@ -138,7 +138,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     
                     $maleOwners = $this->userRepository->findDogOwnersAsUser($pes1->getID());
                     for($i=0; $i<count($maleOwners); $i++) {
-                        $maleOwnersToInput1 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        $maleOwnersToInput1 .= $maleOwners[$i]->getFullName() . ", " . $maleOwners[$i]->getFullAddress() . (($i+1) != count($maleOwners) ? "; " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
                     }
                 } else {
@@ -157,7 +157,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 
                     $maleOwners = $this->userRepository->findDogOwnersAsUser($pes2->getID());
                     for($i=0; $i<count($maleOwners); $i++) {
-                        $maleOwnersToInput2 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        $maleOwnersToInput2 .= $maleOwners[$i]->getFullName() . ", " . $maleOwners[$i]->getFullAddress() . (($i+1) != count($maleOwners) ? "; " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
                     }
                 } else {
@@ -166,18 +166,17 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $latteParams["pes2Majitele"] = $maleOwnersToInput2;
     
                 $maleOwnersToInput3 = "";
-                $pes3 = $this->dogRepository->getDog($pID3);
-                if ($pes3 != null) {
-                    $latteParams["pes3CeleJmeno"] = $pes3->getCeleJmeno();
-                    $latteParams["pes3Barva"] = (empty($pes3->getBarva()) ? "" : $this->enumerationRepository->findEnumItemByOrder($lang, $pes3->getBarva()));
-                    $latteParams["pes3Nar"] = ($pes3->getDatNarozeni() != null ? $pes3->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");    
-                    $latteParams["pes3Cz"] = (!empty($pes3->getCisloZapisu()) ? $pes3->getCisloZapisu() : "");
+                if (!empty($pID3)) {
+                    $latteParams["pes3CeleJmeno"] = $pID3;
+                    $latteParams["pes3Barva"] = "";
+                    $latteParams["pes3Nar"] = "";
+                    $latteParams["pes3Cz"] = "";
                     // $maleOwnersTelToInput = "";
-                    $maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
-                    for($i=0; $i<count($maleOwners); $i++) {
-                        $maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                    // $maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
+                    // for($i=0; $i<count($maleOwners); $i++) {
+                        // $maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
-                    }     
+                    // }     
                 } else {
                     $latteParams["pes3CeleJmeno"] = $latteParams["pes3Barva"] = $latteParams["pes3Nar"] = $latteParams["pes3Cz"] = "";
                 }
@@ -194,12 +193,12 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 // $maleOwnersTelToInput = "";
                 $femaleOwners = $this->userRepository->findDogOwnersAsUser($fena->getID());
                 for($i=0; $i<count($femaleOwners); $i++) {
-                    $femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . (($i+1) != count($femaleOwners) ? ", " : "");
-                    $femaleStation = $femaleOwners[$i]->getStation();
+                    $femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . ", " . $femaleOwners[$i]->getFullAddress() . (($i+1) != count($femaleOwners) ? "; " : "");
+                    $femaleStation .= $femaleOwners[$i]->getStation() . (($i+1) != count($femaleOwners) ? "; " : "");
                     // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
                 }
     
-                $latteParams["cisloKrycihoListu"] = ""; // TODO
+                $latteParams["cisloKrycihoListu"] = "";
     
                 $latteParams["fenaMajitele"] = $femaleOwnersToInput;
                 $latteParams["fenaStanice"] = $femaleStation;
@@ -307,7 +306,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     
                     $maleOwners = $this->userRepository->findDogOwnersAsUser($cea->getOID1());
                     for($i=0; $i<count($maleOwners); $i++) {
-                        $maleOwnersToInput1 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        $maleOwnersToInput1 .= $maleOwners[$i]->getFullName() . ", " . $maleOwners[$i]->getFullAddress() . (($i+1) != count($maleOwners) ? "; " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
                     }
                 } else {
@@ -325,7 +324,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 
                     $maleOwners = $this->userRepository->findDogOwnersAsUser($cea->getOID2());
                     for($i=0; $i<count($maleOwners); $i++) {
-                        $maleOwnersToInput2 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                        $maleOwnersToInput2 .= $maleOwners[$i]->getFullName() . ", " . $maleOwners[$i]->getFullAddress() . (($i+1) != count($maleOwners) ? "; " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
                     }
                 } else {
@@ -334,18 +333,17 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $latteParams["pes2Majitele"] = $maleOwnersToInput2;
 
                 $maleOwnersToInput3 = "";
-                $pes3 = $this->dogRepository->getDog($cea->getOID3());
-                if ($pes3 != null) {
-                    $latteParams["pes3CeleJmeno"] = $pes3->getCeleJmeno();
-                    $latteParams["pes3Barva"] = (empty($pes3->getBarva()) ? "" : $this->enumerationRepository->findEnumItemByOrder($lang, $pes3->getBarva()));
-                    $latteParams["pes3Nar"] = ($pes3->getDatNarozeni() != null ? $pes3->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");    
-                    $latteParams["pes3Cz"] = (!empty($pes3->getCisloZapisu()) ? $pes3->getCisloZapisu() : "");
+                if (!empty($cea->getOID3())) {
+                    $latteParams["pes3CeleJmeno"] = $cea->getOID3();
+                    $latteParams["pes3Barva"] = "";
+                    $latteParams["pes3Nar"] = "";
+                    $latteParams["pes3Cz"] = "";
                     // $maleOwnersTelToInput = "";
-                    $maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
-                    for($i=0; $i<count($maleOwners); $i++) {
-                        $maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                    //$maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
+                    //for($i=0; $i<count($maleOwners); $i++) {
+                        //$maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
-                    }     
+                    //}     
                 } else {
                     $latteParams["pes3CeleJmeno"] = $latteParams["pes3Barva"] = $latteParams["pes3Nar"] = $latteParams["pes3Cz"] = "";
                 }
@@ -362,8 +360,8 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 // $maleOwnersTelToInput = "";
                 $femaleOwners = $this->userRepository->findDogOwnersAsUser($cea->getMID());
                 for($i=0; $i<count($femaleOwners); $i++) {
-                    $femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . (($i+1) != count($femaleOwners) ? ", " : "");
-                    $femaleStation = $femaleOwners[$i]->getStation();
+                    $femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . ", " . $femaleOwners[$i]->getFullAddress() . (($i+1) != count($femaleOwners) ? "; " : "");
+                    $femaleStation .= $femaleOwners[$i]->getStation() . (($i+1) != count($femaleOwners) ? "; " : "");
                     // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
                 }
                 $latteParams["cisloKrycihoListu"] = $cea->getCisloKL();

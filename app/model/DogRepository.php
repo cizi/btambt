@@ -20,6 +20,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Http\Session;
 use Nette\Utils\DateTime;
 use Nette\Utils\Paginator;
+use Nette\Utils\Html;
 
 class DogRepository extends BaseRepository {
 
@@ -120,6 +121,68 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $name;
+    }
+    
+    /**
+	 * @return Html[]
+	 */
+	public function findFemaleDogsForSelectHtml($withNotSelectedOption = true, $justBreeding = false, $alive = false) {
+        $query = [];
+        $query[] = "select `ID`, `Jmeno`, `Plemeno` from appdata_pes where Stav = %i and Pohlavi = %i";
+        $query[] = DogStateEnum::ACTIVE;
+        $query[] = self::FEMALE_ORDER;
+
+        if ($justBreeding) {
+            $query[] = " and Chovnost = "  . EnumerationRepository::CHOVNOST_CHOVNY;
+        }
+        if ($alive) {
+            $query[] = " and ((DatUmrti >= " . date(DogEntity::MASKA_DATA) . ") OR (DatUmrti is null))";
+        }
+        
+		$result = $this->connection->query($query);
+		$dogs = [];
+
+		if ($withNotSelectedOption) {
+			$dogs[0] = self::NOT_SELECTED;
+		}
+		foreach ($result->fetchAll() as $row) {
+            $dog = $row->toArray();
+            $dogs[$dog['ID']] = Html::el('option', $dog['Jmeno'])->setAttribute("Plemeno", $dog['Plemeno']);
+			// $dogs[$dog['ID']] = trim($dog['Jmeno']);
+		}
+
+		return $dogs;
+    }
+    
+    /**
+	 * @return Html[]
+	 */
+	public function findMaleDogsForSelectHtml($withNotSelectedOption = true, $justBreeding = false, $alive = false) {
+        $query = [];
+        $query[] = "select `ID`, `Jmeno`, `Plemeno` from appdata_pes where Stav = %i and Pohlavi = %i";
+        $query[] = DogStateEnum::ACTIVE;
+        $query[] = self::MALE_ORDER;
+
+        if ($justBreeding) {
+            $query[] = " and Chovnost = "  . EnumerationRepository::CHOVNOST_CHOVNY;
+        }
+        if ($alive) {
+            $query[] = " and ((DatUmrti >= " . date(DogEntity::MASKA_DATA) . ") OR (DatUmrti is null))";
+        }
+        
+		$result = $this->connection->query($query);
+		$dogs = [];
+
+		if ($withNotSelectedOption) {
+			$dogs[0] = self::NOT_SELECTED;
+		}
+		foreach ($result->fetchAll() as $row) {
+            $dog = $row->toArray();
+            $dogs[$dog['ID']] = Html::el('option', $dog['Jmeno'])->setAttribute("Plemeno", $dog['Plemeno']);
+			// $dogs[$dog['ID']] = trim($dog['Jmeno']);
+		}
+
+		return $dogs;
 	}
 
 	/**

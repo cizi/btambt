@@ -234,6 +234,8 @@ class DogForm {
 
         $form->addCheckbox("SkrytCelouKartu", " " . DOG_FORM_HIDE_DOG_CARD);
 
+        $form->addCheckbox("SkrytSvod", " " . DOG_FORM_HIDE_DOG_LEAD);
+
 		$form->addMultiUpload("pics", DOG_FORM_PIC_UPLOAD)
 			->setAttribute("class", "form-control");
 

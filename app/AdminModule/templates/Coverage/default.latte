@@ -71,8 +71,7 @@
 
                                         <td>
                                             {if !empty($cover->getOID3())}
-												{var pes = $dogRepository->getDog($cover->getOID3())}
-												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
+												{$cover->getOID3()}
 											{/if}
                                         </td>  
                                         <td>

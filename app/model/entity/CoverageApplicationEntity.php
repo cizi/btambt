@@ -21,7 +21,7 @@ class CoverageApplicationEntity {
     /** @var int */
     private $oID2;
     
-    /** @var int */
+    /** @var string */
 	private $oID3;
 
 	/** @var int */

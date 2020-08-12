@@ -466,12 +466,20 @@ class UserEntity {
 	}
 
 	/**
-	 * Celé jméno uživatele ořezné o případné tituly apod.
+	 * Celé jméno uživatele ořezané o případné tituly apod.
 	 * @return string
 	 */
 	public function getFullName() {
 		return trim($this->getTitleBefore() . " " . $this->getName() . " " . $this->getSurname() . " " . $this->getTitleAfter());
-	}
+    }
+    
+    /**
+	 * Celá adresa uživatele ořezaná o případné mezery
+	 * @return string
+	 */
+	public function getFullAddress() {
+		return trim($this->getStreet() . " " . $this->getCity() . " " . $this->getZip()); // . " " . $this->getState());
+    }
 
 	/**
 	 * @param array $data

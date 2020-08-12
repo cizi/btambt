@@ -58,12 +58,6 @@
 				<a href="{link Enumeration:Default}" {if $item == "enumeration"} style="color: white" {/if}>
 					<span class="glyphicon glyphicon-list-alt menuItem"></span>{=MENU_ENUMERATION}
 				</a>
-            {if (($mainUser->getRoles()[0] >= App\Enum\UserRoleEnum::USER_EDITOR))}
-                <li>
-                    <a href="{link Coverage:Default}" {if $item == "coverage"} style="color: white" {/if}>
-                        <span class="glyphicon glyphicon-sort menuItem"></span>{=MENU_COVERAGE}</a>
-                </li>
-		    {/if}
 			</li>
 			<li>
 				<a href="{link Vet:Default}" {if $item == "vet"} style="color: white" {/if}>
@@ -81,6 +75,12 @@
 				<span class="glyphicon glyphicon-glass menuItem"></span>{=SHOW_MENU}
 			</a>
 		</li>
+        {if (($mainUser->getRoles()[0] >= App\Enum\UserRoleEnum::USER_EDITOR))}
+                <li>
+                    <a href="{link Coverage:Default}" {if $item == "coverage"} style="color: white" {/if}>
+                        <span class="glyphicon glyphicon-sort menuItem"></span>{=MENU_COVERAGE}</a>
+                </li>
+        {/if}
 		<li>
 			<a href="{link LitterApplication:Default}" {if $item == "litter"} style="color: white" {/if}>
 				<span class="glyphicon glyphicon-th menuItem"></span>{=LITTER_APPLICATION}

@@ -112,7 +112,7 @@ class UserForm {
 			->setDefaultValue("CZECH_REPUBLIC")
 			->setAttribute("tabindex", "13");
 
-		$form->addText("web", USER_EDIT_WEB_LABEL)
+		$form->addText("web", USER_EDIT_WEB_LABEL . " " . USER_EDIT_WEB_LABEL_DET)
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", USER_EDIT_WEB_LABEL)
 			->setAttribute("tabindex", "14");
