@@ -130,10 +130,10 @@ class CoverageApplicationRepository extends BaseRepository {
             try {
                 $this->connection->begin();
 
-                $query = ["delete from appdata_krycilist where ID = %i", $id];
+                $query = ["delete from appdata_krycilist_prilohy where kID = %i", $id];
                 $this->connection->query($query);
 
-                $query = ["delete from appdata_krycilist_prilohy where kID = %i", $id];
+                $query = ["delete from appdata_krycilist where ID = %i", $id];
                 $this->connection->query($query);
 
                 $this->connection->commit();

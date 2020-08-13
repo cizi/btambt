@@ -80,6 +80,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $this['matingListForm']->addHidden("upd", "1");
                 $this['matingListForm']->addHidden("DatumVytvoreni", $cea->getDatumVytvoreni());
                 $this['matingListForm']->addHidden("recID", $cea->getID());
+                $this['matingListForm']->addHidden("uID", $cea->getUID());
                 $this['matingListForm']->addSubmit("update", USER_EDIT_SAVE_BTN_LABEL)->setAttribute("class", "btn btn-primary margin10");
             } 
         }
@@ -238,15 +239,16 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $ce->setOID2(empty($pID2) ? null : $pID2);
                 $ce->setOID3(empty($pID3) ? null : $pID3);
                 $ce->setPlemeno($cID);  // tohle je ve skutečnosti název klubu (číselník 18)
-                $ce->setUID($this->getUser()->getId());
                 $ce->setExpresni(isset($values["express"]) ? 1 : 0);
                 if (isset($values["upd"])) {
                     $ce->setID($values["recID"]);
                     $ce->setCisloKL($values["CisloKL"]);
                     $ce->setDatum($values["Datum"]);
                     $ce->setDatumVytvoreni($values["DatumVytvoreni"]);
+                    $ce->setUID($values["uID"]);
                 } else {
                     $ce->setDatumVytvoreni(new Datetime());
+                    $ce->setUID($this->getUser()->getId());
                 }
                 $this->coverageApplicationRepository->save($ce, $attachs);
 
