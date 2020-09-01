@@ -41,7 +41,16 @@
                                         <td>
                                             {if $cover->getDatum() != null}
                                                 {var dt = DateTime::createFromFormat('Y-m-d', $cover->getDatum())}
-                                                {$dt->format('j.n.Y')}
+                                                {var dtResult = DateTime::getLastErrors()}
+                                                {if ((isset($dtResult["error_count"]) && ($dtResult["error_count"] > 0)))}
+                                                    <b style="color: red;">
+                                                        <i>
+                                                         {sprintf(COVERAGE_DATE_WRONG_FORMAT, $cover->getDatum())}
+                                                        </i>
+                                                    </b>
+                                                {else}     
+                                                    {$dt->format('j.n.Y')}
+                                                {/if}
                                             {/if}
                                         </td>
                                         <td>

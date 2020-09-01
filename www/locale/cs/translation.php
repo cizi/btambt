@@ -651,6 +651,7 @@ define("COVERAGE_MAIL_SEND", "Odeslat uživateli");
 define("COVERAGE_EDIT", "Upravit");
 define("COVERAGE_NOT_EXISTS", "Krycí list s čislem %s neexistuje!");
 define("COVERAGE_MAIL_USER_SUCCESS", "Krycí list byl úspěšně odeslán");
+define("COVERAGE_DATE_WRONG_FORMAT", "Neplatný formát data: %s - má být YYYY-MM-DD");
 
 define("MATING_FORM_DATE_SHORT", 'Datum');
 define("MATING_FORM_DATE", 'Datum krytí');
