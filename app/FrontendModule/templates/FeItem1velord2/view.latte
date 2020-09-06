@@ -79,16 +79,15 @@
 						<td>{$dog->getTetovani()}</td>
 					</tr>
 					<tr>
+                        <th>{=DOG_FORM_BON}:</th>
+                        <td>{$dog->getBonitace()}</td>
                         {if ($hideContentByDogSetting == false) || ($hideContentByDogSetting && ($dog->isSkrytSvod() == false))}
-						    <th>{=DOG_FORM_BON}:</th>
-						    <td>{$dog->getBonitace()}</td>
+						    <th>{=DOG_FORM_BON_TEXT}:</th>
+						    <td>{nl2br($dog->getPosudek())|noescape}</td>
                         {else}
                             <th></th>
 						    <td></td>
                         {/if}
-
-						<th>{=DOG_FORM_BON_TEXT}:</th>
-						<td>{nl2br($dog->getPosudek())|noescape}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_BREEDING}:</th>

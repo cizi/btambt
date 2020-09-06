@@ -10,6 +10,7 @@ use App\Model\VetRepository;
 use Nette\Application\UI\Form;
 use Nette\Utils\Html;
 use Nette\Utils\Strings;
+use App\Controller\FileController;
 
 class DogForm {
 
@@ -138,7 +139,7 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_BON);
 
-		$form->addMultiUpload("BonitaceSoubory", DOG_FORM_PIC_UPLOAD_FILE)
+        $form->addMultiUpload("BonitaceSoubory", DOG_FORM_PIC_UPLOAD_FILE)
 			->setAttribute("class", "form-control");
 
 		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::CHOVNOST);
@@ -217,7 +218,7 @@ class DogForm {
         
         $exams = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, EnumerationRepository::ZKOUSKY);
         $form->addMultiSelect("Zkousky", DOG_FORM_SHOWS_EXAMS, $exams)
-                ->setAttribute("class", "form-control chosen-select");
+            ->setAttribute("class", "form-control chosen-select");
 
         /* $form->addTextArea("ZkouskySlozene", DOG_FORM_SHOWS_EXAMS_NEXT, null, 7)
             ->setAttribute("class", "form-control");

@@ -124,7 +124,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->enumRepository = $this->enumerationRepository;
 		$this->template->filterActivated = (!empty($filter) ? true : false);
 		$this->template->recordCount = $recordCount;
-		$this->template->pageCount = $paginator->getPageCount();
+        $this->template->pageCount = $paginator->getPageCount();
+        $this->template->maxFileSizeInfo = sprintf(MATING_MAX_FILE_SIZE, FileController::MAX_FILE_SIZE);
 	}
 
 	/**
@@ -199,7 +200,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("default");
 		}
-
+        $this->template->maxFileSizeInfo = sprintf(MATING_MAX_FILE_SIZE, FileController::MAX_FILE_SIZE);
 		if ($id == null) {
 			$this->template->currentDog = null;
 			$this->template->previousOwners = [];
@@ -460,14 +461,18 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			/** @var FileUpload $file */
 			foreach($formData['pics'] as $file) {
 				if ($file != null) {
-					$fileController = new FileController();
-					if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-						throw new \Exception("Nelze nahrát soubor.");
-						break;
-					}
-					$dogPic = new DogPicEntity();
-					$dogPic->setCesta($fileController->getPathDb());
-					$pics[] = $dogPic;
+                    $fileController = new FileController();
+                    if ($fileController->isInAllowedSize($file)) {
+                        if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+                            throw new \Exception("Nelze nahrát soubor.");
+                            break;
+                        }
+                        $dogPic = new DogPicEntity();
+                        $dogPic->setCesta($fileController->getPathDb());
+                        $pics[] = $dogPic;
+                    } else {
+                        $this->flashMessage(sprintf(MATING_MAX_FILE_SIZE_EXCEEDED, $file->name), "alert-danger");
+                    }
 				}
 			}
 			unset($formData['pics']);
@@ -495,15 +500,19 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			/** @var FileUpload $file */
 			foreach($formData['BonitaceSoubory'] as $file) {
 				if ($file != null) {
-					$fileController = new FileController();
-					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-						throw new \Exception("Nelze nahrát soubor.");
-						break;
-					}
-					$dogFile = new DogFileEntity();
-					$dogFile->setCesta($fileController->getPathDb());
-					$dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
-					$files[] = $dogFile;
+                    $fileController = new FileController();
+                    if ($fileController->isInAllowedSize($file)) {
+                        if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+                            throw new \Exception("Nelze nahrát soubor.");
+                            break;
+                        }
+                        $dogFile = new DogFileEntity();
+                        $dogFile->setCesta($fileController->getPathDb());
+                        $dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
+                        $files[] = $dogFile;
+                    } else {
+                        $this->flashMessage(sprintf(MATING_MAX_FILE_SIZE_EXCEEDED, $file->name), "alert-danger");
+                    }
 				}
 			}
             $dogEntity->hydrate($formData);

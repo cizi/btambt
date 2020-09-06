@@ -62,6 +62,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
 			$this->redirect("Homepage:Default");
         }
 
+        $this->template->maxFileSizeInfo = sprintf(MATING_MAX_FILE_SIZE, FileController::MAX_FILE_SIZE);
         if (!empty($id)) {
             $cea = $this->coverageApplicationRepository->getCoverageApplication($id);
             if (!empty($cea)) {
@@ -223,14 +224,18 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 foreach($values["attachemets"] as $file) {
                     if (isset($file->name) && ($file->name != "")) {
                         $fileController = new FileController();
-                        if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-                            $error = true;
-                            break;
+                        if ($fileController->isInAllowedSize($file)) {
+                            if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+                                $error = true;
+                                break;
+                            }
+                            $cea = new CoverageApplicationAttachementEntity();
+                            $cea->setCesta($fileController->getPathDb());
+                            $attachs[] = $cea; 
+                            $mailAttachs[] = $fileController->getPath();
+                        } else {
+                            $this->flashMessage(sprintf(MATING_MAX_FILE_SIZE_EXCEEDED, $file->name), "alert-danger");
                         }
-                        $cea = new CoverageApplicationAttachementEntity();
-                        $cea->setCesta($fileController->getPathDb());
-                        $attachs[] = $cea; 
-                        $mailAttachs[] = $fileController->getPath();
                     }
                 }
                 $ce = new CoverageApplicationEntity();

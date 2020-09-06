@@ -26,6 +26,8 @@
 				forceParse: 0
 			});
 
+            $("#frm-matingListForm-attachemets").parent().append({$maxFileSizeInfo});
+
 			$("#frm-matingListForm").submit(function( event ) {
 				if ($("#frm-matingListForm-fID").val() == "0") {
 					event.preventDefault();

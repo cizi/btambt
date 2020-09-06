@@ -4,46 +4,77 @@ namespace App\Model;
 
 use App\Model\Entity\CoverageApplicationEntity;
 use App\Model\Entity\CoverageApplicationAttachementEntity;
+use Dibi\Connection;
 
 class CoverageApplicationRepository extends BaseRepository {
+
+    /** DogRepository $dogRepository */
+    private $dogRepository;
+
+    /** Connection $connection, */
+    protected $connection;
+
+    /**
+     * @param DogRepository $dogRepository
+     * @param Connection $connection
+     */
+    public function __construct(DogRepository $dogRepository, Connection $connection) {
+        $this->dogRepository = $dogRepository;
+        $this->connection = $connection;
+    }
 
 	/**
 	 * @return CoverageApplicationEntity[]
 	 */
 	public function findCoverageApplications(array $filter = null) {
-		$chs = null;
 		if ($filter == null && empty($filter)) {
 			$query = "select * from appdata_krycilist order by ID desc";
 		} else {
-			if (isset($filter["Zavedeno"])) {
-				$filter["Zavedeno"] = $filter["Zavedeno"] - 1;
-				if ($filter["Zavedeno"] == 2) {
-					unset($filter["Zavedeno"]);
-				}
-			}
-			if (isset($filter['chs']) && $filter['chs'] != "") {
-				$chs = $filter['chs'];
-				unset($filter['chs']);
-			}
-			$query = ["select * from appdata_krycilist where %and order by ID desc", $filter];
-		}
+			if (isset($filter["Datum"])) {
+                $year = $filter["Datum"];
+                unset($filter["Datum"]);
+				$query = ["select * from appdata_krycilist where %and and YEAR(Datum) = %s order by ID desc", $filter, $year];
+			} else {
+                $query = ["select * from appdata_krycilist where %and order by ID desc", $filter];
+            }
+        }
 		$result = $this->connection->query($query);
 
 		$applications = [];
 		foreach ($result->fetchAll() as $row) {
 			$application = new CoverageApplicationEntity();
 			$application->hydrate($row->toArray());
-			if (empty($chs) == false) {
-				$formData = $application->getDataDecoded();
-				if((isset($formData['chs'])) && (trim($formData['chs']) == $chs)) {
-					$applications[] = $application;
-				}
-			} else {
-				$applications[] = $application;
-			}
+            $applications[] = $application;
 		}
 
 		return $applications;
+    }
+
+    /**
+	 * @return string[]
+	 */
+	public function findCoverageYearsForSelect() {
+        $query = "SELECT distinct YEAR(Datum) as Datum FROM `appdata_krycilist` WHERE Datum IS NOT NULL order by Datum asc";
+        $result = $this->connection->query($query);
+        $years = ["0" => EnumerationRepository::NOT_SELECTED];
+
+        return $years + $result->fetchPairs("Datum", "Datum");
+    }
+
+    /**
+	 * @return string[]
+	 */
+	public function findCoverageFemalesForSelect() {
+        $query = "SELECT distinct mID FROM `appdata_krycilist`";
+        $result = $this->connection->query($query);
+
+        $females = ["0" => EnumerationRepository::NOT_SELECTED];
+        foreach ($result->fetchAll() as $row) {
+			$female = $this->dogRepository->getDog($row['mID']);
+            $females[$row['mID']] = $female->getCeleJmeno();
+        }
+
+        return $females;
     }
     
     /**
@@ -140,6 +171,25 @@ class CoverageApplicationRepository extends BaseRepository {
                 $return = true;
             } catch (Exception $e) {
                 $this->connection->rollback();
+            }
+		}
+
+		return $return;
+    }
+
+    /**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function deleteAttachment($id) {
+		$return = false;
+		if (!empty($id)) {
+            try {
+                $query = ["delete from appdata_krycilist_prilohy where ID = %i", $id];
+                $this->connection->query($query);
+                $return = true;
+            } catch (Exception $e) {
+                $return = false;
             }
 		}
 

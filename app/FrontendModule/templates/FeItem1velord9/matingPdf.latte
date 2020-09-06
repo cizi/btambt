@@ -265,13 +265,7 @@
 								<tr>
 									<td class="tdleft" style="vertical-align: top;">
 										<div class="heading2 tdleft" style="height: 360px!important;"><b>{=MATING_FORM_FEMALE_OWNER}:</b> <br />{nl2br($MajitelFeny)|noescape}</div><br />&nbsp;<br />&nbsp;
-										<div class="heading2 tdleft" style="margin-top: -20px;"><strong>{=USER_EDIT_PHONE_LABEL}</strong>: {$MajitelFenyTel}</div><br /><br />
-										<span class="heading2"><strong>{=MATING_FORM_SIGNATURE}</strong>: </span>....................................
-									</td>
-
-									<td class="tdleft" style="vertical-align: top;">
-										{* <div class="heading2 tdleft" style="height: 360px!important;"><b>{=LITTER_APPLICATION_OWNWER_MALE}:</b> <br />{nl2br($MajitelPsa)|noescape}</div><br />&nbsp;<br />&nbsp;
-										<div class="heading2 tdleft" style="margin-top: -20px;"></div><br /><br /> *}
+										<div class="heading2 tdleft" style="margin-top: -20px;"><strong>{=USER_EDIT_PHONE_LABEL}</strong>: {$MajitelFenyTel}</div>
 									</td>
 								</tr>
 
@@ -285,9 +279,11 @@
                                                 {var $dt = new DateTime($Datum)}
                                                 {$dt->format($dateFormat)}
                                             {/if}
-                                        </div><br />
+                                        </div>
 									</td>
 								</tr>
+
+                                <tr><td colspan="2"></td></tr>
 
                                 <tr>
 									<td colspan="2"><br /><div class="heading2 tdleft"><strong>{=MATING_FORM_RULES}</strong>: {if $UvedeniNaWebu}{=SHOW_DONE}{else}{=SHOW_UNDONE}{/if}</div></td>
@@ -298,13 +294,6 @@
 								</tr>
 
 								<tr><td colspan="2"><br /><br /></td></tr>
-								<tr><td colspan="2"><br /><br /></td></tr>
-
-								<tr>
-									<td colspan="3" class="tdleft"  style="text-align: center;">
-										<div class="heading2 tdcenter"><strong>{=LITTER_APPLICATION_REVIEW}</strong></div>
-									</td>
-								</tr>
 
 								<tr><td colspan="2"><br /><br /></td></tr>
 

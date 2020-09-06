@@ -14,6 +14,7 @@
 						<br /><br />
 
 						<div class="container userTable">
+                            {control coverageFilterForm}<br /><br /><br />
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -90,10 +91,11 @@
                                                 {=SHOW_UNDONE} 
                                            {/if} 
                                         </td>     
-                                        <td>
+                                        <td nowrap="nowrap">
                                             <small>
                                             {var attachs = $coverageApplicationRepo->findCoverageApplicationAttachments($cover->getID())}
                                             {foreach $attachs as $attach}
+                                                <a href='#' data-href='{link deleteAttachment, $attach->getID()}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title={=BLOCK_SETTING_DELETE_ITEM}><span class='glyphicon glyphicon-remove'></span></a>
                                                 <a href={$attach->getCesta()} target="_blank">{$attach->getNazevSouboru()}</a>
                                                 <br />
                                             {/foreach}

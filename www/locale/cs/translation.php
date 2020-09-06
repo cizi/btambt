@@ -553,7 +553,7 @@ define("DOG_FORM_NO_OF_REC", 'Číslo zápisu');
 define("DOG_FORM_NO_OF_REC2", 'Další číslo zápisu');
 define("DOG_FORM_NO_OF_TATTOO", 'Tetování');
 define("DOG_FORM_NO_OF_CHIP", 'Čip');
-define("DOG_FORM_BON", 'Svod');
+define("DOG_FORM_BON", 'Datum svodu');
 define("DOG_FORM_BON_DATE", 'Datum bonitace');
 define("DOG_FORM_BREEDING", 'Chovnost');
 define("DOG_FORM_BREEDING_COM", 'CZDR');
@@ -586,7 +586,7 @@ define("DOG_FORM_WEIGHT_NUMBER", 'Váha psa musí být číslo na dvě desetinn�
 define("DOG_FORM_LITTER_CHECK", 'Kontrola vrhu');
 
 define("DOG_FORM_TITLES", 'Výstavní ocenění');    // Tituly
-define("DOG_FORM_BON_TEXT", 'Bonitační posudek');
+define("DOG_FORM_BON_TEXT", 'Svodový kód');
 define("DOG_FORM_SHOWS_TEXT", 'Výsledky výstav');  // Výstavní ocenění
 define("DOG_FORM_SHOWS_NEXT_TEXT", 'Další výstavní ocenění');
 define("DOG_FORM_SHOWS_EXAMS", 'Zkoušky');
@@ -640,6 +640,11 @@ define("MATING_FORM_NOTE", 'Poznámka (inseminace, náhrada za krytí, apod.)');
 define("MATING_FORM_NOTE_2", "Majitel krycího psa je povinen do 7 dnů po krytí odeslat vyplněný Krycí list – hlášení o krytí správci plemenné knihy. Při zahraničním krytí odesílá majitel feny.");
 define("MATING_FORM_OWNER", "");
 define("MATING_FORM_INFO_BREEDER", "Chovatelé si napíší o složky ke štěňatům paní Hradecké na email VendulaHradeck@email.cz");
+define("MATING_MAX_FILE_SIZE", "<small style='color: red; font-weight: bold;'>Soubory s velikostí nad %s kB nebudou nahrány!</small>");
+define("MATING_MAX_FILE_SIZE_EXCEEDED", "Překročena velikost souboru %s. ");
+define("MATING_MAIL_BODY", "V genealogii bylo vytvořeno nové hlášení vrhu");
+define("MATING_MAIL_SUBJECT", "V příloze naleznete vytvořené hlášení vrhu");
+define("MATING_PROCEED_OK", "Hlášení vrhu bylo zasláno ke zpracování");
 define("COVERAGE_EXPRESS", "Expresní krycí list");
 define("COVERAGE_SAVED_OK", "Krycí list byl v pořádku uložen a zaslán ke zpracování");
 define("COVERAGE_MAIL_SUBJECT", "Byl vytvořen nový krycí list");
@@ -666,7 +671,7 @@ define("DOG_FORM_NAME_MALE", 'Jméno psa');
 define("MATING_FORM_DISCLAIMER", 'Podpisem stvrzuji, že pes je přeregistrován v Plemenné knize č.1 – ČMKU');
 define("MATING_FORM_SIGNATURE", 'podpis');
 define("MATING_FORM_OVERAGAIN", 'Začít znovu');
-define("MATING_FORM_GENERATE", 'Generovat PDF');
+define("MATING_FORM_GENERATE", 'Odeslat ke zpracování');
 
 // user view
 define("USER_VIEW_OWNER", 'Je uveden/a jako vlastník u');
@@ -861,7 +866,7 @@ define("LITTER_APPLICATION_DOG_LIVE", "Počet živě narozených štěňat");
 define("LITTER_APPLICATION_DOG_LIVE_MALE", "z toho psi");
 define("LITTER_APPLICATION_DOG_LIVE_FEMALE", "feny");
 define("LITTER_APPLICATION_DOG_DEATH", "Počet mrtvě nar., do 7 dnů po nar. uhynulých nebo utracených štěňat");
-define("LITTER_APPLICATION_PUPPIES_DETAILS", "Barvy štěňat, další poznámky");
+define("LITTER_APPLICATION_PUPPIES_DETAILS", "Poznámky k porodu");
 define("LITTER_APPLICATION_OWNWER_MALE", "Jméno a adresa majitele krycího psa");
 define("LITTER_APPLICATION_REVIEW", "Majitel feny je povinen do 10 dnů po vrhu odeslat hlášení o vrhu poradci chovu na email poradcechovu@seznam.cz.");
 define("LITTER_APPLICATION_EDIT", "Editace vrhu");

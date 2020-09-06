@@ -102,6 +102,9 @@
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		});
 
+        $("#frm-dogForm-BonitaceSoubory").parent().append({$maxFileSizeInfo});
+        $("#frm-dogForm-pics").parent().append({$maxFileSizeInfo});
+
 		$("input[name='defaultPic']").change(function(){
 			var dogId = $("#currentDogId").val();
 			var picId = $(this).val();

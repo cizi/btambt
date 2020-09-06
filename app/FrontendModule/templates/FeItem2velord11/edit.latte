@@ -113,6 +113,10 @@
 			});
 		});
 		$(document).ready(function(){
+
+            $("#frm-dogForm-BonitaceSoubory").parent().append({$maxFileSizeInfo});
+            $("#frm-dogForm-pics").parent().append({$maxFileSizeInfo});
+
 			$("#DatNarozeni").datetimepicker({
 				format: 'yyyy-mm-dd',
 				language: {$currentLang},

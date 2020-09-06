@@ -8,8 +8,12 @@ use App\Model\UserRepository;
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
 use App\Model\CoverageApplicationRepository;
+use App\Forms\CoverageFilterForm;
 
 class CoveragePresenter extends SignPresenter {
+
+    /** @persistent */
+	public $filter;
 
     /** @var CoverageApplicationRepository */
     private $coverageApplicationRepository;
@@ -21,24 +25,30 @@ class CoveragePresenter extends SignPresenter {
     private $enumerationRepository;
     
     /** @var DogRepository */
-	private $dogRepository;
+    private $dogRepository;
+    
+    /** @var CoverageFilterForm */
+    private $coverageFilterForm;
 
 	/**
 	 * @param CoverageApplicationRepository $coverageApplicationRepository
      * @param DogRepository $dogRepository
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param UserRepository $userRepository
+     * @param CoverageFilterForm $coverageFilterForm
 	 */
 	public function __construct(
         CoverageApplicationRepository $coverageApplicationRepository,
         DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
-		UserRepository $userRepository
+        UserRepository $userRepository, 
+        CoverageFilterForm $coverageFilterForm
     ) {
         $this->coverageApplicationRepository = $coverageApplicationRepository;
         $this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
-		$this->userRepository = $userRepository;
+        $this->userRepository = $userRepository;
+        $this->coverageFilterForm = $coverageFilterForm;
 	}
 
 	/**
@@ -56,7 +66,10 @@ class CoveragePresenter extends SignPresenter {
      * 
      */
 	public function actionDefault() {
-        $covers = $this->coverageApplicationRepository->findCoverageApplications();
+        $filter = $this->decodeFilterFromQuery();
+        $this['coverageFilterForm']->setDefaults($filter);
+
+        $covers = $this->coverageApplicationRepository->findCoverageApplications($filter);
         $this->template->covers = $covers;
         $this->template->coverageApplicationRepo = $this->coverageApplicationRepository;
         $this->template->enumRepo = $this->enumerationRepository;
@@ -74,5 +87,49 @@ class CoveragePresenter extends SignPresenter {
         }
         $this->redirect("Default");
     }
-  
+
+    /**
+     * @param int $id
+     */
+    public function actionDeleteAttachment($id) {
+        $result = $this->coverageApplicationRepository->deleteAttachment($id);
+        if ($result) {
+            $this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+        } else {
+            $this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+        }
+        $this->redirect("Default");
+    }
+
+    public function createComponentCoverageFilterForm() {
+        $currentLang = $this->langRepository->getCurrentLang($this->session);
+        $form = $this->coverageFilterForm->create($currentLang);
+        $form->onSuccess[] = [$this, 'filterCoverage'];
+        
+        $renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-1';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-1 control-label"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+
+		return $form;
+    }
+
+    public function filterCoverage($form) {
+        if (isset($form->getHttpData()["clearFilter"])) {
+            $this->filter = "";
+        } else {
+            $filter = "1&";
+            foreach ($form->getValues() as $key => $value) {
+                if ($value != "") {
+                    $filter .= $key . "=" . $value . "&";
+                }
+            }
+            $this->filter = $filter;
+        }
+        $this->redirect("default");
+    }
 }

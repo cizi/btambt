@@ -817,7 +817,7 @@ class DogEntity {
 		$this->setTitulyPredJmenem(isset($data['TitulyPredJmenem']) ? $data['TitulyPredJmenem'] : null);
 		$this->setTitulyZaJmenem(isset($data['TitulyZaJmenem']) ? $data['TitulyZaJmenem'] : null);
         $this->setJmeno(isset($data['Jmeno']) ? $data['Jmeno'] : null);
-        $this->setZeme(isset($data['Zeme']) ? $data['Zeme'] : null);
+        $this->setZeme(isset($data['Zeme']) && !empty($data['Zeme']) ? $data['Zeme'] : null);
 		$this->setUmrtiKomentar(isset($data['UmrtiKomentar']) ? $data['UmrtiKomentar'] : null);
 		$this->setPohlavi((isset($data['Pohlavi']) && ($data['Pohlavi'] != 0)) ? $data['Pohlavi'] : null);
 		$this->setPlemeno((isset($data['Plemeno']) && ($data['Plemeno'] != 0)) ? $data['Plemeno'] : null);

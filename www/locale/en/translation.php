@@ -533,7 +533,7 @@ define("DOG_FORM_NO_OF_REC", 'Number of registration');
 define("DOG_FORM_NO_OF_REC2", 'Other number of registration');
 define("DOG_FORM_NO_OF_TATTOO", 'Tattoo');
 define("DOG_FORM_NO_OF_CHIP", 'Chip');
-define("DOG_FORM_BON", 'Lead');
+define("DOG_FORM_BON", 'Date of lead');
 define("DOG_FORM_BON_DATE", 'Date of bonitative');
 define("DOG_FORM_BREEDING", 'Breeding');
 define("DOG_FORM_BREEDING_COM", 'CZDR');
@@ -566,7 +566,7 @@ define("DOG_FORM_WEIGHT_NUMBER", 'Weight of the dog must be a valid number with 
 define("DOG_FORM_LITTER_CHECK", 'Litter check');
 
 define("DOG_FORM_TITLES", 'Exhibition awards');    // Titles
-define("DOG_FORM_BON_TEXT", 'Breeding report');
+define("DOG_FORM_BON_TEXT", 'Lead code');
 define("DOG_FORM_SHOWS_TEXT", 'Exhibition results');    // Show result
 define("DOG_FORM_SHOWS_NEXT_TEXT", 'Other show result');
 define("DOG_FORM_SHOWS_EXAMS", 'Exams');
@@ -620,6 +620,11 @@ define("MATING_FORM_NOTE", 'Note (insemination, cover for cover, etc.)');
 define("MATING_FORM_NOTE_2", "The owner of the cover dog is obliged to send within 7 days after coverage the completed cover sheet - a report on the coverage of the herd book manager. In case of foreign cover, the owner sends the bitch.");
 define("MATING_FORM_OWNER", "");
 define("MATING_FORM_INFO_BREEDER", "Breeder will write for folders for puppies to Mrs. Hradecká to email VendulaHradeck@email.cz");
+define("MATING_MAX_FILE_SIZE", "<small style='color: red; font-weight: bold;'>Files over size %s kB won't be upload!</small>");
+define("MATING_MAX_FILE_SIZE_EXCEEDED", "File size exeeded %s. ");
+define("MATING_MAIL_BODY", "In genealogy has been created new litter report");
+define("MATING_MAIL_SUBJECT", "Attached you can find new litter report");
+define("MATING_PROCEED_OK", "Litter report has been send to process");
 define("COVERAGE_EXPRESS", "Express coverage sheet");
 define("COVERAGE_SAVED_OK", "Covere sheet has been successfully saved and sent to process");
 define("COVERAGE_MAIL_SUBJECT", "New coverage application has been created");
@@ -645,7 +650,7 @@ define("DOG_FORM_NAME_MALE", 'Male name');
 define("MATING_FORM_DISCLAIMER", 'Signature confirmation, that the dog registered in the breeder book no. 1 – CMKU');
 define("MATING_FORM_SIGNATURE", 'signature');
 define("MATING_FORM_OVERAGAIN", 'Start again');
-define("MATING_FORM_GENERATE", 'Generate PDF');
+define("MATING_FORM_GENERATE", 'Send to process');
 
 define("USER_VIEW_OWNER", 'User is owner for');
 define("USER_VIEW_OWNER_PREVIOUS", 'User is previous owner for');
@@ -837,7 +842,7 @@ define("LITTER_APPLICATION_DOG_LIVE", "Number of live puppies");
 define("LITTER_APPLICATION_DOG_LIVE_MALE", "of which dogs");
 define("LITTER_APPLICATION_DOG_LIVE_FEMALE", "females");
 define("LITTER_APPLICATION_DOG_DEATH", "Number of dead births, up to 7 days after birth. dead or killed puppies");
-define("LITTER_APPLICATION_PUPPIES_DETAILS", "Colors of puppies, other notes");
+define("LITTER_APPLICATION_PUPPIES_DETAILS", "Birth notes");
 define("LITTER_APPLICATION_OWNWER_MALE", "Name and address of cover dog owner");
 define("LITTER_APPLICATION_REVIEW", "The owner of the bitch is obliged to send the completed litter report to the herd book manager within 10 days after the litter via email poradcechovu@seznam.cz");
 define("LITTER_APPLICATION_EDIT", "Litter application edit");

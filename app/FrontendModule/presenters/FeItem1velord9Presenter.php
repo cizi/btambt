@@ -19,6 +19,7 @@ use Dibi\DateTime;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use App\Forms\MatingListDetailForm;
+use Mpdf\Mpdf as mPDF;
 
 class FeItem1velord9Presenter extends FrontendPresenter {
 
@@ -256,9 +257,9 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			$breederName = trim($appBreeder->getTitleBefore() . " " . $appBreeder->getName() . " " . $appBreeder->getSurname());
 			$stateEnum = new StateEnum();
 			$breederState = $stateEnum->getValueByKey($appBreeder->getState());
-			$breederAddress = $appBreeder->getStreet() . " " . $appBreeder->getCity() . " " . $breederState . ", " . $appBreeder->getEmail();
+			$breederAddress = trim($appBreeder->getStreet() . " " . $appBreeder->getCity() . " " . $appBreeder->getZip() . " " . $breederState . ", " . $appBreeder->getPhone() . ", " . $appBreeder->getEmail());
 			$this['litterApplicationDetailForm']['chs']->setDefaultValue($appBreeder->getStation());
-			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $appBreeder->getStation() . "; " . $breederAddress);
+			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $breederAddress);
 		}
 
 		$pes = $this->dogRepository->getDog($pID);
@@ -323,10 +324,22 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $form->getValues()['cID']);
 
 			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem1velord9/matingPdf.latte', $latteParams);
+            
+            // e-mail s příloho PDF
+            $pdf = new mPDF();
+            $pdf->ignore_invalid_utf8 = true;
+            $pdf->WriteHTML($template);
 
-			$pdf = new \Joseki\Application\Responses\PdfResponse($template);
-			$pdf->documentTitle = MATING_FORM_SAVE . "_" . date("Y-m-d_His");
-			$this->sendResponse($pdf);
+            $timestamp = date("Y-m-d_His");
+            $pdfOutput = __DIR__ . "/../../../www/upload/" . MATING_FORM_SAVE  . "_" . $timestamp . ".pdf";
+            $pdf->Output($pdfOutput);
+
+            $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+            $emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL, WebconfigRepository::KEY_LANG_FOR_COMMON);
+            $emailBody = MATING_MAIL_BODY;
+            EmailController::SendPlainEmail($emailFrom, $emailTo, MATING_MAIL_SUBJECT, $emailBody, [$pdfOutput]);                   
+            $this->flashMessage(MATING_PROCEED_OK, "alert-success");
+            $this->redirect("default");
 		} catch (AbortException $e) {
 			throw $e;
 		} catch (\Exception $e) {
@@ -380,18 +393,21 @@ class FeItem1velord9Presenter extends FrontendPresenter {
 			$this['matingListDetailForm']['fID']['DatNarozeni']->setDefaultValue($fena->getDatNarozeni()->format(DogEntity::MASKA_DATA));
 		}
 
+        $stateEnum = new StateEnum();
 		$femaleOwnersToInput = "";
 		$femaleOwnersTelToInput = "";
-		$femaleOwners = $this->userRepository->findDogOwnersAsUser($fena->getID());
+        $femaleOwners = $this->userRepository->findDogOwnersAsUser($fena->getID());
 		for($i=0; $i<count($femaleOwners); $i++) {
-			$femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . (($i+1) != count($femaleOwners) ? ", " : "");
-			$femaleOwnersTelToInput .= $femaleOwners[$i]->getPhone() . (($i+1) != count($femaleOwners) ? ", " : "");
+			$ownerState = $stateEnum->getValueByKey($femaleOwners[$i]->getState());
+            $ownerInfo = trim($femaleOwners[$i]->getStreet() . " " . $femaleOwners[$i]->getCity() . " " . $femaleOwners[$i]->getZip() . " " . $ownerState . ", " . $femaleOwners[$i]->getPhone() . ", " . $femaleOwners[$i]->getEmail());
+			$femaleOwnersToInput .= $femaleOwners[$i]->getFullName() . ", " . $ownerInfo . (($i+1) != count($femaleOwners) ? "; " : "");
+			$femaleOwnersTelToInput .= $femaleOwners[$i]->getPhone() . (($i+1) != count($femaleOwners) ? "; " : "");
         }
         $this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
 		$this['matingListDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnersToInput);
 		$this['matingListDetailForm']['MajitelFenyTel']->setDefaultValue($femaleOwnersTelToInput);
 
 		$this->template->title = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
-		$this->template->cID = $cID;
+        $this->template->cID = $cID;
 	}
 }
