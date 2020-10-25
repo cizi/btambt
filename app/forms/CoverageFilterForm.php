@@ -60,21 +60,21 @@ class CoverageFilterForm  {
 
         $females = $this->coverageApplicationRepository->findCoverageFemalesForSelect();
         $form->addSelect("mID", MATING_FORM_MID, $females)
-			->setAttribute("class", "form-control userSearchFiled");
+			->setAttribute("class", "form-control");
 
 		$form->addSelect("uID", USER_OWNER, $uzivatele)
-			->setAttribute("class", "form-control userSearchFiled");
+			->setAttribute("class", "form-control");
             
         $roky = $this->coverageApplicationRepository->findCoverageYearsForSelect();
         $form->addSelect("Datum", SHOW_FRONTEND_YEAR, $roky)
-			->setAttribute("class", "form-control userSearchFiled");
+			->setAttribute("class", "form-control");
 
         $plemeno = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($currentLang, 18);
         $form->addSelect("Plemeno", USER_EDIT_BREED_LABEL, $plemeno)
-            ->setAttribute("class", "form-control userSearchFiled");
+            ->setAttribute("class", "form-control");
 
-		$form->addSubmit("confirm", USER_SEARCH_BUTTON)
-			->setAttribute("class","btn btn-primary marginMinus10");
+		$form->addSubmit("confirm", DOG_TABLE_BTN_FILTER)
+			->setAttribute("class","btn btn-primary margin5");
 
 		return $form;
 	}

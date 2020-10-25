@@ -270,7 +270,7 @@ class DogRepository extends BaseRepository {
                 $query = ["select distinct ap.ID, ap.* from appdata_pes as ap where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
             }
 		} else {
-			$query[] = "select distinct ap.ID, ap.*, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
+			$query[] = "select distinct ap.ID, ap.*, CisloZapisu as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner, $breeder) as $join) {
 				$query[] = $join;
 			}

@@ -391,6 +391,7 @@ abstract class BasePresenter extends Presenter {
 					&& ($filterPiece[1] != "")
 					&& ($filterPiece[0] != "filter")
 					&& ($filterPiece[0] != "do")
+					&& ($filterPiece[0] != "_do")
 					&& ($filterPiece[1] != "0")
 				) {
                     if (strpos($filterPiece[1], '##') !== false) {

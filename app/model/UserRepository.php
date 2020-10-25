@@ -6,6 +6,7 @@ use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogOwnerEntity;
+use App\Model\Entity\PuppyEntity;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\Security\Passwords;

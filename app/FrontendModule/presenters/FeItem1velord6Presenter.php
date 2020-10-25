@@ -121,6 +121,7 @@ class FeItem1velord6Presenter extends FrontendPresenter	{
 		} catch (AbortException $e) {
 			throw $e;
 		} catch (\Exception $ex) {
+		    dump($ex);
 			$this->flashMessage(PUPPY_ADD_FAILED, "alert-danger");
 		}
 	}

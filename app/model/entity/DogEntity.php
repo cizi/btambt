@@ -957,10 +957,10 @@ class DogEntity {
         $this->setPosudek("");
         $this->setTitulyKomentar("");
         $this->setTetovani("");
-        $this->SkrytCelouKartu(0);
-        $this->SkrytSourozence(0);
-        $this->SkrytSvod(0);
-        $this->SkrytPotomky(0);
+        $this->setSkrytCelouKartu(0);
+        $this->setSkrytSourozence(0);
+        $this->setSkrytSvod(0);
+        $this->setSkrytPotomky(0);
     }
 
     /**

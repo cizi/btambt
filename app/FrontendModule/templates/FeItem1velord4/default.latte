@@ -39,8 +39,8 @@
 											<td>{$formData[$application->getID()]['chs']}</td>
 											<td><a href={link FeItem1velord2:view, $application->getOID()}>{$dogRepo->getName($application->getOID())}</a></td>
 											<td><a href={link FeItem1velord2:view, $application->getMID()}>{$dogRepo->getName($application->getMID())}</a></td>
-											<td nowrap="nowrap">{$formData[$application->getID()]['males']}{$formData[$application->getID()]['birthMales']}</td>
-											<td nowrap="nowrap">{$formData[$application->getID()]['females']}{$formData[$application->getID()]['birthFemales']}</td>
+											<td nowrap="nowrap">{$formData[$application->getID()]['birthMales']}</td>
+											<td nowrap="nowrap">{$formData[$application->getID()]['birthFemales']}</td>
 											{if $amIAdmin}
 												<td>
                                                     <a href={link FeItem1velord9:Default, $application->getID()} title={=LITTER_APPLICATION_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
