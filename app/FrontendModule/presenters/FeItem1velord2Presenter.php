@@ -451,12 +451,14 @@ class FeItem1velord2Presenter extends FrontendPresenter {
             unset($formData['dogHealth']);
             
             // zkousky
-            foreach($formData['Zkousky'] as $hodnota) {
-				$examEntity = new ExamEntity();
-				$examEntity->setZID($hodnota);
-				$exams[] = $examEntity;
+            if (isset($formData['Zkousky'])) {
+                foreach ($formData['Zkousky'] as $hodnota) {
+                    $examEntity = new ExamEntity();
+                    $examEntity->setZID($hodnota);
+                    $exams[] = $examEntity;
+                }
+                unset($formData['Zkousky']);
             }
-            unset($formData['Zkousky']);
 
 			/** @var FileUpload $file */
 			foreach($formData['pics'] as $file) {
