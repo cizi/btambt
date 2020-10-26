@@ -43,7 +43,6 @@ class PuppyRepository extends BaseRepository {
 	 */
 	public function savePuppy(PuppyEntity $puppyEntity) {
 		if ($puppyEntity->getID() == null) {
-		    $puppyEntity->setID(null);
 			$query = ["insert into appdata_stenata ", $puppyEntity->extract()];
 		} else {
 			$query = ["update appdata_stenata set ", $puppyEntity->extract(), "where ID=%i", $puppyEntity->getID()];

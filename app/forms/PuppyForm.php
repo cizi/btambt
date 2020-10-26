@@ -63,9 +63,9 @@ class PuppyForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $counter + 4);
 
-        $form->addTextArea("Kontakt", PUPPY_TABLE_CONTACT, 20, 10)
+        /* $form->addTextArea("Kontakt", PUPPY_TABLE_CONTACT, 20, 10)
             ->setAttribute("class", "form-control")
-            ->setAttribute("tabindex", $counter + 5);
+            ->setAttribute("tabindex", $counter + 5); */
 
 		$form->addSubmit("save", USER_EDIT_SAVE_BTN_LABEL)
 			->setAttribute("class", "btn btn-primary margin10")

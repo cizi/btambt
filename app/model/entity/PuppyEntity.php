@@ -7,7 +7,7 @@ use Dibi\DateTime;
 class PuppyEntity {
 
 	/** @var int */
-	private $ID;
+	private $ID = null;
 
 	/** @var int */
 	private $Plemeno;
@@ -144,13 +144,13 @@ class PuppyEntity {
 	 * @param array $data
 	 */
 	public function hydrate(array $data) {
-		$this->setID((isset($data['ID']) ? $data['ID'] : null));
-		$this->setPlemeno((isset($data['Plemeno']) ? $data['Plemeno'] : null));
-		$this->setmID((isset($data['mID']) ? $data['mID'] : null));
-		$this->setoID((isset($data['oID']) ? $data['oID'] : null));
-		$this->setUID((isset($data['uID']) ? $data['uID'] : null));
-		$this->setTermin((isset($data['Termin']) ? $data['Termin'] : null));
-		$this->setPodrobnosti((isset($data['Podrobnosti']) ? $data['Podrobnosti'] : null));
+		$this->setID((!empty($data['ID']) ? $data['ID'] : null));
+		$this->setPlemeno((!empty($data['Plemeno']) ? $data['Plemeno'] : null));
+		$this->setmID((!empty($data['mID']) ? $data['mID'] : null));
+		$this->setoID((!empty($data['oID']) ? $data['oID'] : null));
+		$this->setUID((!empty($data['uID']) ? $data['uID'] : null));
+		$this->setTermin((!empty($data['Termin']) ? $data['Termin'] : null));
+		$this->setPodrobnosti((!empty($data['Podrobnosti']) ? $data['Podrobnosti'] : null));
 	}
 
 }
