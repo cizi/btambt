@@ -745,7 +745,7 @@ class DogRepository extends BaseRepository {
 	 * @param int [$mIdOrOidForNewDog]
      * @param ExamEntity[]
 	 */
-	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null, $exams) {
+	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null, $exams = []) {
 		try {
 			$this->connection->begin();
 			$dogEntity->setPosledniZmena(new DateTime());
