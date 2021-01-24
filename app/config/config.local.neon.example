@@ -1,14 +1,13 @@
 parameters:
 
-
-database:
-	host: host
-	username: user
-	password: pass
-	database: db
-	lazy: TRUE
-	profiler:
-		run: false
-		explain: true
-		filter: DibiEvent::ALL
-		file: log.sql
+    database:
+        host: host
+        username: user
+        password: pass
+        database: db
+        lazy: TRUE
+        profiler:
+            run: false
+            explain: true
+            filter: DibiEvent::ALL
+            file: log.sql

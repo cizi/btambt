@@ -52,6 +52,7 @@ services:
     - App\Forms\UserFilterForm
     - App\Forms\LitterApplicationFilterForm
     - App\Forms\CoverageMatingListDetailForm
+    - App\Forms\CoverageFilterForm
     - App\Model\UserRepository
     - App\Model\WebconfigRepository
     - App\Model\LangRepository
@@ -70,6 +71,8 @@ services:
     - App\Model\AwaitingChangesRepository
     - App\Model\LitterApplicationRepository
     - App\Model\PuppyRepository
+    - App\Model\ExamRepository
+    - App\Model\CoverageApplicationRepository
     - App\Controller\MenuController
     - App\Controller\FileController
     - App\Controller\DogChangesComparatorController
