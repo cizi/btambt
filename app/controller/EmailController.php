@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 class EmailController {
@@ -14,21 +15,22 @@ class EmailController {
 	 * @param $subject
 	 * @param $body
      * @param array $attachements - string
+     * @param string $fromName
 	 * @throws \Exception
 	 */
-	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body, array $attachements = []) {
+	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body, array $attachements = [], $fromName = '') {
 		$email = new PHPMailer();
 		$email->CharSet = "UTF-8";
 		$email->From = $emailFrom;
-		$email->FromName = $emailFrom;
+		$email->FromName = empty(trim($fromName)) ? $emailFrom : $fromName;
 		$email->isHTML(true);
 		$email->Subject = $subject;
         $email->Body = $body;
 
         // SNAS config
-        $email->isSMTP();
+        /* $email->isSMTP();
         $email->Host = 'localhost';
-        $email->Port = 25;
+        $email->Port = 25; */
 
 		if (strpos($emailTo, ";") !== false) {	// více příjemců
 			$addresses = explode(";", $emailTo);

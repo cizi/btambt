@@ -168,17 +168,12 @@ abstract class BasePresenter extends Presenter {
 			}
 
 			if ($fileError == false) {
-				$email = new \PHPMailer();
-				$email->CharSet = "UTF-8";
-				$email->From = $values['contactEmail'];
-				$email->FromName = $values['name'];
-				$email->Subject = CONTACT_FORM_EMAIL_MY_SUBJECT . " - " . $values['subject'];
-				$email->Body = $values['text'];
-				$email->AddAddress($this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON));
+                $attachments = [];
 				if (!empty($path)) {
-					$email->AddAttachment($path);
+                    $attachments[] = $path;
 				}
-				$email->Send();
+                $emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+                EmailController::SendPlainEmail($values['contactEmail'], $emailTo, CONTACT_FORM_EMAIL_MY_SUBJECT . " - " . $values['subject'], $values['text'], $attachments, $values['name']);
 				$this->flashMessage(CONTACT_FORM_WAS_SENT, "alert-success");
 			}
 		} else {

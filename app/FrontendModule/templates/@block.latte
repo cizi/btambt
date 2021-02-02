@@ -2,7 +2,7 @@
 	{foreach $userBlocks as $block}
 		{if $block->getId() == $contactFormId}
 			<div style="margin: auto; padding: 10px 0; background-color: {$block->getBackgroundColor()|noescape}; color: {$block->getColor()|noescape}; width: {$widthEnum->getValueByKey($block->getWidth())|noescape};">
-				{include "../contactForm.latte"}
+				{include "contactForm.latte"}
 			</div>
 		{else}
 			<div class="contentRow" style="background-color: {$block->getBackgroundColor()}; color: {$block->getColor()}; width: {$widthEnum->getValueByKey($block->getWidth())}">
