@@ -36,7 +36,7 @@
 	  	"php-gettext/php-gettext" : "1.0.*",
 		"dibi/dibi" : "3.0.*",
 		"joseki/pdf-response": ">= 2.1",
-		"phpmailer/phpmailer": "^6.0",
+		"phpmailer/phpmailer": "^6.2",
       	"symfony/polyfill-mbstring": "^1.2"
 	},
 	"require-dev": {

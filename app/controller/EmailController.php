@@ -19,6 +19,8 @@ class EmailController {
 	 * @throws \Exception
 	 */
 	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body, array $attachements = [], $fromName = '') {
+	    $emailFromCount = explode(';', $emailFrom);
+        $emailFrom = (count($emailFromCount) > 1 ? trim($emailFromCount[0]) : $emailFrom);
 		$email = new PHPMailer();
 		$email->CharSet = "UTF-8";
 		$email->From = $emailFrom;
@@ -28,9 +30,9 @@ class EmailController {
         $email->Body = $body;
 
         // SNAS config
-        /* $email->isSMTP();
+        $email->isSMTP();
         $email->Host = 'localhost';
-        $email->Port = 25; */
+        $email->Port = 25;
 
 		if (strpos($emailTo, ";") !== false) {	// více příjemců
 			$addresses = explode(";", $emailTo);
