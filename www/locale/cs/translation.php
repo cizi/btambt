@@ -833,6 +833,11 @@ define("LITTER_APPLICATION_SAVE_FAILED", "Během ukládání příhlášky vrhu 
 define("LITTER_APPLICATION_DOES_NOT_EXIST", "Přihláška vrhu s číslem %i neexistuje!");
 define("LITTER_APPLICATION_ADD_NEW", "Zadat další přihlášku vrhu");
 define("LITTER_APPLICATION_GENERATE_PDF", "Uložit PDF");
+define("LITTER_APPLICATION_UNHIDE", "Skrýt z veřejné části");
+define("LITTER_APPLICATION_HIDE", "Zobrazit ve veřejné části");
+define("LITTER_APPLICATION_HIDE_OK", "Přihláška vrhu byla nastavena jako skrytá");
+define("LITTER_APPLICATION_UNHIDE_OK", "Přihláška vrhu je nyní veřejná");
+define("LITTER_APPLICATION_HIDE_GENERAL_FAIL", "Došlo k chybě během zpracování");
 define("LITTER_APPLICATION_SAVE_DATE", "Datum vložení");
 define("LITTER_APPLICATION_SAVE_REWRITTEN", "Zavedeno");
 define("LITTER_APPLICATION_SAVE_UNREWRITTEN", "Nezavedeno");

@@ -98,7 +98,7 @@ class ShowDogRepository extends BaseRepository {
 		$query = [
 			"select av.* from appdata_vystava_pes as av
 			left join appdata_pes as ap on av.pID = ap.ID
-			where vID = %i group by av.pID order by ap.Plemeno, ap.Pohlavi, av.Trida",
+			where vID = %i group by av.pID order by av.ID ASC",
 			$vID];
 		$result = $this->connection->query($query);
 

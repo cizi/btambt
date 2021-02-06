@@ -2,19 +2,19 @@
 
 namespace App\AdminModule\Presenters;
 
-use App\AdminModule\Model;
 use App\Controller\EmailController;
 use App\Enum\UserRoleEnum;
 use App\Forms\UserFilterForm;
 use App\Forms\UserForm;
+use App\Model\AwaitingChangesRepository;
 use App\Model\Entity\UserEntity;
+use App\Model\PuppyRepository;
 use App\Model\UserRepository;
 use App\Model\DogRepository;
 use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
-use Nette\Security\User;
 use Nette\Utils\Paginator;
 use App\Model\LitterApplicationRepository;
 use App\Enum\StateEnum;
@@ -48,14 +48,24 @@ class UserPresenter extends SignPresenter {
     /** @var DogChangesComparatorController  */
 	private $dogChangesComparatorController;
 
-	/**
-	 * @param UserRepository $userRepository
-	 * @param UserForm $userForm
+	/** @var PuppyRepository */
+	private $puppyRepository;
+
+	/** @var AwaitingChangesRepository */
+	private $awaitingChangesRepository;
+
+    /**
+     * UserPresenter constructor.
+     * @param UserRepository $userRepository
+     * @param UserForm $userForm
+     * @param UserFilterForm $userFilterForm
      * @param DogRepository $dogRepository
      * @param LitterApplicationRepository $litterApplicationRepository
      * @param EnumerationRepository $enumerationRepository
      * @param DogChangesComparatorController $dogChangesComparatorController
-	 */
+     * @param PuppyRepository $puppyRepository
+     * @param AwaitingChangesRepository $awaitingChangesRepository
+     */
 	public function __construct(
         UserRepository $userRepository, 
         UserForm $userForm, 
@@ -63,7 +73,9 @@ class UserPresenter extends SignPresenter {
         DogRepository $dogRepository, 
         LitterApplicationRepository $litterApplicationRepository, 
         EnumerationRepository $enumerationRepository,
-        DogChangesComparatorController $dogChangesComparatorController
+        DogChangesComparatorController $dogChangesComparatorController,
+        PuppyRepository $puppyRepository,
+        AwaitingChangesRepository $awaitingChangesRepository
     ) {
 		$this->userRepository = $userRepository;
 		$this->userForm = $userForm;
@@ -72,6 +84,10 @@ class UserPresenter extends SignPresenter {
         $this->litterApplicationRepository = $litterApplicationRepository;
         $this->enumerationRepository = $enumerationRepository;
         $this->dogChangesComparatorController = $dogChangesComparatorController;
+        $this->puppyRepository = $puppyRepository;
+        $this->awaitingChangesRepository = $awaitingChangesRepository;
+
+        parent::__construct();
 	}
 
 	/**

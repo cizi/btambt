@@ -39,6 +39,9 @@ class LitterApplicationEntity {
 	/** @var  int */
 	private $MajitelFeny;
 
+	/** @var bool */
+	private $Skryto;
+
 	/**
 	 * @return int
 	 */
@@ -209,6 +212,22 @@ class LitterApplicationEntity {
 		$this->MajitelFeny = $MajitelFeny;
 	}
 
+    /**
+     * @return bool
+     */
+    public function isSkryto(): bool
+    {
+        return $this->Skryto;
+    }
+
+    /**
+     * @param bool $Skryto
+     */
+    public function setSkryto(bool $Skryto): void
+    {
+        $this->Skryto = $Skryto;
+    }
+
 	/**
 	 * @param array $data
 	 */
@@ -224,6 +243,7 @@ class LitterApplicationEntity {
 		$this->setPlemeno(isset($data['Plemeno']) ? $data['Plemeno'] : null);
 		$this->setKlub(isset($data['Klub']) ? $data['Klub'] : null);
 		$this->setMajitelFeny(isset($data['MajitelFeny']) ? $data['MajitelFeny'] : null);
+		$this->setSkryto(isset($data['Skryto']) ? $data['Skryto'] : 0);
 	}
 
 	/**
@@ -241,7 +261,8 @@ class LitterApplicationEntity {
 			'Zavedeno'	=> $this->getZavedeno(),
 			'Plemeno'	=> $this->getPlemeno(),
 			'Klub'	=> $this->getKlub(),
-			'MajitelFeny'	=> $this->getMajitelFeny()
+			'MajitelFeny'	=> $this->getMajitelFeny(),
+            'Skryto' => $this->isSkryto()
 		];
 	}
 }

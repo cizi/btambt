@@ -809,6 +809,11 @@ define("LITTER_APPLICATION_SAVE_FAILED", "An error occured during savnig. Please
 define("LITTER_APPLICATION_DOES_NOT_EXIST", "Litter apoplication number %i does not exist!");
 define("LITTER_APPLICATION_ADD_NEW", "Add new litter apúplication");
 define("LITTER_APPLICATION_GENERATE_PDF", "Save PDF");
+define("LITTER_APPLICATION_UNHIDE", "Hide from public");
+define("LITTER_APPLICATION_HIDE", "Show in public");
+define("LITTER_APPLICATION_HIDE_OK", "Litter application is now private");
+define("LITTER_APPLICATION_UNHIDE_OK", "Litter application is now public");
+define("LITTER_APPLICATION_HIDE_GENERAL_FAIL", "Privacy saving fails");
 define("LITTER_APPLICATION_SAVE_DATE", "Date of insertion");
 define("LITTER_APPLICATION_SAVE_REWRITTEN", "Saved");
 define("LITTER_APPLICATION_SAVE_UNREWRITTEN", "Not saved");

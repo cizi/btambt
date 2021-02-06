@@ -54,7 +54,7 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 		$filter = $this->decodeFilterFromQuery();
 		$this['litterApplicationFilterForm']->setDefaults($filter);
 
-		$applications = $this->litterApplicationRepository->findLitterApplications($filter);
+		$applications = $this->litterApplicationRepository->findLitterApplications($filter, true);
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepo = $this->enumRepository;
 		$this->template->dogRepo = $this->dogRepository;

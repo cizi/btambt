@@ -40,6 +40,11 @@
 											<td>{$dogRepo->getName($application->getMID())}</td>
 											<td>{if $application->getZavedeno() == $litterApplicationStateEnumInsert}{=SHOW_UNDONE}{else}{=SHOW_DONE}{/if}</td>
 											<td class="alignRight" nowrap="nowrap">
+                                            {if $application->isSkryto()}
+                                                <a href={link unhideApplication, $application->getID()} title={=LITTER_APPLICATION_HIDE}><span class="glyphicon glyphicon-eye-open"></span></a> &nbsp;&nbsp;
+                                            {else}
+                                                <a href={link hideApplication, $application->getID()} title={=LITTER_APPLICATION_UNHIDE}><span class="glyphicon glyphicon-eye-close"></span></a> &nbsp;&nbsp;
+                                            {/if}
 												<a href={link :Frontend:LitterApplicationPdfGenerator:default, $application->getID()} title={=LITTER_APPLICATION_GENERATE_PDF}><span class="glyphicon glyphicon-print black"></span></a> &nbsp;&nbsp;
 												{if $application->getZavedeno() == $litterApplicationStateEnumInsert}
 													<a href={link RewriteDescendants, $application->getID()} title={=LITTER_APPLICATION_REWRITE_DESCENDANTS}><span class="glyphicon glyphicon-indent-left"></span></a> &nbsp;&nbsp;

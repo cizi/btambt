@@ -161,7 +161,7 @@
                                 {foreach $dogFiles as $file}
                                     <a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
                                     {if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
-                                        {var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+                                        {var $typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
                                         <small>({constant($typ)|lower})</small>
                                     {/if}
                                     <br />
@@ -336,7 +336,7 @@
 								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getOceneni())}</td>
 								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getPoradi())}</td>
 								<td>
-									{var titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
+									{var $titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
 									{foreach $titles as $titleDet}
 										{$enumRepo->findEnumItemByOrder($lang, $titleDet->getTitul())}
 										{if $iterator->last == false}, {/if}

@@ -50,7 +50,7 @@
 									</a>
 									<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
 									{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
-										{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+										{var $typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
 										<small>({constant($typ)|lower})</small>
 									{/if}
 									<br />

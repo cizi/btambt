@@ -9,10 +9,10 @@ class LitterApplicationRepository extends BaseRepository {
 	/**
 	 * @return LitterApplicationEntity[]
 	 */
-	public function findLitterApplications(array $filter = null) {
+	public function findLitterApplications(array $filter = null, bool $zobrazitNeskryte = false) {
 		$chs = null;
 		if ($filter == null && empty($filter)) {
-			$query = "select * from appdata_prihlaska order by DatumNarozeni desc";
+			$query = "select * from appdata_prihlaska " . ($zobrazitNeskryte ? " where Skryto = 0 " : "") . " order by DatumNarozeni desc";
 		} else {
 			if (isset($filter["Zavedeno"])) {
 				$filter["Zavedeno"] = $filter["Zavedeno"] - 1;
@@ -24,6 +24,9 @@ class LitterApplicationRepository extends BaseRepository {
 				$chs = $filter['chs'];
 				unset($filter['chs']);
 			}
+			if ($zobrazitNeskryte) {
+			    $filter['Skryto'] = 0;
+            }
 			$query = ["select * from appdata_prihlaska where %and order by DatumNarozeni desc", $filter];
 		}
 		$result = $this->connection->query($query);
@@ -102,6 +105,28 @@ class LitterApplicationRepository extends BaseRepository {
 		}
 
 		return $return;
+    }
+
+    public function hide($id)
+    {
+        $return = false;
+        if (!empty($id)) {
+            $query = ["update appdata_prihlaska set Skryto = 1 where ID = %i", $id];
+            $return = ($this->connection->query($query) == 1 ? true : false);
+        }
+
+        return $return;
+    }
+
+    public function unhide($id)
+    {
+        $return = false;
+        if (!empty($id)) {
+            $query = ["update appdata_prihlaska set Skryto = 0 where ID = %i", $id];
+            $return = ($this->connection->query($query) == 1 ? true : false);
+        }
+
+        return $return;
     }
     
     /**

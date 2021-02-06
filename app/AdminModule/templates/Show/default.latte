@@ -50,9 +50,9 @@
 										</td>
 										<td>
 											{if $show->getRozhodci() != null}
-												{var refes = explode(App\Model\Entity\RefereeEntity::REFEREE_SHOW_DELIMITER, $show->getRozhodci())}
+												{var $refes = explode(App\Model\Entity\RefereeEntity::REFEREE_SHOW_DELIMITER, $show->getRozhodci())}
 												{foreach $refes as $ref}
-													{var refe = $refereeRepository->getReferee($ref)}
+													{var $refe = $refereeRepository->getReferee($ref)}
 													{$refe->getCeleJmeno()}{if $iterator->isLast() == false}, {/if}
 												{/foreach}
 											{/if}

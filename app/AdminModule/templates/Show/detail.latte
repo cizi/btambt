@@ -25,9 +25,9 @@
 							{/if}<br />
 							<b>{=SHOW_TABLE_REFEREE}:</b>
 							{if $show->getRozhodci() != null}
-								{var refes = explode(App\Model\Entity\RefereeEntity::REFEREE_SHOW_DELIMITER, $show->getRozhodci())}
+								{var $refes = explode(App\Model\Entity\RefereeEntity::REFEREE_SHOW_DELIMITER, $show->getRozhodci())}
 								{foreach $refes as $ref}
-									{var refe = $refereeRepository->getReferee($ref)}
+									{var $refe = $refereeRepository->getReferee($ref)}
 									{$refe->getCeleJmeno()}{if $iterator->isLast() == false}, {/if}
 								{/foreach}
 							{else}
@@ -53,7 +53,7 @@
 								{foreach $referees as $referee}
 									<tr>
 										<td>
-											{var ref = $refereeRepository->getReferee($referee->getRID())}
+											{var $ref = $refereeRepository->getReferee($referee->getRID())}
 											{$ref->getTitulyPrefix()} {$ref->getJmeno()} {$ref->getPrijmeni()} {$ref->getTitulySuffix()}
 										</td>
 										<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getTrida())}</td>
@@ -87,7 +87,7 @@
 								{foreach $dogs as $dog}
 									<tr>
 										<td>
-											{var dogDetail = $dogRepository->getDog($dog->getPID())}
+											{var $dogDetail = $dogRepository->getDog($dog->getPID())}
 											{$dogDetail->getTitulyPredJmenem()} {$dogDetail->getJmeno()} {$dogDetail->getTitulyZaJmenem()}
 										</td>
 										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getTrida())}</td>

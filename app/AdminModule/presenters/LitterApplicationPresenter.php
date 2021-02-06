@@ -10,7 +10,6 @@ use App\Forms\LitterApplicationRewriteForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
-use App\Model\Entity\DogOwnerEntity;
 use App\Model\EnumerationRepository;
 use App\Model\LitterApplicationRepository;
 use App\Model\UserRepository;
@@ -87,6 +86,34 @@ class LitterApplicationPresenter extends SignPresenter {
 		}
 		$this->redirect("default");
 	}
+
+    /**
+     * @param int $id
+     * @throws AbortException
+     */
+    public function ActionHideApplication($id)
+    {
+        if ($this->litterApplicationRepository->hide($id)) {
+            $this->flashMessage(LITTER_APPLICATION_HIDE_OK, "alert-success");
+        } else {
+            $this->flashMessage(LITTER_APPLICATION_HIDE_GENERAL_FAIL, "alert-danger");
+        }
+        $this->redirect("default");
+	}
+
+    /**
+     * @param int $id
+     * @throws AbortException
+     */
+    public function ActionUnhideApplication($id)
+    {
+        if ($this->litterApplicationRepository->unhide($id)) {
+            $this->flashMessage(LITTER_APPLICATION_UNHIDE_OK, "alert-success");
+        } else {
+            $this->flashMessage(LITTER_APPLICATION_HIDE_GENERAL_FAIL, "alert-danger");
+        }
+        $this->redirect("default");
+    }
 
 	/**
 	 * @param int $id

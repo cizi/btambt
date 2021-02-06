@@ -87,7 +87,7 @@
 											{/if}
 										</td> *}
 										<td>
-											{var healths = $dogRepository->findHealthsByDogId($dog->getID())}
+											{var $healths = $dogRepository->findHealthsByDogId($dog->getID())}
 											{if count($healths) > 0}
 												{foreach $healths as $health}
 													{if 
@@ -103,12 +103,12 @@
 										</td>
 										<td {if $amIAdmin == false} colspan="2" {/if}>
 											{if $dog->getOID() != 0}
-												{var otec = $dogRepository->getDog($dog->getOID())}
+												{var $otec = $dogRepository->getDog($dog->getOID())}
 												<a href={link view, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
 											{/if}
 											{if $dog->getMID() != 0}
 												<hr class="motherFatherDelimiter"/>
-												{var matka = $dogRepository->getDog($dog->getMID())}
+												{var $matka = $dogRepository->getDog($dog->getMID())}
 												<a href={link view, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
 											{/if}
 										</td>
