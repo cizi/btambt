@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use App\Enum\StateEnum;
-use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\PuppyEntity;
