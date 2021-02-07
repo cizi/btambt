@@ -361,7 +361,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$this->directPicsUpload($currentDogEntity, $supportedPicFormats, (isset($formData['pics']) ? $formData['pics'] : []));
-				$this->directFilesUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []), true);
+                $uploadedSomething = $this->directFilesUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []), true);
 				$newDogEntity->hydrate($formData);
 				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hodnoty
 
@@ -378,8 +378,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 				$currentOwners = $this->userRepository->findDogOwnersAsEntities($formData['ID']);	// najde současné majitele
 				$ownerChanged = $this->dogChangesComparatorController->compareSaveOwners($currentOwners, $owners);
-				if ($dogChanged || $healthChanged || $breederChanged || $ownerChanged) {
-					$linkToDogView = "http://" . $this->getHttpRequest()->getUrl()->getHost() . $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
+				if ($dogChanged || $healthChanged || $breederChanged || $ownerChanged || $examsChanged || $uploadedSomething) {
+					$linkToDogView = $this->presenter->link("//:FeItem1velord2:view", $currentDogEntity->getID());
 					$this->dogChangesComparatorController->sendInfoEmail($linkToDogView);
 				}
 				$this->flashMessage(AWAITING_CHANGES_SENT_TO_APPROVAL, "alert-success");
@@ -485,8 +485,10 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param array $files
      * @param bool $approvalNeeded
 	 * @throws \Exception
+     * @return bool
 	 */
 	private function directFilesUpload(DogEntity $currentDogEntity, array $supportedFileFormats, array $files, bool $approvalNeeded = false) {
+	    $uploadedSomething = false;
 		/** @var FileUpload $file */
 		foreach($files as $file) {
 			if ($file != null) {
@@ -496,6 +498,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
                         $message = sprintf("Nelze nahrát soubor '%s'.", $file->getName());
                         throw new \Exception($message);
                     }
+                    $uploadedSomething = true;
                     if ($approvalNeeded) {
                         $awaitingChangesEntity = new AwaitingChangesEntity();
                         $awaitingChangesEntity->setPID($currentDogEntity->getID());
@@ -518,6 +521,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
                 }
 			}
 		}
+
+		return $uploadedSomething;
 	}
 
 	/**

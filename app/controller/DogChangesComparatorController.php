@@ -364,7 +364,7 @@ class DogChangesComparatorController {
 			// email pro uživatele
 			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER);		// TODO
 			// email pro admina/y
-			$body = sprintf(AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN, $dogUrl);
+			$body = sprintf(AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN, $dogUrl, $dogUrl);
 			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN, $body);
 		}
 	}
