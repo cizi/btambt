@@ -379,7 +379,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$currentOwners = $this->userRepository->findDogOwnersAsEntities($formData['ID']);	// najde současné majitele
 				$ownerChanged = $this->dogChangesComparatorController->compareSaveOwners($currentOwners, $owners);
 				if ($dogChanged || $healthChanged || $breederChanged || $ownerChanged || $examsChanged || $uploadedSomething) {
-					$linkToDogView = $this->presenter->link("//:FeItem1velord2:view", $currentDogEntity->getID());
+                    $linkToDogView = $this->presenter->link("//:Frontend:FeItem1velord2:view", $currentDogEntity->getID());
 					$this->dogChangesComparatorController->sendInfoEmail($linkToDogView);
 				}
 				$this->flashMessage(AWAITING_CHANGES_SENT_TO_APPROVAL, "alert-success");
