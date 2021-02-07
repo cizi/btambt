@@ -30,6 +30,7 @@ class DogChangesComparatorController {
 	const TBL_BREEDER_NAME = "appdata_chovatel";
 	const TBL_OWNER_NAME = "appdata_majitel";
 	const TBL_EXAM_NAME = "appdata_pes_zkousky";
+	const TBL_DOG_FILE = "appdata_pes_soubory";
 
 	/**
 	 * @const string sloupce
@@ -468,7 +469,7 @@ class DogChangesComparatorController {
 			if ($user != null) {
 				$htmlOut .= $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter();
 			}
-			$htmlOut .= '</td><td >';
+			$htmlOut .= '</td><td>';
 			if ($awaitingChange->getDatimVlozeno() != null) {
 				$htmlOut .= $awaitingChange->getDatimVlozeno()->format('d.m.Y H:i:s');
 			}
@@ -557,6 +558,11 @@ class DogChangesComparatorController {
 		return $htmlOut;
 	}
 
+    public function saveAwaitingChangeEntity(AwaitingChangesEntity $awaitingChangesEntity)
+    {
+        $this->awaitingChangeRepository->writeChanges([$awaitingChangesEntity]);
+	}
+
 	/**
 	 * @param AwaitingChangesEntity $awaitingChangesEntity
 	 * @param string $currentLang
@@ -583,11 +589,13 @@ class DogChangesComparatorController {
 		}
 		$result .= ": {$awaitingChangesEntity->getSloupec()}</td>";
 		$result .= '<td>';
-		$result .= $this->getChaneValueDetail($awaitingChangesEntity->getTabulka(), $awaitingChangesEntity->getSloupec(), $awaitingChangesEntity->getAktualniHodnota(), $awaitingChangesEntity->getCID(), $currentLang);
+		$val = $this->getChaneValueDetail($awaitingChangesEntity->getTabulka(), $awaitingChangesEntity->getSloupec(), $awaitingChangesEntity->getAktualniHodnota(), $awaitingChangesEntity->getCID(), $currentLang);
+		$result .= (substr($val, 0, 4 ) === "http") ? "<a target='_blank' href='{$val}'>{$val}</a>" : $val;
 		$result .= '</td>';
 
 		$result .= '<td>';
-		$result .= $this->getChaneValueDetail($awaitingChangesEntity->getTabulka(), $awaitingChangesEntity->getSloupec(), $awaitingChangesEntity->getPozadovanaHodnota(), $awaitingChangesEntity->getCID(), $currentLang);
+		$val = $this->getChaneValueDetail($awaitingChangesEntity->getTabulka(), $awaitingChangesEntity->getSloupec(), $awaitingChangesEntity->getPozadovanaHodnota(), $awaitingChangesEntity->getCID(), $currentLang);
+		$result .= (substr($val, 0, 4 ) === "http") ? "<a target='_blank' href='{$val}'>{$val}</a>" : $val;
 		$result .= '</td>';
 
 		return $result;
@@ -619,7 +627,7 @@ class DogChangesComparatorController {
 				$result .= trim($userAs->getTitleBefore() . " " . $userAs->getName() . " " . $userAs->getSurname() . " " . $userAs->getTitleAfter());
 			}
 		} else {
-			if ($cid == null) {    // pes a neni není číselník
+			if ($cid == null) {    // pes a není číselník
 				if ((($sloupec == self::TBL_CLM_DOG_BIRTH) || ($sloupec == self::TBL_CLM_DOG_DEATH)) && ($hodnota != null)) {
 					$date = new DateTime($hodnota);
 					$result .= $date->format(DogEntity::MASKA_DATA);

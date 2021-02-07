@@ -4,12 +4,14 @@ namespace App\FrontendModule\Presenters;
 
 use App\Controller\DogChangesComparatorController;
 use App\Controller\FileController;
+use App\Enum\DogChangeStateEnum;
 use App\Enum\DogFileEnum;
 use App\Enum\DogStateEnum;
 use App\Enum\UserRoleEnum;
 use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
 use App\Model\DogRepository;
+use App\Model\Entity\AwaitingChangesEntity;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogFileEntity;
@@ -20,6 +22,7 @@ use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
 use App\Model\WebconfigRepository;
+use Dibi\DateTime;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
@@ -312,13 +315,15 @@ class FeItem2velord11Presenter extends FrontendPresenter {
             unset($formData['dogHealth']);
             
             // zkoušky
-            foreach($formData['Zkousky'] as $hodnota) {
-				$examEntity = new ExamEntity();
-                $examEntity->setZID($hodnota);
-                if (isset($formData['ID'])) {
-					$examEntity->setPID($formData['ID']);
-				}
-				$exams[] = $examEntity;
+            if (isset($formData['Zkousky'])) {
+                foreach ($formData['Zkousky'] as $hodnota) {
+                    $examEntity = new ExamEntity();
+                    $examEntity->setZID($hodnota);
+                    if (isset($formData['ID'])) {
+                        $examEntity->setPID($formData['ID']);
+                    }
+                    $exams[] = $examEntity;
+                }
             }
             unset($formData['Zkousky']);
 
@@ -356,7 +361,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$this->directPicsUpload($currentDogEntity, $supportedPicFormats, (isset($formData['pics']) ? $formData['pics'] : []));
-				$this->directFilesUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []));
+				$this->directFilesUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []), true);
 				$newDogEntity->hydrate($formData);
 				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hodnoty
 
@@ -478,9 +483,10 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param DogEntity $currentDogEntity
 	 * @param array $supportedFileFormats
 	 * @param array $files
+     * @param bool $approvalNeeded
 	 * @throws \Exception
 	 */
-	private function directFilesUpload(DogEntity $currentDogEntity, array $supportedFileFormats, array $files) {
+	private function directFilesUpload(DogEntity $currentDogEntity, array $supportedFileFormats, array $files, bool $approvalNeeded = false) {
 		/** @var FileUpload $file */
 		foreach($files as $file) {
 			if ($file != null) {
@@ -489,13 +495,24 @@ class FeItem2velord11Presenter extends FrontendPresenter {
                     if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
                         $message = sprintf("Nelze nahrát soubor '%s'.", $file->getName());
                         throw new \Exception($message);
-                        break;
                     }
-                    $dogFile = new DogFileEntity();
-                    $dogFile->setCesta($fileController->getPathDb());
-                    $dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
-                    $dogFile->setPID($currentDogEntity->getID());
-                    $this->dogRepository->saveDogFile($dogFile);
+                    if ($approvalNeeded) {
+                        $awaitingChangesEntity = new AwaitingChangesEntity();
+                        $awaitingChangesEntity->setPID($currentDogEntity->getID());
+                        $awaitingChangesEntity->setUID($this->user->getId());
+                        $awaitingChangesEntity->setStav(DogChangeStateEnum::INSERTED);
+                        $awaitingChangesEntity->setDatimVlozeno(new DateTime());
+                        $awaitingChangesEntity->setTabulka(DogChangesComparatorController::TBL_DOG_FILE);
+                        $awaitingChangesEntity->setSloupec("cesta");
+                        $awaitingChangesEntity->setPozadovanaHodnota($fileController->getPathDb());
+                        $this->dogChangesComparatorController->saveAwaitingChangeEntity($awaitingChangesEntity);
+                    } else {
+                        $dogFile = new DogFileEntity();
+                        $dogFile->setCesta($fileController->getPathDb());
+                        $dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
+                        $dogFile->setPID($currentDogEntity->getID());
+                        $this->dogRepository->saveDogFile($dogFile);
+                    }
                 } else {
                     $this->flashMessage(sprintf(MATING_MAX_FILE_SIZE_EXCEEDED, $file->name), "alert-danger");
                 }

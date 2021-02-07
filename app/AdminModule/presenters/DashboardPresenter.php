@@ -2,7 +2,6 @@
 
 namespace App\AdminModule\Presenters;
 
-use App\AdminModule\Presenters;
 use App\Controller\DogChangesComparatorController;
 use App\Controller\EmailController;
 use App\Enum\UserRoleEnum;
@@ -41,6 +40,7 @@ class DashboardPresenter extends SignPresenter {
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->dogChangesComparatorController = $dogChangesComparatorController;
+		parent::__construct();
 	}
 
 	/**
