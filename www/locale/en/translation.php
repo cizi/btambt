@@ -625,6 +625,7 @@ define("MATING_MAX_FILE_SIZE_EXCEEDED", "File size exeeded %s. ");
 define("MATING_MAIL_BODY", "In genealogy has been created new litter report");
 define("MATING_MAIL_SUBJECT", "Attached you can find new litter report");
 define("MATING_PROCEED_OK", "Litter report has been send to process");
+define("COVERAGE_EXPRESS_SHORT", "Express coverage sheet");
 define("COVERAGE_EXPRESS", "Express coverage sheet (payment confirmation add to the attachment)");
 define("COVERAGE_SAVED_OK", "Covere sheet has been successfully saved and sent to process");
 define("COVERAGE_MAIL_SUBJECT", "New coverage application has been created");
