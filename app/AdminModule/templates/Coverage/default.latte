@@ -34,14 +34,14 @@
 								{foreach $covers as $cover}	
                                     <tr>
                                         <td>
-                                            {var user = $userRepository->getUser($cover->getUID())}
+                                            {var $user = $userRepository->getUser($cover->getUID())}
                                             <a target="_blank" href={link User:edit, $user->getID()}>{$user->getFullName()}</a>
                                         </td>
                                         <td>{$cover->getCisloKL()}</td>
                                         <td>
                                             {if $cover->getDatum() != null}
-                                                {var dt = DateTime::createFromFormat('Y-m-d', $cover->getDatum())}
-                                                {var dtResult = DateTime::getLastErrors()}
+                                                {var $dt = DateTime::createFromFormat('Y-m-d', $cover->getDatum())}
+                                                {var $dtResult = DateTime::getLastErrors()}
                                                 {if ((isset($dtResult["error_count"]) && ($dtResult["error_count"] > 0)))}
                                                     <b style="color: red;">
                                                         <i>
@@ -59,21 +59,21 @@
 
                                         <td>
                                             {if !empty($cover->getMID())}
-												{var pes = $dogRepository->getDog($cover->getMID())}
+												{var $pes = $dogRepository->getDog($cover->getMID())}
 												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
 											{/if}
                                         </td>
 
                                         <td>
                                             {if !empty($cover->getOID1())}
-												{var pes = $dogRepository->getDog($cover->getOID1())}
+												{var $pes = $dogRepository->getDog($cover->getOID1())}
 												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
 											{/if}
                                         </td>
 
                                         <td>
                                             {if !empty($cover->getOID2())}
-												{var pes = $dogRepository->getDog($cover->getOID2())}
+												{var $pes = $dogRepository->getDog($cover->getOID2())}
 												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
 											{/if}
                                         </td>
@@ -92,7 +92,7 @@
                                         </td>     
                                         <td nowrap="nowrap">
                                             <small>
-                                            {var attachs = $coverageApplicationRepo->findCoverageApplicationAttachments($cover->getID())}
+                                            {var $attachs = $coverageApplicationRepo->findCoverageApplicationAttachments($cover->getID())}
                                             {foreach $attachs as $attach}
                                                 <a href='#' data-href='{link deleteAttachment, $attach->getID()}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title={=BLOCK_SETTING_DELETE_ITEM}><span class='glyphicon glyphicon-remove'></span></a>
                                                 <a href={$attach->getCesta()} target="_blank">{$attach->getNazevSouboru()}</a>

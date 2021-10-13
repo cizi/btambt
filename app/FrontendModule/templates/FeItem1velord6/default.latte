@@ -35,7 +35,7 @@
 										<td>{if $puppy->getTermin() != null}{$puppy->getTermin()->format('d.m.Y')}{/if}</td>
 										<td>{$puppy->getPodrobnosti()|noescape}</td>
 										<td>
-											{var user = $userRepo->getUser($puppy->getUID())}
+											{var $user = $userRepo->getUser($puppy->getUID())}
 											{include ../@userInfoForList.latte, 'user' => $user}
 										</td>
 										<td class="alignRight">

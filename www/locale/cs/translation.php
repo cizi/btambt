@@ -893,3 +893,5 @@ define("PUPPY_DELETE_TITLE", "Smazání inzerátu štěňat");
 define("PUPPY_DELETE_BODY", "Opravdu chcete smazat záznam?");
 
 define("CHS_TITLE", 'Chovatelské stanice');
+
+require_once 'user_texts.php';
