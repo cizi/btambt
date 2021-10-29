@@ -32,6 +32,12 @@
 				if ($("#frm-matingListForm-fID").val() == "0") {
 					event.preventDefault();
 				}
+
+                {if !$id}
+                    if (confirm({=COVERAGE_CONFIRM}) === false) {
+                        event.preventDefault();
+                    }
+                {/if}
 			});
 
             var cID = $('#frm-matingListForm-cID').val();

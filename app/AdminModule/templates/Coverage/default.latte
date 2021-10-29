@@ -102,7 +102,11 @@
                                         </td>                         
                                         <td class="alignRight" nowrap="nowrap">
                                             <a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "print"} title={=COVERAGE_MAIL_SEE}><span class="glyphicon glyphicon-eye-open"></span></a> &nbsp;&nbsp;
-                                            <a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SEND}><span class="glyphicon glyphicon-envelope"></span></a> &nbsp;&nbsp;
+											{if $cover->getOdeslano()}
+                                            	<a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SENT}><span class="glyphicon glyphicon-send"></span></a> &nbsp;&nbsp;
+                                            {else}
+												<a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SEND}><span class="glyphicon glyphicon-envelope"></span></a> &nbsp;&nbsp;
+											{/if}
 
                                             <a target="_blank" href={link :Frontend:FeItem1velord8:Default, $cover->getID()} title={=COVERAGE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
                                             <a href="#" data-href={link Coverage:Delete, $cover->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=LITTER_APPLICATION_DELETE}><span class="glyphicon glyphicon-remove"></span></a>

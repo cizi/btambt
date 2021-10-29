@@ -36,8 +36,11 @@ class CoverageApplicationEntity {
 	/** @var  string */
     private $CisloKL;
     
-    /** @var  int */
-    private $Expresni;  
+    /** @var int */
+    private $Expresni;
+
+    /** @var DateTime */
+    private $Odeslano;
 
 	/**
 	 * @param array $data
@@ -54,6 +57,7 @@ class CoverageApplicationEntity {
         $this->setCisloKL(isset($data['CisloKL']) ? $data['CisloKL'] : null);
         $this->setExpresni(isset($data['Expresni']) ? $data['Expresni'] : null);
         $this->setPlemeno(isset($data['Plemeno']) ? $data['Plemeno'] : null);
+        $this->setOdeslano(isset($data['Odeslano']) ? $data['Odeslano'] : null);
 	}
 
 	/**
@@ -72,6 +76,7 @@ class CoverageApplicationEntity {
             'CisloKL'	=> $this->getCisloKL(),
             'DatumVytvoreni'	=> $this->getDatumVytvoreni(),
             'Expresni'	=> ($this->isExpresni() ? 1 : 0),
+            'Odeslano' => $this->getOdeslano(),
 		];
 	}
 
@@ -293,5 +298,15 @@ class CoverageApplicationEntity {
         $this->Expresni = $Expresni;
 
         return $this;
+    }
+
+    public function getOdeslano(): ?DateTime
+    {
+        return $this->Odeslano;
+    }
+
+    public function setOdeslano(?DateTime $Odeslano)
+    {
+        $this->Odeslano = $Odeslano;
     }
 }

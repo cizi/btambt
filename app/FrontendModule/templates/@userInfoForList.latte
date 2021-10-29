@@ -3,7 +3,7 @@
 		{$user->getStation()}
 		{if $user->getBreed() != null}
 			(
-			{var breeds = explode(App\Model\Entity\UserEntity::BREED_DELIMITER, $user->getBreed())}
+			{var $breeds = explode(App\Model\Entity\UserEntity::BREED_DELIMITER, $user->getBreed())}
 			{foreach $breeds as $breed}
 				{$enumRepo->findEnumItemByOrder($lang, $breed)}{if $iterator->isLast() == false}, {/if}
 			{/foreach}

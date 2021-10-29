@@ -3,7 +3,6 @@
 namespace App\AdminModule\Presenters;
 
 use App\Enum\UserRoleEnum;
-use App\Model\LangRepository;
 use App\Model\UserRepository;
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;

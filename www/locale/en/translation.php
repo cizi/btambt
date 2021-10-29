@@ -633,10 +633,12 @@ define("COVERAGE_MAIL_BODY", "New coverage application has been created with ID 
 define("COVERAGE_MAIL_BODY_TO_USER", "Your coverage application has been updated, please see the attachment.");
 define("COVERAGE_MAIL_SEE", "See");
 define("COVERAGE_MAIL_SEND", "Send to user");
+define("COVERAGE_MAIL_SENT", "Already sent to user");
 define("COVERAGE_EDIT", "Edit");
 define("COVERAGE_NOT_EXISTS", "Coverage application %s not exists!");
 define("COVERAGE_MAIL_USER_SUCCESS", "Coverage application has been sent");
 define("COVERAGE_DATE_WRONG_FORMAT", "Wrong date format: %s - should be YYYY-MM-DD");
+define("COVERAGE_CONFIRM", "Really send covarege list?");
 
 define("MATING_FORM_DATE_SHORT", 'Date');
 define("MATING_FORM_DATE", 'Mating date');

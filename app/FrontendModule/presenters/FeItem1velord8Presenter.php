@@ -83,6 +83,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $this['matingListForm']->addSubmit("update", USER_EDIT_SAVE_BTN_LABEL)->setAttribute("class", "btn btn-primary margin10");
             } 
         }
+        $this->template->id = $id;
 	}
 
 	public function createComponentMatingListForm() {
@@ -395,14 +396,18 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
                     $ceaUser = $this->userRepository->getUser($cea->getUID());
                     $emailTo = $ceaUser->getEmail();
-                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT_UPDATE, COVERAGE_MAIL_BODY_TO_USER, [$pdfOutput]);                   
+                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT_UPDATE, COVERAGE_MAIL_BODY_TO_USER, [$pdfOutput]);
+
+                    $cea->setOdeslano(new DateTime());
+                    $this->coverageApplicationRepository->save($cea, []);
+
                     $this->flashMessage(COVERAGE_MAIL_USER_SUCCESS, "alert-success");
                     $this->redirect(":Admin:Coverage:Default");
                 }
             } catch (AbortException $e) {
                 throw $e;
             } catch (\Exception $e) {
-                // dump($e); die;
+//                 dump($e); die;
             }
         } else {
             $this->flashMessage(COVERAGE_NOT_EXISTS, "alert-danger");

@@ -15,7 +15,7 @@
 		}
 	],
 	"require": {
-		"php": ">= 7.0",
+		"php": ">= 7.4",
 		"nette/application": "^2.4.0",
 		"nette/bootstrap": "^2.4",
 		"nette/caching": "^2.4",
