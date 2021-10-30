@@ -28,26 +28,31 @@ class CoverageApplicationRepository extends BaseRepository {
 	 */
 	public function findCoverageApplications(array $filter = null) {
 		if ($filter == null && empty($filter)) {
-			$query = "select * from appdata_krycilist order by ID desc";
+			$query = "select * from appdata_krycilist order by DatumVytvoreni desc";
 		} else {
 			if (isset($filter["Datum"])) {
                 $year = $filter["Datum"];
                 unset($filter["Datum"]);
-				$query = ["select * from appdata_krycilist where %and and YEAR(Datum) = %s order by ID desc", $filter, $year];
+				$query = ["select * from appdata_krycilist where %and and YEAR(Datum) = %s order by DatumVytvoreni desc", $filter, $year];
 			} else {
-                $query = ["select * from appdata_krycilist where %and order by ID desc", $filter];
+                $query = ["select * from appdata_krycilist where %and order by DatumVytvoreni desc", $filter];
             }
         }
 		$result = $this->connection->query($query);
 
+        $applicationsNoKlNumber = [];
 		$applications = [];
 		foreach ($result->fetchAll() as $row) {
 			$application = new CoverageApplicationEntity();
 			$application->hydrate($row->toArray());
-            $applications[] = $application;
+            if (empty($application->getCisloKL())) {
+                $applicationsNoKlNumber[] = $application;
+            } else {
+                $applications[] = $application;
+            }
 		}
 
-		return $applications;
+		return array_merge($applicationsNoKlNumber, $applications);
     }
 
     /**
