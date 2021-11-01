@@ -69,6 +69,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $this['matingListForm']['pID1']->setValue($cea->getOID1());
                 $this['matingListForm']['pID2']->setValue($cea->getOID2());
                 $this['matingListForm']['pID3']->setValue($cea->getOID3());
+                $this['matingListForm']['Poznamka']->setValue($cea->getPoznamka());
                 if ($cea->isExpresni()) {
                     $this['matingListForm']['express']->setDefaultValue("checked");
                 }
@@ -82,6 +83,8 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $this['matingListForm']->addHidden("uID", $cea->getUID());
                 $this['matingListForm']->addSubmit("update", USER_EDIT_SAVE_BTN_LABEL)->setAttribute("class", "btn btn-primary margin10");
             } 
+        } else {
+            unset($this['matingListForm']['Poznamka']);
         }
         $this->template->id = $id;
 	}
@@ -121,6 +124,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
             $pID1 = $values['pID1'];
             $pID2 = $values['pID2'];
             $pID3 = $values['pID3'];
+            $poznamka = $values['Poznamka'] ?? null;
 
             try {
                 $lang = $this->langRepository->getCurrentLang($this->session);
@@ -242,6 +246,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $ce->setOID1(empty($pID1) ? null : $pID1);
                 $ce->setOID2(empty($pID2) ? null : $pID2);
                 $ce->setOID3(empty($pID3) ? null : $pID3);
+                $ce->setPoznamka(empty($poznamka) ? null : $poznamka);
                 $ce->setPlemeno($cID);  // tohle je ve skutečnosti název klubu (číselník 18)
                 $ce->setExpresni(isset($values["express"]) ? 1 : 0);
                 if (isset($values["upd"])) {
@@ -269,7 +274,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
             } catch (AbortException $e) {
                 throw $e;
             } catch (\Exception $e) {
-                //dump($e); die;
+//                dump($e); die;
                 $this->flashMessage(BLOCK_SETTINGS_ITEM_SAVED_FAILED, "alert-danger");
             }
             $this->redirect("Default");
@@ -339,17 +344,19 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $latteParams["pes2Majitele"] = $maleOwnersToInput2;
 
                 $maleOwnersToInput3 = "";
+                $pes3 = $this->dogRepository->getDog($cea->getOID3());
                 if (!empty($cea->getOID3())) {
-                    $latteParams["pes3CeleJmeno"] = $cea->getOID3();
-                    $latteParams["pes3Barva"] = "";
-                    $latteParams["pes3Nar"] = "";
-                    $latteParams["pes3Cz"] = "";
+                    $latteParams["pes3CeleJmeno"] = $pes3->getCeleJmeno();
+                    $latteParams["pes3Barva"] = (empty($pes3->getBarva()) ? "" : $this->enumerationRepository->findEnumItemByOrder($lang, $pes3->getBarva()));
+                    $latteParams["pes3Nar"] = ($pes3->getDatNarozeni() != null ? $pes3->getDatNarozeni()->format(DogEntity::MASKA_DATA_ZOBRAZENI) : "");
+                    $latteParams["pes3Cz"] = (!empty($pes3->getCisloZapisu()) ? $pes3->getCisloZapisu() : "");
+
                     // $maleOwnersTelToInput = "";
-                    //$maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
-                    //for($i=0; $i<count($maleOwners); $i++) {
-                        //$maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
+                    $maleOwners = $this->userRepository->findDogOwnersAsUser($pes3->getID());
+                    for($i=0; $i<count($maleOwners); $i++) {
+                        $maleOwnersToInput3 .= $maleOwners[$i]->getFullName() . (($i+1) != count($maleOwners) ? ", " : "");
                         // $maleOwnersTelToInput .= $maleOwners[$i]->getPhone() . (($i+1) != count($maleOwners) ? ", " : "");
-                    //}     
+                    }
                 } else {
                     $latteParams["pes3CeleJmeno"] = $latteParams["pes3Barva"] = $latteParams["pes3Nar"] = $latteParams["pes3Cz"] = "";
                 }

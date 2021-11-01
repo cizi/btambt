@@ -27,6 +27,7 @@
 										<th>{=MATING_FORM_FID}</th>
 										<th>{=COVERAGE_EXPRESS_SHORT}</th>
                                         <th>{=CONTACT_FORM_ATTACHMENT}</th>
+                                        <th>{=MATING_FORM_NOTE_ADMIN}</th>
                                         <th style="width: 120px;"></th>
 									</tr>
 								</thead>
@@ -79,8 +80,9 @@
                                         </td>
 
                                         <td>
-                                            {if !empty($cover->getOID3())}
-												{$cover->getOID3()}
+											{if !empty($cover->getOID3())}
+												{var $pes = $dogRepository->getDog($cover->getOID3())}
+												<a target="_blank" href={link :Frontend:FeItem1velord2:view, $pes->getID()}>{$pes->getCeleJmeno()}</a>
 											{/if}
                                         </td>  
                                         <td>
@@ -99,8 +101,11 @@
                                                 <br />
                                             {/foreach}
                                             </small>
-                                        </td>                         
-                                        <td class="alignRight" nowrap="nowrap">
+                                        </td>
+										<td>
+											{$cover->getPoznamka()}
+										</td>
+										<td class="alignRight" nowrap="nowrap">
                                             <a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "print"} title={=COVERAGE_MAIL_SEE}><span class="glyphicon glyphicon-eye-open"></span></a> &nbsp;&nbsp;
 											{if $cover->getOdeslano()}
                                             	<a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SENT}><span class="glyphicon glyphicon-send"></span></a> &nbsp;&nbsp;

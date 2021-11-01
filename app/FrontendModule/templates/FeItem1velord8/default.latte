@@ -81,8 +81,21 @@
             $("#frm-matingListForm-pID2").chosen({
                 placeholder_text: {=MATING_FORM_PICK_MALE},
                 no_results_text: {=MATING_FORM_NO_MATCH}
-            });           
+            });
 
+            $("#frm-matingListForm-pID3 option").hide();
+            $("#frm-matingListForm-pID3 > option").each(function() {
+                if ((cID == "89") && ($(this).attr("plemeno") == "17")) {
+                    $(this).show();
+                }
+                if ((cID == "215") && ($(this).attr("plemeno") == "18")) {
+                    $(this).hide();
+                }
+            });
+            $("#frm-matingListForm-pID3").chosen({
+                placeholder_text: {=MATING_FORM_PICK_MALE},
+                no_results_text: {=MATING_FORM_NO_MATCH}
+            });
 
 
 
@@ -132,6 +145,22 @@
                     }   
                 });   
                 $("#frm-matingListForm-pID2").chosen({
+                    placeholder_text: {=MATING_FORM_PICK_MALE},
+                    no_results_text: {=MATING_FORM_NO_MATCH}
+                });
+
+                $('#frm-matingListForm-pID3').chosen('destroy');
+                $("#frm-matingListForm-pID3 option").hide();
+                var cID = this.value;
+                $("#frm-matingListForm-pID3 > option").each(function() {
+                    if ((cID == "89") && ($(this).attr("plemeno") == "17")) {
+                        $(this).show();
+                    }
+                    if ((cID == "215") && ($(this).attr("plemeno") == "18")) {
+                        $(this).show();
+                    }
+                });
+                $("#frm-matingListForm-pID3").chosen({
                     placeholder_text: {=MATING_FORM_PICK_MALE},
                     no_results_text: {=MATING_FORM_NO_MATCH}
                 });

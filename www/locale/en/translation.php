@@ -600,6 +600,7 @@ define("DOG_FORM_REQUEST_NOT_EXISTS", 'Invalid URL request!');
 
 define("MATING_FORM_CLUB", 'Mating list');
 define("MATING_FORM_FID", 'Male');
+define("MATING_FORM_NOTE_ADMIN", 'Note');
 define("MATING_FORM_MID", 'Female');
 define("MATING_FORM_SAVE", 'Litter report');
 define("MATING_FORM_SAVE1", 'Send coverage report');

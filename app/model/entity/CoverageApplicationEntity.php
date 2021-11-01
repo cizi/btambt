@@ -21,8 +21,11 @@ class CoverageApplicationEntity {
     /** @var int */
     private $oID2;
     
-    /** @var string */
+    /** @var int */
 	private $oID3;
+
+    /** @var string */
+    private $Poznamka;
 
 	/** @var int */
 	private $mID;
@@ -52,6 +55,7 @@ class CoverageApplicationEntity {
         $this->setOID1(isset($data['oID1']) ? $data['oID1'] : null);
         $this->setOID2(isset($data['oID2']) ? $data['oID2'] : null);
         $this->setOID3(isset($data['oID3']) ? $data['oID3'] : null);
+        $this->setPoznamka(isset($data['Poznamka']) ? $data['Poznamka'] : null);
         $this->setMID(isset($data['mID']) ? $data['mID'] : null);
         $this->setUID(isset($data['uID']) ? $data['uID'] : null);
         $this->setCisloKL(isset($data['CisloKL']) ? $data['CisloKL'] : null);
@@ -70,6 +74,7 @@ class CoverageApplicationEntity {
             'oID1'	=> $this->getOID1(),
             'oID2'	=> $this->getOID2(),
             'oID3'	=> $this->getOID3(),
+            'Poznamka'  => $this->getPoznamka(),
 			'mID'	=> $this->getMID(),
             'Plemeno'	=> $this->getPlemeno(),
             'uID'	=> $this->getUID(),
@@ -308,5 +313,15 @@ class CoverageApplicationEntity {
     public function setOdeslano(?DateTime $Odeslano)
     {
         $this->Odeslano = $Odeslano;
+    }
+
+    public function getPoznamka(): ?string
+    {
+        return $this->Poznamka;
+    }
+
+    public function setPoznamka(?string $Poznamka): void
+    {
+        $this->Poznamka = $Poznamka;
     }
 }

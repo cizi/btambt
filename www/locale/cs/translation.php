@@ -620,6 +620,7 @@ define("DOG_FORM_REQUEST_NOT_EXISTS", 'Neplatný URL požadavek!');
 
 define("MATING_FORM_CLUB", 'Krycí list');
 define("MATING_FORM_FID", 'Pes');
+define("MATING_FORM_NOTE_ADMIN", 'Poznámka');
 define("MATING_FORM_MID", 'Fena');
 define("MATING_FORM_SAVE", 'Hlášení vrhu');
 define("MATING_FORM_SAVE1", 'Odeslat krycí list');
