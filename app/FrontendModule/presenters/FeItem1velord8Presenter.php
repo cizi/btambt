@@ -267,7 +267,13 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     $emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
                     $emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_BREEDER_CONSULTANT_EMAIL, WebconfigRepository::KEY_LANG_FOR_COMMON);
                     $emailBody = sprintf(COVERAGE_MAIL_BODY, $ce->getID());
-                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);                   
+                    EmailController::SendPlainEmail($emailFrom, $emailTo, COVERAGE_MAIL_SUBJECT, $emailBody, $mailAttachs);
+
+                    $currentUser = $this->userRepository->getUser($this->getUser()->getId());
+                    if (!empty(trim($currentUser->getEmail()))) {
+                        EmailController::SendPlainEmail($emailTo, trim($currentUser->getEmail()), COVERAGE_MAIL_SUBJECT, COVERAGE_SAVED_OK);
+                    }
+
                     $this->flashMessage(COVERAGE_SAVED_OK, "alert-success");
                 }               
             } catch (AbortException $e) {

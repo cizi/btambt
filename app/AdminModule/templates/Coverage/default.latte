@@ -108,9 +108,9 @@
 										<td class="alignRight" nowrap="nowrap">
                                             <a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "print"} title={=COVERAGE_MAIL_SEE}><span class="glyphicon glyphicon-eye-open"></span></a> &nbsp;&nbsp;
 											{if $cover->getOdeslano()}
-                                            	<a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SENT}><span class="glyphicon glyphicon-send"></span></a> &nbsp;&nbsp;
+                                            	<a style="color: black" href="#" data-href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} data-toggle="modal" data-target="#confirm-send"  title={=COVERAGE_MAIL_SENT}><span class="glyphicon glyphicon-send"></span></a> &nbsp;&nbsp;
                                             {else}
-												<a style="color: black" href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} title={=COVERAGE_MAIL_SEND}><span class="glyphicon glyphicon-envelope"></span></a> &nbsp;&nbsp;
+												<a style="color: black" href="#" data-href={link :Frontend:FeItem1velord8:Preview, $cover->getID(), "send"} data-toggle="modal" data-target="#confirm-send"  title={=COVERAGE_MAIL_SEND}><span class="glyphicon glyphicon-envelope"></span></a> &nbsp;&nbsp;
 											{/if}
 
                                             <a target="_blank" href={link :Frontend:FeItem1velord8:Default, $cover->getID()} title={=COVERAGE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
@@ -151,8 +151,29 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="confirm-send" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=MATING_FORM_CLUB}
+				</div>
+				<div class="modal-body">
+					{=COVERAGE_CONFIRM}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=USER_CONFIRM_DELETE_CANCEL}</button>
+					<a class="btn btn-success btn-ok">{=CONTACT_FORM_BUTTON_CONFIRM}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$('#confirm-send').on('show.bs.modal', function(e) {
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		});
 
