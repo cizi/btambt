@@ -74,7 +74,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     $this['matingListForm']['express']->setDefaultValue("checked");
                 }
 
-                $this['matingListForm']->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control")->setValue($cea->getDatum());
+                $this['matingListForm']->addText("DatumVytvoreniFormat", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setValue($cea->getDatumVytvoreni()->format('j.n.Y'));
                 $this['matingListForm']->addText("CisloKL", COUNTER_LITTER_NO)->setAttribute("class", "form-control")->setValue($cea->getCisloKL());
                 unset($this['matingListForm']['save']);
                 $this['matingListForm']->addHidden("upd", "1");
@@ -252,7 +252,6 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 if (isset($values["upd"])) {
                     $ce->setID($values["recID"]);
                     $ce->setCisloKL($values["CisloKL"]);
-                    $ce->setDatum($values["Datum"]);
                     $ce->setDatumVytvoreni($values["DatumVytvoreni"]);
                     $ce->setUID($values["uID"]);
                 } else {
@@ -300,8 +299,8 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 $latteParams["title"] = $this->enumerationRepository->findEnumItemByOrder($lang, $cea->getPlemeno());
                 $latteParams["rok"] = date("Y");
 
-                if ($cea->getDatum() != null) {
-                    $dt = DateTime::createFromFormat('Y-m-d', $cea->getDatum());
+                if ($cea->getDatumVytvoreni() != null) {
+                    $dt = DateTime::createFromFormat('Y-m-d H:i:s', $cea->getDatumVytvoreni());
                     $latteParams["dnes"] = $dt->format('j.n.Y');
                 } else {
                     $latteParams["dnes"] = "";

@@ -66,11 +66,11 @@ class MatingListForm {
 			->setAttribute("class", "form-control")
             ->setAttribute("tabindex", $counter++);
 
-        $form->addText("Poznamka", MATING_FORM_NOTE_ADMIN)
+        $form->addMultiUpload("attachemets", CONTACT_FORM_ATTACHMENT)
             ->setAttribute("class", "form-control")
             ->setAttribute("tabindex", $counter++);
 
-        $form->addMultiUpload("attachemets", CONTACT_FORM_ATTACHMENT)
+        $form->addText("Poznamka", MATING_FORM_NOTE_ADMIN)
             ->setAttribute("class", "form-control")
             ->setAttribute("tabindex", $counter++);
 

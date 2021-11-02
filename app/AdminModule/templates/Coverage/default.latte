@@ -40,13 +40,13 @@
                                         </td>
                                         <td>{$cover->getCisloKL()}</td>
                                         <td>
-                                            {if $cover->getDatum() != null}
-                                                {var $dt = DateTime::createFromFormat('Y-m-d', $cover->getDatum())}
+                                            {if $cover->getDatumVytvoreni() != null}
+                                                {var $dt = DateTime::createFromFormat('Y-m-d H:i:s', $cover->getDatumVytvoreni())}
                                                 {var $dtResult = DateTime::getLastErrors()}
                                                 {if ((isset($dtResult["error_count"]) && ($dtResult["error_count"] > 0)))}
                                                     <b style="color: red;">
                                                         <i>
-                                                         {sprintf(COVERAGE_DATE_WRONG_FORMAT, $cover->getDatum())}
+                                                         {sprintf(COVERAGE_DATE_WRONG_FORMAT, $cover->getDatumVytvoreni())}
                                                         </i>
                                                     </b>
                                                 {else}     

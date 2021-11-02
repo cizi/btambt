@@ -33,7 +33,7 @@ class CoverageApplicationRepository extends BaseRepository {
 			if (isset($filter["Datum"])) {
                 $year = $filter["Datum"];
                 unset($filter["Datum"]);
-				$query = ["select * from appdata_krycilist where %and and YEAR(Datum) = %s order by DatumVytvoreni desc", $filter, $year];
+				$query = ["select * from appdata_krycilist where %and and YEAR(DatumVytvoreni) = %s order by DatumVytvoreni desc", $filter, $year];
 			} else {
                 $query = ["select * from appdata_krycilist where %and order by DatumVytvoreni desc", $filter];
             }
@@ -59,11 +59,11 @@ class CoverageApplicationRepository extends BaseRepository {
 	 * @return string[]
 	 */
 	public function findCoverageYearsForSelect() {
-        $query = "SELECT distinct YEAR(Datum) as Datum FROM `appdata_krycilist` WHERE Datum IS NOT NULL order by Datum asc";
+        $query = "SELECT distinct YEAR(DatumVytvoreni) as DatumVytvoreni FROM `appdata_krycilist` WHERE DatumVytvoreni IS NOT NULL order by DatumVytvoreni asc";
         $result = $this->connection->query($query);
         $years = ["0" => EnumerationRepository::NOT_SELECTED];
 
-        return $years + $result->fetchPairs("Datum", "Datum");
+        return $years + $result->fetchPairs("DatumVytvoreni", "DatumVytvoreni");
     }
 
     /**
