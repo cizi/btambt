@@ -116,37 +116,6 @@
 
             $("#frm-dogForm-BonitaceSoubory").parent().append({$maxFileSizeInfo});
             $("#frm-dogForm-pics").parent().append({$maxFileSizeInfo});
-
-			$("#DatNarozeni").datetimepicker({
-				format: 'yyyy-mm-dd',
-				language: {$currentLang},
-				autoclose: 1,
-				todayHighlight: 1,
-				startView: 2,
-				minView: 2,
-				forceParse: 0
-			});
-
-			$("#DatUmrti").datetimepicker({
-				format: 'yyyy-mm-dd',
-				language: {$currentLang},
-				autoclose: 1,
-				todayHighlight: 1,
-				startView: 2,
-				minView: 2,
-				forceParse: 0
-			});
-
-			$(".healthDatePicker").datetimepicker({
-				format: 'yyyy-mm-dd',
-				language: {$currentLang},
-				autoclose: 1,
-				todayHighlight: 1,
-				startView: 2,
-				minView: 2,
-				forceParse: 0
-			});
-
             $("#frm-dogForm-dogHealth-64-Veterinar").chosen({
 				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
 				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
@@ -226,9 +195,11 @@
 			{/if}
 		});
 
+		$("[type=date][name^='dogHealth']").parent().parent().toggle();
 		$("[type=text][name^='dogHealth']").parent().parent().toggle();
 		$("select[name^='dogHealth']").parent().parent().toggle();
 		$("#healthHelper").on('click' , function(e) {
+			$("[type=date][name^='dogHealth']").parent().parent().toggle();
 			$("[type=text][name^='dogHealth']").parent().parent().toggle();
 			$("select[name^='dogHealth']").parent().parent().toggle();
 		});

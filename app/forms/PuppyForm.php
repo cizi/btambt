@@ -56,6 +56,7 @@ class PuppyForm {
 			->setAttribute("tabindex", $counter + 2);
 
 		$form->addText("Termin", PUPPY_TABLE_TERM)
+			->setType('date')
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $counter + 3);
 

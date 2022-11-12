@@ -30,9 +30,18 @@ class EmailController {
         $email->Body = $body;
 
         // SNAS config
-        $email->isSMTP();
-        $email->Host = 'localhost';
-        $email->Port = 25;
+        //$email->isSMTP();
+        //$email->Host = 'localhost';
+        //$email->Port = 25;
+		// bullterierconfig
+		// $email->SMTPDebug = SMTP::DEBUG_SERVER;                         //Enable verbose debug output
+		// $email->isSMTP();                                           		 //Send using SMTP
+		// $email->Host       = 'smtp.seznam.cz';                     		 //Set the SMTP server to send through
+		// $email->SMTPAuth   = true;                                  		 //Enable SMTP authentication
+		// $email->Username   = 'bulterieraminiaturnibulterier@seznam.cz';   //SMTP username
+		// $email->Password   = 'iVESimeTchaNdsmE';                          //SMTP password
+		// $email->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;           		 //Enable implicit TLS encryption
+		// $email->Port       = 465;                                    	 //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
 		if (strpos($emailTo, ";") !== false) {	// více příjemců
 			$addresses = explode(";", $emailTo);

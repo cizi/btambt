@@ -47,6 +47,7 @@ class LitterApplicationFilterForm {
 			->setAttribute("tabindex", $counter + 1);
 
 		$form->addText("DatumNarozeni", DOG_FORM_BIRT)
+			->setType('date')
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $counter + 2);
 

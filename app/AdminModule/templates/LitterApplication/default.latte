@@ -91,16 +91,6 @@
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		});
 
-		$("#frm-litterApplicationFilterForm-DatumNarozeni").datetimepicker({
-			format: 'yyyy-mm-dd',
-			language: {$currentLang},
-			autoclose: 1,
-			todayHighlight: 1,
-			startView: 2,
-			minView: 2,
-			forceParse: 0
-		});
-
 		$("#frm-litterApplicationFilterForm-chs").chosen({
 			placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
 			no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}

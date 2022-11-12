@@ -37,7 +37,7 @@ class ShowRefereeForm {
 	/**
 	 * @return Form
 	 */
-	public function create($linkBack, $lang) {
+	public function create($lang) {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
@@ -72,7 +72,6 @@ class ShowRefereeForm {
 
 		$form->addButton("back", VET_EDIT_BACK)
 			->setAttribute("class", "btn margin10")
-			->setAttribute("onclick", "location.assign('" . $linkBack . "')")
 			->setAttribute("tabindex", $index++);
 
 		$form->addSubmit("confirm", VET_EDIT_SAVE)

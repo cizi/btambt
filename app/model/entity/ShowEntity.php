@@ -6,7 +6,7 @@ use Dibi\DateTime;
 
 class ShowEntity {
 
-	/** @const formát data */
+	/** @const formï¿½t data */
 	const MASKA_DATA = 'Y-m-d';
 
 	/** @var  int */

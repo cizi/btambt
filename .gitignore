@@ -3,3 +3,4 @@ www/!migrace/*
 !www/upload/.gitignore
 .idea/*
 .vscode/*
+.DS_store

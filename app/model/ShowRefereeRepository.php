@@ -30,7 +30,7 @@ class ShowRefereeRepository extends BaseRepository {
 	 * @return ShowRefereeEntity[]
 	 */
 	public function findRefereeByShowFrontEnd($vID) {
-		$query = ["select ID, vID, rID, GROUP_CONCAT(Trida SEPARATOR ',') as Trida, Plemeno from appdata_vystava_rozhodci where vID = %i group by Plemeno", $vID];
+		$query = ["select ID, vID, rID, GROUP_CONCAT(Trida SEPARATOR ',') as Trida, Plemeno from appdata_vystava_rozhodci where vID = %i group by Plemeno, rID", $vID];
 		$result = $this->connection->query($query);
 
 		$referees = [];

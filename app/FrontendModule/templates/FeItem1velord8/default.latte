@@ -16,24 +16,20 @@
 
 	<script>
 		$(document).ready(function() {
-            $("#frm-matingListForm-Datum").datetimepicker({
-				format: 'yyyy-mm-dd',
-				language: {$currentLang},
-				autoclose: 1,
-				todayHighlight: 1,
-				startView: 2,
-				minView: 2,
-				forceParse: 0
-			});
-
             $("#frm-matingListForm-attachemets").parent().append({$maxFileSizeInfo});
 
 			$("#frm-matingListForm").submit(function( event ) {
 				if ($("#frm-matingListForm-fID").val() == "0") {
 					event.preventDefault();
+                    return;
 				}
 
                 {if !$id}
+                    if ($("#frm-matingListForm-express").is(':checked') && ($("#frm-matingListForm-attachemets").get(0).files.length === 0)) {
+                        alert({=COVERAGE_EXPRESS_NO_FILE});
+                        event.preventDefault();
+                        return;
+                    }
                     if (confirm({=COVERAGE_CONFIRM}) === false) {
                         event.preventDefault();
                     }

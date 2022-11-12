@@ -647,7 +647,8 @@ define("MATING_MAIL_BODY", "V genealogii bylo vytvořeno nové hlášení vrhu")
 define("MATING_MAIL_SUBJECT", "V příloze naleznete vytvořené hlášení vrhu");
 define("MATING_PROCEED_OK", "Hlášení vrhu bylo zasláno ke zpracování");
 define("COVERAGE_EXPRESS_SHORT", "Expresní krycí list");
-define("COVERAGE_EXPRESS", "Expresní krycí list (potvrzení o zaplacení poplatku nahrát do přílohy)");
+define("COVERAGE_EXPRESS", "Krycí list - potvrzení o zaplacení poplatku nahrát do přílohy");
+define("COVERAGE_EXPRESS_NO_FILE", "Prosím, nahrajte platbu.");
 define("COVERAGE_SAVED_OK", "Krycí list byl v pořádku uložen a zaslán ke zpracování");
 define("COVERAGE_MAIL_SUBJECT", "Byl vytvořen nový krycí list");
 define("COVERAGE_MAIL_SUBJECT_UPDATE", "Aktualizace krycího list");

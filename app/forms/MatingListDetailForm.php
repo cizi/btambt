@@ -66,7 +66,8 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter++);
 
 		$femaleContainer->addText("DatNarozeni", MATING_LITTER_DOG_DATE)
-			->setAttribute("placeholder", DOG_FORM_BIRT)
+			->setType('date')
+			->setAttribute("readonly", "readonly")
 			->setAttribute("tabindex", $counter++);
 
 		/* $femaleContainer->addText("Bonitace", MATING_FORM_BON_CODE)
@@ -85,7 +86,8 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter++);
 
 		$maleContainer->addText("DatNarozeni", MATING_LITTER_DOG_DATE)
-			->setAttribute("placeholder", DOG_FORM_BIRT)
+			->setType('date')
+			->setAttribute("readonly", "readonly")
 			->setAttribute("tabindex", $counter++);
 
 		/* $maleContainer->addText("Bonitace", MATING_FORM_BON_CODE)
@@ -99,15 +101,15 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter++);
 
 		$form->addText("DatumKryti", MATING_FORM_PLACE_DETAIL_DAY)
-			->setAttribute("placeholder", MATING_FORM_PLACE_DETAIL_DAY)
+			->setType('date')
 			->setAttribute("tabindex", $counter++);
 
 		$form->addText("DatumKrytiOpakovane", MATING_FORM_PLACE_DETAIL_DAY_REPEAT)
-			->setAttribute("placeholder", MATING_FORM_PLACE_DETAIL_DAY_REPEAT)
+			->setType('date')
 			->setAttribute("tabindex", $counter++);
 
 		$form->addText("PredpokladDatum", MATING_FORM_ESTIMATE_DATE)
-			->setAttribute("placeholder", MATING_FORM_ESTIMATE_DATE)
+			->setType('date')
 			->setAttribute("tabindex", $counter++);
 
 		/* $form->addText("DatumPorodu", LITTER_APPLICATION_BIRTH)
@@ -159,7 +161,7 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter++); */
 
 		$form->addText("Datum", MATING_FORM_DATE_SHORT)
-			->setAttribute("placeholder", MATING_FORM_DATE_SHORT)
+			->setType('date')
 			->setAttribute("tabindex", $counter++);
 
 		$form->addButton("back", MATING_FORM_OVERAGAIN)

@@ -12,6 +12,7 @@ use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
+use Nette\FileNotFoundException;
 use Mpdf\Mpdf as mPDF;
 use Dibi\DateTime;
 use App\Model\Entity\CoverageApplicationAttachementEntity;
@@ -242,6 +243,11 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                         }
                     }
                 }
+
+                if (isset($values["express"]) && (count($attachs) == 0)) {
+                    throw new FileNotFoundException(COVERAGE_EXPRESS_NO_FILE);
+                }
+
                 $ce = new CoverageApplicationEntity();
                 $ce->setMID($fID);
                 $ce->setOID1(empty($pID1) ? null : $pID1);
@@ -279,6 +285,8 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                 }               
             } catch (AbortException $e) {
                 throw $e;
+            } catch (FileNotFoundException $e) {
+                $this->flashMessage($e->getMessage(), "alert-danger");
             } catch (\Exception $e) {
 //                dump($e); die;
                 $this->flashMessage(BLOCK_SETTINGS_ITEM_SAVED_FAILED, "alert-danger");

@@ -150,6 +150,7 @@ class ShowPresenter extends SignPresenter {
 	 */
 	public function actionEditShowReferee($id) {
 		$this['showRefereeForm']['vID']->setDefaultValue($id);
+		$this['showRefereeForm']['back']->setAttribute("onclick", "location.assign('" . $this->link("detail", $id) . "')");
 	}
 
 	/**
@@ -160,7 +161,7 @@ class ShowPresenter extends SignPresenter {
 	}
 
 	public function createComponentShowRefereeForm() {
-		$form = $this->showRefereeForm->create($this->link("detail"), $this->langRepository->getCurrentLang($this->session));
+		$form = $this->showRefereeForm->create($this->langRepository->getCurrentLang($this->session));
 		$form->onSubmit[] = [$this, 'saveShowReferee'];
 
 		$renderer = $form->getRenderer();

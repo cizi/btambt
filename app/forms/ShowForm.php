@@ -43,9 +43,9 @@ class ShowForm {
 			->setAttribute("tabindex", $index + 1);
 
 		$form->addText("Datum", SHOW_TABLE_DATE)
+			->setType('date')
 			->setAttribute("class", "form-control tinym_required_field")
 			->setAttribute("validation", SHOW_TABLE_DATE_VALIDATION)
-			->setAttribute("placeholder", SHOW_TABLE_DATE)
 			->setAttribute("tabindex", $index + 2);
 
 		$form->addText("Nazev", SHOW_TABLE_NAME)

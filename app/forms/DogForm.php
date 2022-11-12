@@ -95,9 +95,9 @@ class DogForm {
 			->setAttribute("class", "form-control");
 
 		$form->addText("DatNarozeni", DOG_FORM_BIRT)
+			->setType('date')
 			->setAttribute("class", "form-control")
-			->setAttribute("id", "DatNarozeni")
-			->setAttribute("placeholder", DOG_FORM_BIRT);
+			->setAttribute("id", "DatNarozeni");
 
 		 $form->addText("Vyska", DOG_FORM_HEIGHT)
 			->setAttribute("class", "form-control")
@@ -111,9 +111,9 @@ class DogForm {
 					->setAttribute("placeholder", DOG_FORM_WEIGHT); */
 
 		$form->addText("DatUmrti", DOG_FORM_DEAD)
+			->setType('date')
 			->setAttribute("class", "form-control")
-			->setAttribute("id", "DatUmrti")
-			->setAttribute("placeholder", DOG_FORM_DEAD);
+			->setAttribute("id", "DatUmrti");
 
 		/* $form->addText("UmrtiKomentar", DOG_FORM_DEAD_COM)
 			->setAttribute("class", "form-control")
@@ -178,7 +178,7 @@ class DogForm {
 			$container->addText("caption", null)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setDefaultValue($enumEntity->getItem());
 			$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
 			$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
-			$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "healthDatePicker form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);
+			$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setType('date')->setAttribute("class", "healthDatePicker form-control");
 			$container->addSelect("Veterinar", DOG_FORM_HEALTH_VET, $vets)->setAttribute("class", "form-control");
 		}
 

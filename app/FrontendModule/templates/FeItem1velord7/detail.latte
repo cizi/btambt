@@ -61,8 +61,7 @@
 											<td>
 												{var $tridy = explode(',', $referee->getTrida())}
 												{foreach $tridy as $trida}
-													{$enumRepo->findEnumItemByOrder($lang, $trida)}
-													{if $iterator->last == false}, {/if}
+													{$enumRepo->findEnumItemByOrder($lang, $trida)}{if $iterator->last == false}, {/if}
 												{/foreach}
 											</td>
 											<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getPlemeno())}</td>
