@@ -11,7 +11,7 @@ define("ADMIN_LOGIN_REMEMBER_ME", 'Zapamatuj si mě');
 define("ADMIN_LOGIN_FORGOTTEN_PASSWORD", 'Zapomenuté heslo?');
 define("ADMIN_LOGIN_RESET_PASSWORD", 'Obnovit heslo');
 define("ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL", 'Email nebyl nalezen v databázi.');
-define("ADMIN_LOGIN_RESET_SUCCESS", 'Heslo bylo úspěšně změněno a odesláno na email.');
+define("ADMIN_LOGIN_RESET_SUCCESS", 'Heslo bylo úspěšně změněno a odesláno na email (prosím, zkontrolujte i spamovou složku).');
 define("ADMIN_LOGIN_RESET_FAILED", 'Obnova hesla se nezdařila, opakujte později.');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT", 'Změna hesla v systému %s');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT_PLAIN", 'Změna hesla v systému');

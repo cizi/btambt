@@ -244,7 +244,7 @@ class FeItem1velord8Presenter extends FrontendPresenter {
                     }
                 }
 
-                if (isset($values["express"]) && (count($attachs) == 0)) {
+                if ((count($attachs) == 0) && (!isset($values["upd"]))) {
                     throw new FileNotFoundException(COVERAGE_EXPRESS_NO_FILE);
                 }
 

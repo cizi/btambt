@@ -11,7 +11,7 @@ define("ADMIN_LOGIN_REMEMBER_ME", 'Remember me');
 define("ADMIN_LOGIN_FORGOTTEN_PASSWORD", 'Forgotten password?');
 define("ADMIN_LOGIN_RESET_PASSWORD", 'Reset password');
 define("ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL", 'Email does not exist in database.');
-define("ADMIN_LOGIN_RESET_SUCCESS", 'Password has benn successfully changed and send to your email.');
+define("ADMIN_LOGIN_RESET_SUCCESS", 'Password has benn successfully changed and send to your email (please check the spam folder as well.');
 define("ADMIN_LOGIN_RESET_FAILED", 'Password reset failed. Try again later.');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT", 'Password changed in %s');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT_PLAIN", 'Password changed');
